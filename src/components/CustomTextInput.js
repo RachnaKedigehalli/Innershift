@@ -12,6 +12,10 @@ const CustomTextInput = (props) => {
             placeholder={props.placeholder}
             keyboardType={props.keyboardType}
             onBlur={() => Keyboard.dismiss()}
+            selectionColor = {AppStyles.colour.textGreen}
+            placeholderTextColor = {AppStyles.colour.darkGrey}
+            cursorColor = {AppStyles.colour.textGreen}
+            secureTextEntry = {props.secureTextEntry}
         />
     )
 }
@@ -20,8 +24,7 @@ export default CustomTextInput
 
 const styles = StyleSheet.create({
     input : {
-        cursorColor: AppStyles.colour.textGreen,
-        color: AppStyles.colour.darkGrey,
+        color: AppStyles.colour.textGreen,
         borderColor: AppStyles.colour.darkGreen,
         borderWidth: 2,
         width: 300,
