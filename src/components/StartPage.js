@@ -12,7 +12,10 @@ const StartPage = ({ navigation }) => {
       style={{
         flexDirection: "column",
         alignItems: "center",
-        paddingTop: 226,
+        // paddingTop: 226,
+        justifyContent: "center",
+        backgroundColor: AppStyles.colour.white,
+        height: "100%",
         // gap: 57,
       }}
     >
