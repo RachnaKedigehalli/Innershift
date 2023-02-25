@@ -1,4 +1,4 @@
-import {  StyleSheet, Text, View } from 'react-native'
+import {  StyleSheet} from 'react-native'
 import React from 'react'
 import AppStyles from '../AppStyles'
 import { Button } from '@rneui/base';
@@ -11,12 +11,10 @@ const CustomButton = (props) => {
         title={props.title}
         accessibilityLabel={props.accessibilityLabel}
         buttonStyle={styles.customButton}
+        titleStyle={{fontFamily: 'Poppins_500Medium'}}
     >
 
     </Button>
-    // <View>
-    //   <Text>CustomButton</Text>
-    // </View>
   )
 }
 
@@ -29,7 +27,7 @@ const styles = StyleSheet.create({
         // padding: "10 0",
         borderRadius: 28,
         color: AppStyles.colour.textGreen,
-        // fontFamily: AppStyles.font.subHeadings,
+        fontFamily: AppStyles.font.subHeadings,
         fontSize: AppStyles.size.subHeadings,
         fontWeight: AppStyles.weight.subHeadings
     },

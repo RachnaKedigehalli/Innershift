@@ -10,7 +10,6 @@ const StartPage = () => {
     return (
         <View
             style={{
-                // fontFamily: AppStyles.font.subHeadings,
                 flexDirection: 'column', 
                 alignItems: 'center', 
                 paddingTop: 226, 
@@ -33,6 +32,7 @@ const StartPage = () => {
                         color: AppStyles.colour.textGreen,
                         width: 300,
                         textAlign: 'center',
+                        fontFamily: AppStyles.font.subHeadings,
                     }}
                 >{welcomeText}</Text>
 
@@ -54,6 +54,7 @@ const StartPage = () => {
                             fontSize: 17,
                             fontWeight: '500',
                             color: AppStyles.colour.darkGrey,
+                            fontFamily: AppStyles.font.subHeadings,
                         }}
                     >{registerOrLoginText[1]}</Text>
                     <CustomButton 

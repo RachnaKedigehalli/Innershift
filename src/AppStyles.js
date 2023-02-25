@@ -6,7 +6,7 @@ export default AppStyles = {
         darkGrey: '#757575',
     },
     font: {
-        subHeadings: 'Poppins'
+        subHeadings: 'Poppins_600SemiBold',
     },
     size: {
         subHeadings: '17px'
