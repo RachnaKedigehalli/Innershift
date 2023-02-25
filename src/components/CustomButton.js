@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     customButton : {
         backgroundColor: AppStyles.colour.darkGreen,
         width: 300,
-        // padding: "10 0",
+        paddingTop: 10,
+        paddingBottom:10,
         borderRadius: 28,
         color: AppStyles.colour.textGreen,
         fontFamily: AppStyles.font.subHeadings,
