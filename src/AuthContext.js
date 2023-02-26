@@ -11,9 +11,41 @@ export const AuthProvider = (props) => {
   const [userToken, setUserToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
 
+  const getOTP = async (email) => {
+    await axios
+      .post(`${BASE_AUTH_URL}/getEmailOTP`, {
+        email: email,
+      })
+      .then((res) => {
+        console.log(res);
+        return true;
+      })
+      .catch((err) => {
+        console.log(err);
+        return false;
+      });
+  };
+
+  const verifyOTP = async (email, otp) => {
+    await axios
+      .post(`${BASE_AUTH_URL}/confirmEmailOTP`, {
+        email: email,
+        token: otp,
+      })
+      .then((res) => {
+        console.log(res);
+        return true;
+      })
+      .catch((err) => {
+        console.log(err);
+        return false;
+      });
+
+    return true;
+  };
+
   const login = async (email, password) => {
     setIsLoading(true);
-    setUserToken("token");
     console.log(`${BASE_AUTH_URL}/authenticate`);
     await axios
       .post(`${BASE_AUTH_URL}/authenticate`, {
@@ -22,20 +54,37 @@ export const AuthProvider = (props) => {
       })
       .then((res) => {
         AsyncStorage.setItem("userToken", res.data.token);
-        AsyncStorage.setItem("refreshToken", res.data.refreshToken);
+        AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
-        setRefreshToken(res.data.refreshToken);
+        setRefreshToken(res.data.refreshToken.token);
+        return true;
       })
       .catch((err) => {
         console.log(err);
+        return false;
       });
 
     setIsLoading(false);
   };
-  const register = () => {
+  const register = async (email, first, last, password) => {
     setIsLoading(true);
-    setUserToken("token");
-    AsyncStorage.setItem("userToken", "sdfsfd");
+    // setUserToken("token");
+    await axios
+      .post(`${BASE_AUTH_URL}/register`, {
+        email: email,
+        firstName: first,
+        lastName: last,
+        password: password,
+      })
+      .then((res) => {
+        AsyncStorage.setItem("userToken", res.data.token);
+        AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
+        setUserToken(res.data.token);
+        setRefreshToken(res.data.refreshToken.token);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setIsLoading(false);
   };
 
@@ -86,7 +135,15 @@ export const AuthProvider = (props) => {
   return (
     <AuthContext.Provider
       props={props}
-      value={{ login, logout, isLoading, userToken }}
+      value={{
+        login,
+        register,
+        getOTP,
+        verifyOTP,
+        logout,
+        isLoading,
+        userToken,
+      }}
     >
       {props.children}
     </AuthContext.Provider>

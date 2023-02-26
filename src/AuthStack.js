@@ -8,6 +8,8 @@ import AppStyles from "./AppStyles";
 import LoginPassword from "./components/LoginPassword";
 import Home from "./components/Home";
 import SetPassword from "./components/SetPassword";
+import RegisterName from "./components/RegisterName";
+import VerifyEmail from "./components/VerifyEmail";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,16 @@ const AuthStack = () => {
     <Stack.Navigator initialRouteName="StartPage">
       <Stack.Screen name="StartPage" component={StartPage} options={noHeader} />
       <Stack.Screen name="Register" component={Register} options={noHeader} />
+      <Stack.Screen
+        name="VerifyEmail"
+        component={VerifyEmail}
+        options={noHeader}
+      />
+      <Stack.Screen
+        name="RegisterName"
+        component={RegisterName}
+        options={noHeader}
+      />
       <Stack.Screen name="Login" component={Login} options={noHeader} />
       <Stack.Screen
         name="LoginPassword"

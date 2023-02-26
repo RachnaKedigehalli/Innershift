@@ -6,23 +6,18 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import CustomButton from "./CustomButton";
 import AppStyles from "../AppStyles";
 import CustomTextInput from "./CustomTextInput";
-import { AuthContext } from "../AuthContext";
 
-const SetPassword = ({ route, navigation }) => {
-  const [enterPasswordText, setenterPasswordText] = useState(
-    "Set up your password"
-  );
-  const [password, setPassword] = useState("");
-  const [repassword, setRepassword] = useState("");
+const RegisterName = ({ route, navigation }) => {
+  const [enterNameText, setEnterNameText] = useState("Enter your full name");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  const [loginText, setLoginText] = useState("Register");
-  const { first, last, email } = route.params;
-  const { register } = useContext(AuthContext);
-  const [errorStatus, setErrorStatus] = useState(false);
+  const [continueText, setContinueText] = useState("Continue");
+  const { email } = route.params;
 
   return (
     <ScrollView
@@ -59,7 +54,7 @@ const SetPassword = ({ route, navigation }) => {
               fontFamily: AppStyles.font.subHeadings,
             }}
           >
-            {enterPasswordText}
+            {enterNameText}
           </Text>
 
           <View
@@ -70,10 +65,9 @@ const SetPassword = ({ route, navigation }) => {
             }}
           >
             <CustomTextInput
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Password"
-              secureTextEntry={false}
+              onChangeText={setFirstName}
+              value={firstName}
+              placeholder="First name"
             />
 
             <View
@@ -82,24 +76,10 @@ const SetPassword = ({ route, navigation }) => {
               }}
             >
               <CustomTextInput
-                onChangeText={setRepassword}
-                value={repassword}
-                placeholder="Re-type password"
-                secureTextEntry={false}
-                error={errorStatus}
+                onChangeText={setLastName}
+                value={lastName}
+                placeholder="Last name"
               />
-              {repassword != "" && password != repassword ? (
-                <View
-                  style={{
-                    paddingLeft: 8,
-                    paddingTop: 10,
-                  }}
-                >
-                  <Text style={{ color: "red" }}>Passwords do not match </Text>
-                </View>
-              ) : (
-                <></>
-              )}
             </View>
             <View
               style={{
@@ -107,10 +87,14 @@ const SetPassword = ({ route, navigation }) => {
               }}
             >
               <CustomButton
-                title={loginText}
-                accessibilityLabel={loginText}
+                title={continueText}
+                accessibilityLabel={continueText}
                 onPress={() => {
-                  register(email, first, last, password);
+                  navigation.navigate("SetPassword", {
+                    first: firstName,
+                    last: lastName,
+                    email: email,
+                  });
                 }}
               />
             </View>
@@ -121,6 +105,6 @@ const SetPassword = ({ route, navigation }) => {
   );
 };
 
-export default SetPassword;
+export default RegisterName;
 
 const styles = StyleSheet.create({});
