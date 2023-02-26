@@ -1,8 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
-import StartPage from "./src/components/StartPage";
-import NavStack from "./src/AuthStack";
+
 // import AppLoading from 'expo-app-loading';
 import {
   useFonts,
@@ -26,7 +23,7 @@ import {
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthProvider } from "./src/AuthContext";
+import { AuthProvider } from "./src/components/auth/AuthContext";
 import { useContext } from "react";
 import AppNav from "./src/AppNav";
 

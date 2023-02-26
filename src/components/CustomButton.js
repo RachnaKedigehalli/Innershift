@@ -13,6 +13,7 @@ const CustomButton = (props) => {
       buttonStyle={styles.customButton}
       titleStyle={{ fontFamily: "Poppins_500Medium" }}
       disabled={props.disabled}
+      loading={props.loading}
     ></Button>
   );
 };

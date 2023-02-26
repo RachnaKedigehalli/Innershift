@@ -1,25 +1,18 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Platform,
-} from "react-native";
-import React, { useState, useContext } from "react";
-import CustomButton from "./CustomButton";
-import AppStyles from "../AppStyles";
-import CustomTextInput from "./CustomTextInput";
-import { AuthContext } from "../AuthContext";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import React, { useContext, useState } from "react";
+import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
+import CustomTextInput from "../CustomTextInput";
+import { AuthContext } from "./AuthContext";
 
-const LoginPassword = ({ route, navigation }) => {
-  const [enterPasswordText, setenterPasswordText] = useState(
-    "Enter your password"
+const Register = ({ route, navigation }) => {
+  const [enterEmailText, setenterEmailText] = useState(
+    "Verify email ID with OTP"
   );
-  const [password, setPassword] = useState("");
-  const [invalid, setInvalid] = useState(false);
-  const [loginText, setLoginText] = useState("Login");
-  const { login, userToken } = useContext(AuthContext);
+  const [otp, setOtp] = useState("");
+  const [isVerified, setIsVerified] = useState();
+  const [continueText, setContinueText] = useState("Verify");
+  const { verifyOTP } = useContext(AuthContext);
   const { email } = route.params;
 
   return (
@@ -37,7 +30,7 @@ const LoginPassword = ({ route, navigation }) => {
           // gap: 57,
         }}
       >
-        <Image source={require("../../assets/images/logo.png")} />
+        <Image source={require("../../../assets/images/logo.png")} />
         <View
           style={{
             flexDirection: "column",
@@ -48,16 +41,15 @@ const LoginPassword = ({ route, navigation }) => {
         >
           <Text
             style={{
-              // fontSize: 27,
               fontSize: Platform.OS == "android" ? 24 : 27,
               fontWeight: "600",
               color: AppStyles.colour.textGreen,
               width: 300,
-              textAlign: "center",
+              // textAlign: "center",
               fontFamily: AppStyles.font.subHeadings,
             }}
           >
-            {enterPasswordText}
+            {enterEmailText}
           </Text>
 
           <View
@@ -68,37 +60,37 @@ const LoginPassword = ({ route, navigation }) => {
             }}
           >
             <CustomTextInput
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Password"
-              secureTextEntry={true}
+              onChangeText={setOtp}
+              value={otp}
+              placeholder="Enter your OTP"
+              keyboardType="default"
             />
-            {invalid ? (
+            {isVerified == false ? (
               <View
                 style={{
                   paddingLeft: 8,
                   paddingTop: 10,
                 }}
               >
-                <Text style={{ color: "red" }}>
-                  Incorrect email or password.{" "}
-                </Text>
+                <Text style={{ color: "red" }}>Invalid e-mail address </Text>
               </View>
             ) : (
               <></>
             )}
-
             <View
               style={{
                 marginTop: 42,
               }}
             >
               <CustomButton
-                title={loginText}
-                accessibilityLabel={loginText}
+                title={continueText}
+                accessibilityLabel={continueText}
                 onPress={async () => {
-                  const prom = login(email, password);
-                  setInvalid(await prom);
+                  const verified = verifyOTP(email, otp);
+                  setIsVerified(verified);
+                  console.log(verified);
+                  if (await verified)
+                    navigation.navigate("RegisterName", { email: email });
                 }}
               />
             </View>
@@ -109,6 +101,6 @@ const LoginPassword = ({ route, navigation }) => {
   );
 };
 
-export default LoginPassword;
+export default Register;
 
 const styles = StyleSheet.create({});

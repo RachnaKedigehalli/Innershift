@@ -1,8 +1,8 @@
 import { View, Text, ActivityIndicator } from "react-native";
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthContext } from "./AuthContext";
-import AuthStack from "./AuthStack";
+import { AuthContext } from "./components/auth/AuthContext";
+import AuthStack from "./components/auth/AuthStack";
 import AppStack from "./AppStack";
 
 const AppNav = () => {

@@ -1,7 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import CustomButton from "./CustomButton";
-import AppStyles from "../AppStyles";
+import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
 
 const StartPage = ({ navigation }) => {
   const welcomeText = "Welcome, let’s get started!";
@@ -19,7 +19,7 @@ const StartPage = ({ navigation }) => {
         // gap: 57,
       }}
     >
-      <Image source={require("../../assets/images/logo.png")} />
+      <Image source={require("../../../assets/images/logo.png")} />
       <View
         style={{
           flexDirection: "column",

@@ -1,13 +1,26 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { useContext, useState } from "react";
-import CustomButton from "./CustomButton";
-import AppStyles from "../AppStyles";
-import CustomTextInput from "./CustomTextInput";
+import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
+import CustomTextInput from "../CustomTextInput";
+import { AuthContext } from "./AuthContext";
 
-const Login = ({ navigation }) => {
-  const [enterEmailText, setenterEmailText] = useState("Enter your email ID");
+const Register = ({ navigation }) => {
+  const [enterEmailText, setenterEmailText] = useState(
+    "Enter your email ID to get OTP"
+  );
   const [emailID, setEmailID] = useState("");
-  const [continueText, setContinueText] = useState("Continue");
+  const [continueText, setContinueText] = useState("Get OTP");
+  const [isLoading, setIsLoading] = useState(false);
+  const { getOTP } = useContext(AuthContext);
+  const validate = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <ScrollView
@@ -24,7 +37,7 @@ const Login = ({ navigation }) => {
           // gap: 57,
         }}
       >
-        <Image source={require("../../assets/images/logo.png")} />
+        <Image source={require("../../../assets/images/logo.png")} />
         <View
           style={{
             flexDirection: "column",
@@ -39,7 +52,7 @@ const Login = ({ navigation }) => {
               fontWeight: "600",
               color: AppStyles.colour.textGreen,
               width: 300,
-              textAlign: "center",
+              // textAlign: "center",
               fontFamily: AppStyles.font.subHeadings,
             }}
           >
@@ -59,7 +72,18 @@ const Login = ({ navigation }) => {
               placeholder="Email ID"
               keyboardType="email-address"
             />
-
+            {emailID != "" && !validate(emailID) ? (
+              <View
+                style={{
+                  paddingLeft: 8,
+                  paddingTop: 10,
+                }}
+              >
+                <Text style={{ color: "red" }}>Invalid e-mail address </Text>
+              </View>
+            ) : (
+              <></>
+            )}
             <View
               style={{
                 marginTop: 42,
@@ -68,8 +92,15 @@ const Login = ({ navigation }) => {
               <CustomButton
                 title={continueText}
                 accessibilityLabel={continueText}
-                onPress={() => {
-                  navigation.navigate("LoginPassword", { email: emailID });
+                loading={isLoading}
+                disabled={!validate(emailID)}
+                onPress={async () => {
+                  setIsLoading(true);
+                  await getOTP(emailID.toLowerCase());
+                  setIsLoading(false);
+                  navigation.navigate("VerifyEmail", {
+                    email: emailID.toLowerCase(),
+                  });
                 }}
               />
             </View>
@@ -80,6 +111,6 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({});

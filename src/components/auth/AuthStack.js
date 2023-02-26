@@ -1,15 +1,15 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import StartPage from "./components/StartPage";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import AppStyles from "./AppStyles";
-import LoginPassword from "./components/LoginPassword";
-import Home from "./components/Home";
-import SetPassword from "./components/SetPassword";
-import RegisterName from "./components/RegisterName";
-import VerifyEmail from "./components/VerifyEmail";
+import StartPage from "./StartPage";
+import Register from "./Register";
+import Login from "./Login";
+import AppStyles from "../../AppStyles";
+import LoginPassword from "./LoginPassword";
+
+import SetPassword from "./SetPassword";
+import RegisterName from "./RegisterName";
+import VerifyEmail from "./VerifyEmail";
 
 const Stack = createNativeStackNavigator();
 

@@ -6,23 +6,22 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import React, { useContext, useState } from "react";
-import CustomButton from "./CustomButton";
-import AppStyles from "../AppStyles";
-import CustomTextInput from "./CustomTextInput";
-import { AuthContext } from "../AuthContext";
+import React, { useState, useContext } from "react";
+import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
+import CustomTextInput from "../CustomTextInput";
+import { AuthContext } from "./AuthContext";
 
-const SetPassword = ({ route, navigation }) => {
+const LoginPassword = ({ route, navigation }) => {
   const [enterPasswordText, setenterPasswordText] = useState(
-    "Set up your password"
+    "Enter your password"
   );
   const [password, setPassword] = useState("");
-  const [repassword, setRepassword] = useState("");
-
-  const [loginText, setLoginText] = useState("Register");
-  const { first, last, email } = route.params;
-  const { register } = useContext(AuthContext);
-  const [errorStatus, setErrorStatus] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginText, setLoginText] = useState("Login");
+  const { login, userToken } = useContext(AuthContext);
+  const { email } = route.params;
 
   return (
     <ScrollView
@@ -39,7 +38,7 @@ const SetPassword = ({ route, navigation }) => {
           // gap: 57,
         }}
       >
-        <Image source={require("../../assets/images/logo.png")} />
+        <Image source={require("../../../assets/images/logo.png")} />
         <View
           style={{
             flexDirection: "column",
@@ -64,7 +63,7 @@ const SetPassword = ({ route, navigation }) => {
 
           <View
             style={{
-              marginTop: Platform.OS == "android" ? 20 : 25,
+              marginTop: 20,
               flexDirection: "column",
               alignItems: "center",
             }}
@@ -73,44 +72,37 @@ const SetPassword = ({ route, navigation }) => {
               onChangeText={setPassword}
               value={password}
               placeholder="Password"
-              secureTextEntry={false}
+              secureTextEntry={true}
             />
+            {invalid ? (
+              <View
+                style={{
+                  paddingLeft: 8,
+                  paddingTop: 10,
+                }}
+              >
+                <Text style={{ color: "red" }}>
+                  Incorrect email or password.{" "}
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
 
             <View
               style={{
-                marginTop: 19,
-              }}
-            >
-              <CustomTextInput
-                onChangeText={setRepassword}
-                value={repassword}
-                placeholder="Re-type password"
-                secureTextEntry={false}
-                error={errorStatus}
-              />
-              {repassword != "" && password != repassword ? (
-                <View
-                  style={{
-                    paddingLeft: 8,
-                    paddingTop: 10,
-                  }}
-                >
-                  <Text style={{ color: "red" }}>Passwords do not match </Text>
-                </View>
-              ) : (
-                <></>
-              )}
-            </View>
-            <View
-              style={{
-                marginTop: 30,
+                marginTop: 42,
               }}
             >
               <CustomButton
                 title={loginText}
                 accessibilityLabel={loginText}
-                onPress={() => {
-                  register(email, first, last, password);
+                loading={isLoading}
+                onPress={async () => {
+                  setIsLoading(true);
+                  const prom = login(email, password);
+                  setInvalid(await prom);
+                  setIsLoading(false);
                 }}
               />
             </View>
@@ -121,6 +113,6 @@ const SetPassword = ({ route, navigation }) => {
   );
 };
 
-export default SetPassword;
+export default LoginPassword;
 
 const styles = StyleSheet.create({});

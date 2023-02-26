@@ -7,9 +7,9 @@ import {
   Platform,
 } from "react-native";
 import React, { useState } from "react";
-import CustomButton from "./CustomButton";
-import AppStyles from "../AppStyles";
-import CustomTextInput from "./CustomTextInput";
+import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
+import CustomTextInput from "../CustomTextInput";
 
 const RegisterName = ({ route, navigation }) => {
   const [enterNameText, setEnterNameText] = useState("Enter your full name");
@@ -34,7 +34,7 @@ const RegisterName = ({ route, navigation }) => {
           // gap: 57,
         }}
       >
-        <Image source={require("../../assets/images/logo.png")} />
+        <Image source={require("../../../assets/images/logo.png")} />
         <View
           style={{
             flexDirection: "column",
