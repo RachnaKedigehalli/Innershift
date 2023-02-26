@@ -1,5 +1,8 @@
 package com.innershiift.auth.auth;
 
+import com.innershiift.auth.auth.emailToken.EmailToken;
+import com.innershiift.auth.auth.emailToken.EmailTokenRepository;
+import com.innershiift.auth.auth.emailToken.EmailTokenService;
 import com.innershiift.auth.config.JwtService;
 import com.innershiift.auth.config.RefreshToken;
 import com.innershiift.auth.config.RefreshTokenException;
@@ -14,17 +17,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository repository;
+
+
     private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+
+    private final EmailTokenService emailTokenService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -59,11 +68,14 @@ public class AuthenticationService {
                 .orElseThrow();
 //        System.out.println("user " + user);
         var jwtToken = jwtService.generateToken(user);
-//        RefreshToken refToken = refreshTokenService.createRefreshToken(user.getEmail());
+        RefreshToken refToken = refreshTokenService.createRefreshToken(user.getEmail());
 //        System.out.println("jwt " + jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-//                .refreshToken(refToken)
+                .refreshToken(refToken)
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .build();
     }
 
@@ -76,10 +88,36 @@ public class AuthenticationService {
                 .map(RefreshToken::getUser)
                 .map(user -> {
                     String token = jwtService.generateToken(user);
-                    return new AuthenticationResponse(token);
+                    return AuthenticationResponse.builder()
+                            .token(token)
+                            .email(user.getEmail())
+                            .firstName(user.getFirstName())
+                            .lastName(user.getLastName())
+                            .build();
                 })
                 .orElseThrow(() -> new RefreshTokenException(requestRefreshToken,
                         "Refresh token is not in database!"));
 
+    }
+    public String confirmToken(String token) {
+        EmailToken confirmationToken = emailTokenService
+                .getToken(token)
+                .orElseThrow(() ->
+                        new IllegalStateException("token not found"));
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new IllegalStateException("email already confirmed");
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("token expired");
+        }
+
+        emailTokenService.setConfirmedAt(token);
+//        appUserService.enableAppUser(
+//                confirmationToken.getAppUser().getEmail());
+        return "confirmed";
     }
 }

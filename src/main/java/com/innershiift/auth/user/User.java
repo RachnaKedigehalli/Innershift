@@ -38,7 +38,9 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
-
+    public void setPassword(String pass) {
+        this.password = pass;
+    }
     @Override
     public String getUsername() {
         return email;
