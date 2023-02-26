@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import StartPage from "./src/components/StartPage";
-import NavStack from "./src/NavStack";
+import NavStack from "./src/AuthStack";
 // import AppLoading from 'expo-app-loading';
 import {
   useFonts,
@@ -26,6 +26,10 @@ import {
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
 import { NavigationContainer } from "@react-navigation/native";
+import { AuthProvider } from "./src/AuthContext";
+import { useContext } from "react";
+import AppNav from "./src/AppNav";
+
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -55,9 +59,9 @@ export default function App() {
     return null;
   } else {
     return (
-      <NavigationContainer>
-        <NavStack />
-      </NavigationContainer>
+      <AuthProvider>
+        <AppNav />
+      </AuthProvider>
       // <View style={styles.container}>
       //   <Text>Open up App.js to start working on your app!</Text>
       //   <StatusBar style="auto" />

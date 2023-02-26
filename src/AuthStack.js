@@ -11,7 +11,7 @@ import SetPassword from "./components/SetPassword";
 
 const Stack = createNativeStackNavigator();
 
-const NavStack = () => {
+const AuthStack = () => {
   const discreteHeader = {
     headerShown: true,
     title: "",
@@ -21,38 +21,25 @@ const NavStack = () => {
     },
     headerTintColor: AppStyles.colour.darkGreen,
   };
-  const noHeader = {headerShown: false}
+  const noHeader = { headerShown: false };
 
   return (
     <Stack.Navigator initialRouteName="StartPage">
+      <Stack.Screen name="StartPage" component={StartPage} options={noHeader} />
+      <Stack.Screen name="Register" component={Register} options={noHeader} />
+      <Stack.Screen name="Login" component={Login} options={noHeader} />
       <Stack.Screen
-        name="StartPage"
-        component={StartPage}
+        name="LoginPassword"
+        component={LoginPassword}
         options={noHeader}
       />
       <Stack.Screen
-        name="Register"
-        component={Register}
+        name="SetPassword"
+        component={SetPassword}
         options={noHeader}
       />
-      <Stack.Screen 
-        name="Login" 
-        component={Login} 
-        options={noHeader} />
-      <Stack.Screen 
-        name="LoginPassword" 
-        component={LoginPassword} 
-        options={noHeader} />
-      <Stack.Screen 
-        name="Home" 
-        component={Home} 
-        options={noHeader} />
-      <Stack.Screen 
-        name="SetPassword" 
-        component={SetPassword} 
-        options={noHeader} />
     </Stack.Navigator>
   );
 };
 
-export default NavStack;
+export default AuthStack;
