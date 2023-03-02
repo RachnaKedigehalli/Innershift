@@ -2,7 +2,8 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppStyles from "./AppStyles";
 
-import Home from "./components/Home";
+import Home from "./screens/Home";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,9 +20,10 @@ const AppStack = () => {
   const noHeader = { headerShown: false };
 
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} options={noHeader} />
-    </Stack.Navigator>
+    // <Stack.Navigator initialRouteName="Home">
+      // <Stack.Screen name="Home" component={Home} options={noHeader} />
+    // </Stack.Navigator>
+    <BottomTabNavigator/>
   );
 };
 

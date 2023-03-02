@@ -26,6 +26,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthProvider } from "./src/components/auth/AuthContext";
 import { useContext } from "react";
 import AppNav from "./src/AppNav";
+import {Text, View,Platform, StatusBar} from 'react-native';
+// import { SafeAreaView } from "react-native";
+
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -56,9 +59,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <AuthProvider>
-        <AppNav />
-      </AuthProvider>
+      // <SafeAreaView>
+        <AuthProvider>
+           {/* <View style={{ paddingTop: StatusBar.currentHeigh }}> */}
+            <AppNav/>
+          {/* </View> */}
+        </AuthProvider>
+      // </SafeAreaView>
+
       // <View style={styles.container}>
       //   <Text>Open up App.js to start working on your app!</Text>
       //   <StatusBar style="auto" />
