@@ -8,6 +8,7 @@ import com.innershiift.auth.auth.emailToken.EmailToken;
 import com.innershiift.auth.auth.emailToken.EmailTokenRepository;
 import com.innershiift.auth.auth.emailToken.EmailTokenService;
 import com.innershiift.auth.config.RefreshTokenService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,6 @@ public class AuthenticationController {
     private final RefreshTokenService refreshTokenService;
     private final EmailService emailService;
     private final EmailTokenRepository emailTokenRepository;
-
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
