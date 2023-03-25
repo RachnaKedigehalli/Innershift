@@ -2,6 +2,7 @@ package com.innershiift.auth.user.Patient;
 
 import com.innershiift.auth.user.doctor.Doctor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Component
 public class PatientService {
 
     private final  PatientRepository patientRepository;

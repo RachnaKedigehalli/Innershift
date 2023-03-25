@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/app")
 public class Application {
-//    @PreAuthorize("hasRole('USER')")
-
     @GetMapping
-    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from a secured endpoint!");
     }
