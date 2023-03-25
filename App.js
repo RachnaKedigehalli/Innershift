@@ -27,6 +27,7 @@ import { AuthProvider } from "./src/components/auth/AuthContext";
 import { useContext } from "react";
 import AppNav from "./src/AppNav";
 import {Text, View,Platform, StatusBar} from 'react-native';
+import Mood from "./src/screens/Mood";
 // import { SafeAreaView } from "react-native";
 
 
@@ -59,18 +60,10 @@ export default function App() {
     return null;
   } else {
     return (
-      // <SafeAreaView>
-        <AuthProvider>
-           {/* <View style={{ paddingTop: StatusBar.currentHeigh }}> */}
-            <AppNav/>
-          {/* </View> */}
-        </AuthProvider>
-      // </SafeAreaView>
-
-      // <View style={styles.container}>
-      //   <Text>Open up App.js to start working on your app!</Text>
-      //   <StatusBar style="auto" />
-      // </View>
+        // <AuthProvider>
+        //     <AppNav/>
+        // </AuthProvider>
+        <Mood/>
     );
   }
 }

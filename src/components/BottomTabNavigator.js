@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from './screens/Home';
-import TopBar from './components/TopBar';
-import SearchScreen from './screens/SearchScreen';
-import CalenderScreen from './screens/ProfileScreen';
-import ChatScreen from './screens/ChatScreen';
+import Home from '../screens/Home';
+import TopBar from './TopBar';
+import SearchScreen from '../screens/SearchScreen';
+import CalenderScreen from '../screens/ProfileScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
