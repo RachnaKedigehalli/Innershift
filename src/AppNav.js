@@ -6,25 +6,26 @@ import AuthStack from "./components/auth/AuthStack";
 import AppStack from "./AppStack";
 
 const AppNav = () => {
-  const { isLoading, userToken } = useContext(AuthContext);
+    const { isLoading, userToken } = useContext(AuthContext);
 
-  if (isLoading) {
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <ActivityIndicator size={"large"} />
-    </View>;
-  }
+    if (isLoading) {
+        <View
+            style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <ActivityIndicator size={"large"} />
+        </View>;
+    }
 
-  return (
-    <NavigationContainer>
-      {userToken == null ? <AuthStack /> : <AppStack />}
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer>
+            {userToken == null ? <AuthStack /> : <AppStack />}
+            {/* <AppStack /> */}
+        </NavigationContainer>
+    );
 };
 
 export default AppNav;
