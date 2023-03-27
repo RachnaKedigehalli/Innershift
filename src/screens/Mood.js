@@ -5,7 +5,7 @@ import AppStyles from "../AppStyles";
 import CustomButton from "../components/CustomButton";
 import MoodCard from "../components/MoodCard";
 
-const Mood = () => {
+const Mood = ({ navigation }) => {
     const moods = [
         {
             name: "Energetic",
@@ -43,6 +43,12 @@ const Mood = () => {
     const [moodQues, setmoodQues] = useState("How are you feeling today?");
     const [buttonText, setButtonText] = useState("Get Started");
 
+    const handleSubmitMood = () => {
+        // api call to set mood for day
+        console.log("Submitted" + mood);
+        navigation.navigate("Home");
+    };
+
     return (
         <>
             <TopBar showBack={false}></TopBar>
@@ -65,11 +71,10 @@ const Mood = () => {
                     </View>
                 </View>
                 <CustomButton
-                    onPress={() => {
-                        console.log("Submitted" + mood);
-                    }}
+                    onPress={() => handleSubmitMood()}
                     title={buttonText}
                     accessibilityLabel={buttonText}
+                    disabled={mood == ""}
                 />
             </View>
         </>
