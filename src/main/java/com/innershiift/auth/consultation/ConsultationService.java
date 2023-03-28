@@ -13,11 +13,11 @@ public class ConsultationService {
     private final ConsultationRepository consultationRepository;
     private final MessageRepository messageRepository;
 
-    public Optional<List<Consultation>> getAllConsultationPerUser(Integer userId){
+    public Optional<List<Consultation>> getAllConsultationPerUser(int userId){
         List<Consultation> temp=consultationRepository.findAll();
         List<Consultation> ret=new ArrayList<Consultation>();
         for(Consultation c: temp){
-            if(c.getDoctorId()==userId || c.getPatientId()==userId){
+            if(c.getDoctorId() == userId || c.getPatientId() == userId){
                 ret.add(c);
             }
         }
@@ -29,7 +29,7 @@ public class ConsultationService {
         if(c.isPresent()){
             for(Integer mId: c.get().getMessageIdHistory()){
                 Optional<Message> m=messageRepository.findById(mId);
-                if(m.isPresent())ret.add(m.get());
+                m.ifPresent(ret::add);
             }
             return Optional.of(ret);
         }
@@ -58,6 +58,6 @@ public class ConsultationService {
             consultation.setMessageIdHistory(messageIdHistory);
             return Optional.of(ret);
         }
-        else return Optional.of(null);
+        else return Optional.of(new Message());
     }
 }
