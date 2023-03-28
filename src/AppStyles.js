@@ -9,6 +9,7 @@ export default AppStyles = {
     font: {
         subHeadings: "Poppins_600SemiBold",
         poppinsBold: "Poppins_700Bold",
+        poppinsRegular: "Poppins_400Regular",
     },
     size: {
         subHeadings: "17px",
