@@ -40,8 +40,16 @@ public class ConsultationService {
         Consultation c = new Consultation();
         c.setPatientId(id2);
         c.setDoctorId(id1);
-        c.setStatus(true);
+        c.setStatus(false);
         return Optional.of(consultationRepository.save(c));
+    }
+    public Optional<Consultation> setConsultationStatus(Integer cid,Boolean status){
+        Optional<Consultation> c = consultationRepository.findById(cid);
+        if(c.isPresent()){
+            c.get().setStatus(status);
+            return Optional.of(consultationRepository.save(c.get()));
+        }
+        return  Optional.of(null);
     }
     public Optional<Message> addMessageToConsultation(Integer cid,String message){
         Message m = new Message();
@@ -60,4 +68,23 @@ public class ConsultationService {
         }
         else return Optional.of(new Message());
     }
+
+    public List<Message> getAllMessagesByPid(Integer pid){
+        List<Message> ret = new ArrayList<Message>();
+        List<Consultation> cl = consultationRepository.findAll();
+        for(Consultation c : cl){
+            if(c.getPatientId()== pid || c.getDoctorId()== pid){
+                Optional<List<Message>> temp = getAllMessageForConsultationId(c.getConsultationId());
+                if(temp.isPresent()){
+                    for(Message m: temp.get()){
+                        ret.add(m);
+                    }
+                }
+            }
+        }
+        return ret;
+
+    }
+
+//    public  List<Message> getAllMessagesByCId(Integer cid){}
 }
