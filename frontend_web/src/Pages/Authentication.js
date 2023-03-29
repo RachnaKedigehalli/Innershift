@@ -1,16 +1,35 @@
-import { Grid, GridItem, Image,Center,Heading,Input} from '@chakra-ui/react'
+import { Grid, GridItem, Image,Center,Heading,Input,Button} from '@chakra-ui/react'
 import Navbar from '../Components/Navbar';
-import {DARK_OLIVE,BRIGHT_GREEN, DARK_GREEN} from "../Constants" 
+import {DARK_OLIVE,BRIGHT_GREEN, DARK_GREEN, LIGHT_GREEN} from "../Constants" 
 
-import logo from "../Assets/Logo/Logo_transparent.png"
+
+import logo from "../Assets/Logo/Logo_white.png"
+import { useState } from 'react';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 
 function Auth(){
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+
+    const handleChangeEmail = (event) => setEmail(event.target.value)
+    const handleChangePassword = (event) => setPassword(event.target.value)
+
+    const navigate = useNavigate();
+
+    const onSubmit = ()=>{
+        const credentials = {email:email,password:password}
+        axios.post('http://172.16.141.35:8080/api/v1/auth/authenticate',credentials)
+            .then(response=>{
+                console.log(response.data)
+                navigate("/home",{state:{response:response.data}})
+            })
+    }
     return(
         <div>
-            {/* <Navbar/> */}
             
             <Grid
-                h='59em'
+                h='61em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 >
@@ -22,7 +41,7 @@ function Auth(){
                     <Grid>
                         <Center mt = '5em'>
                             <GridItem rowSpan={4}>
-                                <Image src={logo} h='5em' />
+                                <Image src={logo} h='15em' />
                             </GridItem>
                         </Center>
 
@@ -39,18 +58,24 @@ function Auth(){
                         </Center>
 
                         
-                        <GridItem mt='15em' ml = '15em' mr='15em'>
+                        <GridItem mt='12em' ml = '25em' mr='25em'>
                             <Heading size='sm' >Username/Email</Heading>
-                                <Input size='lg' bgColor={DARK_OLIVE} />
+                                <Input value={email}  onChange={handleChangeEmail} size='lg' bgColor={LIGHT_GREEN} />
                         </GridItem>
                         
-                        <GridItem mt='3em' ml = '15em' mr='15em'>
+                        <GridItem mt='2em' ml = '25em' mr='25em'>
                             <Heading size='sm' >Password</Heading>
-                                <Input size='lg' bgColor={DARK_OLIVE} />
+                                <Input value={password} type='password' onChange={handleChangePassword} size='lg' bgColor={LIGHT_GREEN} />
                         </GridItem>
 
                         <Center mt='2em'>
-                            <Heading size="xs" color={DARK_GREEN}> Forgot Password?</Heading>
+                            <Button onClick={onSubmit} colorScheme='teal' size='lg' style={{color:"black"}}>
+                                        Login
+                            </Button>
+                        </Center>
+
+                        <Center mt='2em'>
+                            <Heading size="xs"> Forgot Password?</Heading>
                         </Center>
                     </Grid>
 

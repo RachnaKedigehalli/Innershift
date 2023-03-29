@@ -1,52 +1,32 @@
 import { Grid, GridItem ,Heading,Image, Button,Center} from '@chakra-ui/react'
 import Navbar from '../Components/Navbar';
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE} from "../Constants" 
-import logo from "../Assets/Logo/Logo_transparent.png"
+import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../Constants" 
+import logo from "../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg-icons'
-import { Col,Row} from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Dashboard(){
+    const location = useLocation();
+
+    useEffect(()=>{
+        console.log(location.state.response)
+    },[])
     return(
         <div>
-            {/* <Navbar/> */}
-            
             <Grid
                 h='60em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 >
 
-                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_LIGHT}>
-                    <Center>
-
-                        <Grid 
-                            h = '20em'
-                            templateRows ='repeat(1,1fr)'
-                            templateColumns='repeat(2,1fr)'
-                            gap={2}
-                            mt = '5em'
-                        >
-                                {/* <GridItem mt = '3em' ml = '4em' colSpan={1}>
-                                        <Image src={logo} h='5em' />
-                                </GridItem>
-                                
-
-                                <GridItem mt = '5em' colSpan={1}>
-                                    <Heading style={{color:DARK_OLIVE}}>Innershift</Heading>
-                                </GridItem> */}
-                                <GridItem colSpan={1}>
-                                        <Image src={logo} h='5em' />
-                                </GridItem>
-                                
-
-                                <GridItem mt = '2em' colSpan={1}>
-                                    <Heading style={{color:DARK_OLIVE}}>Innershift</Heading>
-                                </GridItem>
-                            
-                        </Grid>
+                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
+                    <Center mt = '5em' mb = '12em'>  
+                        <Image src={logo} h='9em' />
                     </Center>
+
                     <Button ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
                     </Button>
@@ -62,7 +42,9 @@ function Dashboard(){
                 </GridItem>
                 
                 
-                <GridItem rowSpan={20} colSpan={4} bg={DESKTOP_BG_MEDIUM} />
+                <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
+                   <Heading  size='lg'> Welcome, <div style={{color:DARK_GREEN}}>{location.state.response.firstName} {location.state.response.lastName}</div> </Heading>
+                </GridItem>
             </Grid>
         </div>
     ); 
