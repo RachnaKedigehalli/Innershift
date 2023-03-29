@@ -1,9 +1,12 @@
 package com.innershiift.auth.user.doctor;
 
+import com.innershiift.auth.user.Patient.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,4 +73,13 @@ public class DoctorService {
         return Optional.of(doctorRepository.save(d));
     }
 
+    public Optional<Doctor> addDoctor(String phoneNumber,String licenseId, Integer doctorId){
+        Doctor d = new Doctor();
+        d.setDoctorId(doctorId);
+        d.setLicenseId(licenseId);
+        d.setPhoneNumber(phoneNumber);
+        d.setCurrentPos("");
+        d.setBiography("");
+        return  Optional.of(doctorRepository.save(d));
+    }
 }

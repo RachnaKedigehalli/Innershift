@@ -21,7 +21,6 @@ import lombok.experimental.SuperBuilder;
 public class Doctor {
 
     @Id
-    @GeneratedValue
     private Integer doctorId;
 
     private  String licenseId;

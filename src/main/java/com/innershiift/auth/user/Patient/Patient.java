@@ -22,7 +22,6 @@ import java.util.Date;
 @Table(name = "_patient")
 public class Patient {
     @Id
-    @GeneratedValue
     private  Integer patientId;
 
     private Integer registeredThrough;
