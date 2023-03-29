@@ -50,6 +50,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .refreshToken(refToken)
+                .role(user.getRole())
                 .build();
 //        return null;
     }
@@ -76,6 +77,7 @@ public class AuthenticationService {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .role(user.getRole())
                 .build();
     }
 

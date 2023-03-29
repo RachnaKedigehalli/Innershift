@@ -1,6 +1,7 @@
 package com.innershiift.auth.auth;
 
 import com.innershiift.auth.config.RefreshToken;
+import com.innershiift.auth.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class AuthenticationResponse {
 
     private String firstName;
     private String lastName;
+
+    private Role role;
 
 
     AuthenticationResponse(String token) {

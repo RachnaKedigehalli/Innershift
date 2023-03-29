@@ -30,12 +30,14 @@ public class ApplicationController {
     private final PatientService patientService;
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from a secured endpoint!");
     }
 
     @PostMapping("/createDoctor")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin
     public ResponseEntity<Doctor> createDoctor(@Valid @RequestBody Doctor doc) {
         return ResponseEntity.ok(
                 doctorService.createDoctor(doc)
@@ -45,6 +47,7 @@ public class ApplicationController {
 
     @PostMapping("/isConsulting")
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<List<Consultation>> isConsulting(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(
                 consultationService.getAllConsultationPerUser(p.getPatientId())
@@ -54,6 +57,7 @@ public class ApplicationController {
 
     @PostMapping("/addConsultation")
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<Consultation> addConsultation(@Valid @RequestBody Consultation cons) {
         return ResponseEntity.ok(
                 consultationService.addConsultationBetweenUserId(cons.getDoctorId(), cons.getPatientId())
@@ -63,6 +67,7 @@ public class ApplicationController {
 
     @PostMapping("/addMessage")
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<Message> addMessage(@Valid @RequestBody Message m) {
         return ResponseEntity.ok(
                 consultationService.addMessageToConsultation(m.getConsultationId(), m.getContent())
@@ -72,6 +77,7 @@ public class ApplicationController {
 
     @PostMapping("/addMood")
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<Mood> addMood(@Valid @RequestBody Mood m) {
         return ResponseEntity.ok(
                 moodService.addMood(m));
@@ -79,6 +85,7 @@ public class ApplicationController {
 
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
     public ResponseEntity<List<Patient>> getAllPatients(){
         return ResponseEntity.ok(
                 patientService.getAllPatients()
@@ -86,5 +93,5 @@ public class ApplicationController {
         ));
     }
 
-    @PostMapping("/addPatient")
+//    @PostMapping("/addPatient")
 }

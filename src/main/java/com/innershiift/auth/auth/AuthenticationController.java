@@ -11,10 +11,7 @@ import com.innershiift.auth.config.RefreshTokenService;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import com.innershiift.auth.config.RefreshToken;
@@ -33,6 +30,7 @@ public class AuthenticationController {
     private final EmailTokenRepository emailTokenRepository;
 
     @PostMapping("/register")
+    @CrossOrigin
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
@@ -40,6 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
+    @CrossOrigin
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ) {
@@ -47,6 +46,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refreshtoken")
+    @CrossOrigin
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
 //        System.out.println("in refresh token");
         return ResponseEntity.ok(service.refresh(request));
@@ -54,6 +54,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/getEmailOTP")
+    @CrossOrigin
     public ResponseEntity<?> getOTP(@Valid @RequestBody EmailRequest request) {
         System.out.println("in verify email");
         String token = UUID.randomUUID().toString();
@@ -78,6 +79,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/confirmEmailOTP")
+    @CrossOrigin
     public ResponseEntity<?> confirmOTP(@Valid @RequestBody OTPConfirmationRequest request) {
         String stat = service.confirmToken(request.getToken());
         return ResponseEntity.ok(EmailResponse.builder()
