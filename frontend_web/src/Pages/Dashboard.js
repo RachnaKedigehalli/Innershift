@@ -7,13 +7,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg-icons'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import {useNavigate} from 'react-router-dom'
 
 function Dashboard(){
     const location = useLocation();
+    const navigate = useNavigate(); 
 
-    useEffect(()=>{
-        console.log(location.state.response)
-    },[])
+    const onClickDoctors = ()=>{
+        navigate('/doctor',{
+            state:location.state.response
+        })
+    }
+
+    const onClickDashboard = ()=>{
+        navigate('/home',{
+            state:location.state.response
+        })
+    }
+
     return(
         <div>
             <Grid
@@ -27,15 +38,15 @@ function Dashboard(){
                         <Image src={logo} h='9em' />
                     </Center>
 
-                    <Button ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
+                    <Button onClick={onClickDashboard} ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
                     </Button>
                     
-                    <Button ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
+                    <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
                     </Button>
 
-                    <Button ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
+                    <Button ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
                     </Button>
 

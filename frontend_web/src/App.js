@@ -8,6 +8,7 @@ import './App.css';
 import Home from './Pages/Home';
 import Dashboard from './Pages/Dashboard';
 import Auth from './Pages/Authentication';
+import Doctor from './Pages/Doctor';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} /> 
         <Route path="/home" element={<Dashboard/>} />
         <Route path="/auth" element={<Auth />} /> 
+        <Route path="/doctor" element={<Doctor />} /> 
       </Routes>
     </BrowserRouter>
   );
