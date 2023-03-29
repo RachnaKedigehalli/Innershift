@@ -2,9 +2,11 @@ package com.innershiift.auth.user.Patient;
 
 import com.innershiift.auth.user.doctor.Doctor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,21 @@ public class PatientService {
     private final  PatientRepository patientRepository;
 
     public Optional<Patient> register(Patient p){
+        return  Optional.of(patientRepository.save(p));
+    }
+
+
+    public Optional<Patient> addPatient(Patient p){
+        return  Optional.of(patientRepository.save(p));
+    }
+    public Optional<Patient> addPatient(String phoneNumber,Integer gender){
+        Patient p = new Patient();
+        p.setDob(new Date());
+        p.setEmergencyContact("none");
+        p.setPhoneNumber(phoneNumber);
+        p.setGender(gender);
+        p.setRegisteredThrough(1);// default 1
+
         return  Optional.of(patientRepository.save(p));
     }
 
