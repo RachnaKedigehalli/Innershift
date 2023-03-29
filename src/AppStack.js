@@ -11,46 +11,36 @@ import DoctorDetails from "./screens/DoctorDetails";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
-    const [isMoodSet, setIsMoodSet] = useState(false);
+  const [isMoodSet, setIsMoodSet] = useState(false);
 
-    const discreteHeader = {
-        headerShown: true,
-        title: "",
-        headerBackTitleVisible: false,
-        headerStyle: {
-            backgroundColor: AppStyles.colour.white,
-        },
-        headerTintColor: AppStyles.colour.darkGreen,
-    };
-    const noHeader = { headerShown: false };
+  const discreteHeader = {
+    headerShown: true,
+    title: "",
+    headerBackTitleVisible: false,
+    headerStyle: {
+      backgroundColor: AppStyles.colour.white,
+    },
+    headerTintColor: AppStyles.colour.darkGreen,
+  };
+  const noHeader = { headerShown: false };
 
-    return (
-        <>
-            <Stack.Navigator
-                initialRouteName={isMoodSet ? "BottomTabNavigator" : "Mood"}
-            >
-                <Stack.Screen name="Home" component={Home} options={noHeader} />
-                <Stack.Screen name="Mood" component={Mood} options={noHeader} />
-                <Stack.Screen name="Chat" component={Chat} options={noHeader} />
-                <Stack.Screen
-                    name="DoctorProfile"
-                    component={DoctorDetails}
-                    options={{
-                        title: "MODAL",
-                        stackPresentation: "modal",
-
-                        headerShown: false,
-                    }}
-                />
-                <Stack.Screen
-                    name="BottomTabNavigator"
-                    component={BottomTabNavigator}
-                    options={noHeader}
-                />
-            </Stack.Navigator>
-            {/* <BottomTabNavigator /> */}
-        </>
-    );
+  return (
+    <>
+      <Stack.Navigator
+        initialRouteName={isMoodSet ? "BottomTabNavigator" : "Mood"}
+      >
+        <Stack.Screen name="Home" component={Home} options={noHeader} />
+        <Stack.Screen name="Mood" component={Mood} options={noHeader} />
+        <Stack.Screen name="Chat" component={Chat} options={noHeader} />
+        <Stack.Screen
+          name="BottomTabNavigator"
+          component={BottomTabNavigator}
+          options={noHeader}
+        />
+      </Stack.Navigator>
+      {/* <BottomTabNavigator /> */}
+    </>
+  );
 };
 
 export default AppStack;
