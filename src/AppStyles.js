@@ -5,6 +5,9 @@ export default AppStyles = {
         darkGrey: "#757575",
         white: "#ffffff",
         lightGreen: "#CCE8E5",
+        chatBg: "#f6f6f6",
+        grey: "#F3F3F3",
+        black: "000000",
     },
     font: {
         subHeadings: "Poppins_600SemiBold",

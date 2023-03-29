@@ -21,7 +21,8 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = (props) => {
     const [showBack, setShowBack] = useState(false);
-    const [isDoctorAssigned, setIsDoctorAssigned] = useState(false);
+    const [isDoctorAssigned, setIsDoctorAssigned] = useState(true);
+
     useEffect(() => {
         const apiCall = async () => {
             let token = await AsyncStorage.getItem("userToken");
@@ -131,6 +132,7 @@ const BottomTabNavigator = (props) => {
                             </>
                         );
                     },
+                    tabBarStyle: { display: "none" },
                 }}
             />
         </Tab.Navigator>
