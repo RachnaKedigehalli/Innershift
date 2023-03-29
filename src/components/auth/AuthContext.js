@@ -115,10 +115,10 @@ export const AuthProvider = (props) => {
       let userDetails = AsyncStorage.getItem("userDetails");
       let reftoken = AsyncStorage.getItem("refreshToken");
       console.log(await token);
-      console.log(await JSON.parse(userDetails));
+      console.log((await userDetails).toString());
       console.log(await reftoken);
       setUserToken(await token);
-      setUser(await JSON.parse(userDetails));
+      setUser(await userDetails);
       setRefreshToken(await reftoken);
       // console.log(refreshtoken);
       if (token != null) {

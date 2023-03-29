@@ -4,28 +4,29 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "./components/auth/AuthContext";
 import AuthStack from "./components/auth/AuthStack";
 import AppStack from "./AppStack";
+import BottomTabNavigator from "./components/BottomTabNavigator";
 
 const AppNav = () => {
-    const { isLoading, userToken } = useContext(AuthContext);
+  const { isLoading, userToken } = useContext(AuthContext);
 
-    if (isLoading) {
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <ActivityIndicator size={"large"} />
-        </View>;
-    }
+  if (isLoading) {
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ActivityIndicator size={"large"} />
+    </View>;
+  }
 
-    return (
-        <NavigationContainer>
-            {userToken == null ? <AuthStack /> : <AppStack />}
-            {/* <AppStack /> */}
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      {/* {userToken == null ? <AuthStack /> : <AppStack />} */}
+      <BottomTabNavigator />
+    </NavigationContainer>
+  );
 };
 
 export default AppNav;
