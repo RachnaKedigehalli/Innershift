@@ -7,6 +7,8 @@ import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
 import com.innershiift.auth.user.Patient.Patient;
 import com.innershiift.auth.user.Patient.PatientService;
+import com.innershiift.auth.user.User;
+import com.innershiift.auth.user.UserRepository;
 import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,6 +31,8 @@ public class ApplicationController {
     private final ConsultationService consultationService;
     private final MoodService moodService;
     private final PatientService patientService;
+    private final UserRepository userRepository;
+
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<String> sayHello() {
@@ -87,4 +92,19 @@ public class ApplicationController {
     }
 
     @PostMapping("/addPatient")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient p){
+        return ResponseEntity.ok(patientService.addPatient(p).orElseThrow(()-> new IllegalStateException("Could not add patient")));
+    }
+    @PostMapping("/addPatientWithPhone")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Map<String, String> json){
+        return ResponseEntity.ok(patientService.addPatient(json.get("phoneNumber"),Integer.parseInt( json.get("gender"))).orElseThrow(()-> new IllegalStateException("Could not add patient")));
+    }
+
+    @GetMapping("/getAllUsers")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
 }
