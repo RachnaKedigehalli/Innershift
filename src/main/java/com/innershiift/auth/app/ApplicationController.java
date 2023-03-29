@@ -1,9 +1,12 @@
 package com.innershiift.auth.app;
 
+import com.innershiift.auth.Mood.Mood;
+import com.innershiift.auth.Mood.MoodService;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
 import com.innershiift.auth.user.Patient.Patient;
+import com.innershiift.auth.user.Patient.PatientService;
 import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ public class ApplicationController {
 
     private final DoctorService doctorService;
     private final ConsultationService consultationService;
+    private final MoodService moodService;
+    private final PatientService patientService;
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<String> sayHello() {
@@ -65,5 +70,21 @@ public class ApplicationController {
         );
     }
 
+    @PostMapping("/addMood")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Mood> addMood(@Valid @RequestBody Mood m) {
+        return ResponseEntity.ok(
+                moodService.addMood(m));
+    }
 
+    @GetMapping("/getAllPatients")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<List<Patient>> getAllPatients(){
+        return ResponseEntity.ok(
+                patientService.getAllPatients()
+                        .orElseThrow(()-> new IllegalStateException("Could not get all patients")
+        ));
+    }
+
+    @PostMapping("/addPatient")
 }

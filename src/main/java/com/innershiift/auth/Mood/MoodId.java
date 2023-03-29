@@ -6,7 +6,7 @@ import java.util.Date;
 //public class MoodId {
 //}
 
-public class MoodId implements Serializable {
+class MoodId implements Serializable {
     private Integer patientId;
     private Date date;
     // default constructor
@@ -14,6 +14,10 @@ public class MoodId implements Serializable {
     public MoodId(Integer patientId, Date date) {
         this.date = date;
         this.patientId = patientId;
+    }
+    public  MoodId(){
+        this.date=null;
+        this.patientId = null;
     }
 
     // equals() and hashCode()
