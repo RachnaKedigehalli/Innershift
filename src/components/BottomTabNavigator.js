@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
@@ -13,12 +13,47 @@ import cal_active from "../../assets/icons/cal_active.png";
 import chat from "../../assets/icons/chat_inactive.png";
 import chat_active from "../../assets/icons/chat_active.png";
 import AppStyles from "../AppStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_APP_URL } from "../../config";
 const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = (props) => {
     const [showBack, setShowBack] = useState(false);
     const [isDoctorAssigned, setIsDoctorAssigned] = useState(false);
+    useEffect(() => {
+        const apiCall = async () => {
+            let token = await AsyncStorage.getItem("userToken");
+            let userDetails = JSON.parse(
+                await AsyncStorage.getItem("userDetails")
+            );
+            console.log("token", token);
+            console.log("userDetails", userDetails);
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+
+            const bodyParameters = {
+                patientId: await userDetails.id,
+            };
+            console.log("patient_id", bodyParameters.patientId);
+
+            axios
+                .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
+                .then((res) => {
+                    console.log(JSON.stringify(res.data));
+                    console.log(typeof res.data);
+                    if (JSON.stringify(res.data) == "[]") {
+                        console.log("empty");
+                    } else {
+                        setIsDoctorAssigned(true);
+                    }
+                })
+                .catch(console.log);
+        };
+        apiCall();
+    });
 
     return (
         // <View>
@@ -78,6 +113,11 @@ const BottomTabNavigator = (props) => {
                 options={{
                     header: ({ navigation, route, options, back }) => {
                         // return <TopBar showBack={false} />;
+                        return isDoctorAssigned ? (
+                            <></>
+                        ) : (
+                            <TopBar showBack={false} />
+                        );
                     },
                     tabBarShowLabel: false,
                     tabBarIcon: ({ focused, color, size }) => {

@@ -6,6 +6,7 @@ import { useState } from "react";
 import Mood from "./screens/Mood";
 import BottomTabNavigator from "./components/BottomTabNavigator";
 import Chat from "./screens/Chat";
+import DoctorDetails from "./screens/DoctorDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,16 @@ const AppStack = () => {
                 <Stack.Screen name="Home" component={Home} options={noHeader} />
                 <Stack.Screen name="Mood" component={Mood} options={noHeader} />
                 <Stack.Screen name="Chat" component={Chat} options={noHeader} />
+                <Stack.Screen
+                    name="DoctorProfile"
+                    component={DoctorDetails}
+                    options={{
+                        title: "MODAL",
+                        stackPresentation: "modal",
+
+                        headerShown: false,
+                    }}
+                />
                 <Stack.Screen
                     name="BottomTabNavigator"
                     component={BottomTabNavigator}
