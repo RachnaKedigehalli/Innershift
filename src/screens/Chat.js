@@ -11,21 +11,72 @@ import AppStyles from "../AppStyles";
 import Avatar from "../components/Avatar";
 import Message from "../components/Message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_APP_URL } from "../../config";
 
 const Chat = ({ navigation }) => {
   const [messagePlaceHolder, setMessagePlaceHolder] = useState("Type here...");
   const [currentMessage, setCurrentMessage] = useState("");
   const [cons, setCons] = useState();
   const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    const callApi = async () => {
-      let consultation = await AsyncStorage.getItem("consultation");
-      consultation = JSON.parse(consultation);
-      console.log("consultation", consultation);
-      setCons(consultation);
+
+  const callApi = async () => {
+    let consultation = await AsyncStorage.getItem("consultation");
+    let token = await AsyncStorage.getItem("userToken");
+    consultation = await JSON.parse(consultation);
+    console.log("consultation", await consultation.patientId);
+
+    setCons(consultation);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
     };
+    const bodyParameters = {
+      patientId: await consultation.patientId,
+    };
+    axios
+      .post(`${BASE_APP_URL}/getAllMessagesByPId`, bodyParameters, config)
+      .then((res) => {
+        console.log(res.data);
+        setMessages(res.data);
+      })
+      .catch((e) => console.log(e));
+  };
+  useEffect(() => {
     callApi();
   }, []);
+
+  const sendMessage = async () => {
+    let token = await AsyncStorage.getItem("userToken");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const bodyParameters = {
+      consultationId: cons.consultationId,
+      content: currentMessage,
+      senderId: cons.patientId,
+    };
+    console.log("sending ", bodyParameters);
+    await axios
+      .post(`${BASE_APP_URL}/addMessage`, bodyParameters, config)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((e) => console.log(e));
+
+    const mConfig = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const mBodyParameters = {
+      patientId: cons.patientId,
+    };
+    await axios
+      .post(`${BASE_APP_URL}/getAllMessagesByPId`, mBodyParameters, mConfig)
+      .then((res) => {
+        console.log(res.data);
+        setMessages(res.data);
+      })
+      .catch((e) => console.log(e));
+  };
   return (
     <>
       {/* <View style={styles.container}> */}
@@ -42,14 +93,25 @@ const Chat = ({ navigation }) => {
             ></Avatar>
             <Text style={styles.doctorName}>
               {" "}
-              {`Dr. ${cons.doctor[4]} ${cons.doctor[5]}`}
+              {cons ? `Dr. ${cons.doctor[4]} ${cons.doctor[5]}` : ""}
             </Text>
           </View>
         </View>
       </View>
       <View style={styles.chatSendContainer}>
         <View style={styles.chat}>
-          <Message
+          {messages.map((m, mid) => {
+            return (
+              <Message
+                content={m.content}
+                sender={m.senderId == cons.patientId ? true : false}
+                timeStamp={m.timeStamp}
+                readReceipt={m.readRecipt}
+                key={mid}
+              />
+            );
+          })}
+          {/* <Message
             content={"cdscanjkdjnk"}
             sender={true}
             timeStamp={"11/12/2020"}
@@ -60,7 +122,7 @@ const Chat = ({ navigation }) => {
             sender={false}
             timeStamp={"11/12/2020"}
             readReceipt={true}
-          />
+          /> */}
         </View>
         <View style={styles.sendMessageContainer}>
           <View style={styles.sendMessageInnerContainer}>
@@ -73,6 +135,16 @@ const Chat = ({ navigation }) => {
               editable
               numberOfLines={1}
               cursorColor={AppStyles.colour.darkGreen}
+              onKeyPress={async ({ nativeEvent }) => {
+                if (nativeEvent.key == "Enter") {
+                  await sendMessage();
+                  setCurrentMessage("");
+                }
+              }}
+              //   onSubmitEditing={async () => {
+              //     // await sendMessage();
+              //     // setCurrentMessage("");
+              //   }}
             />
 
             <Image
