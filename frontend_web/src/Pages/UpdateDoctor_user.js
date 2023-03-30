@@ -19,76 +19,84 @@ const custom = defineStyle({
     color: "DARK_OLIVE"
 })
 
-function UserForm(data){ 
-    const navigate = useNavigate(); 
+function UserForm(response){
+    
 
-    console.log(data.data.token)
-
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const [firstName,setFirstName] = useState("")
-    const [lastName,setLastName] = useState("")
+    const [license,setLicense] = useState("")
+    const [bio,setBio] = useState("")
+    const [degree,setDegree] = useState("")
+    const [currentPos,setCurrentPos] = useState("")
+    const [phone,setPhone] = useState("")
      
-    const handleChangeEmail = (event) => setEmail(event.target.value)
-    const handleChangePassword = (event) => setPassword(event.target.value)
-    const handleChangeFirstName= (event) => setFirstName(event.target.value)
-    const handleChangeLastName= (event) => setLastName(event.target.value)
+    const handleChangeLicense = (event) => setLicense(event.target.value)
+    const handleChangeBio = (event) => setBio(event.target.value)
+    const handleChangeDegree= (event) => setDegree(event.target.value)
+    const handleChangeCurrentPos= (event) => setCurrentPos(event.target.value)
+    const handleChangePhone= (event) => setPhone(event.target.value)
 
     const onSubmit = ()=>{
         const credentials = {
-            firstName:firstName,
-            lastName:lastName,
-            email:email,
-            password:password
+            doctorId:response.response.id,
+            licenseId:license,
+            biography:bio,
+            degree:degree,
+            currentPos:currentPos,
+            phoneNumber:phone
         }
-        console.log(credentials)
 
-        
+        console.log(`Bearer ${response.response.adminToken}`)
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${response.response.adminToken}`
+            }
+        }
 
-        axios.post('http://172.16.141.35:8080/api/v1/auth/register',credentials)
+        axios.post('http://172.16.141.35:8080/api/v1/app/createDoctor',credentials, auth)
             .then(response=>{
                 console.log(response.data)
-                const newDict = {...response.data,adminToken:data.data.token}
-                navigate("/updatedoctor",{
-                    state:newDict
-                })
             })
     }
 
     return(
         <form>
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>First Name</FormLabel>
-                <Input onChange={handleChangeFirstName} type='text' placeholder='First Name'/>
+                <FormLabel mt={6} color={DARK_GREEN}>License ID</FormLabel>
+                <Input onChange={handleChangeLicense} type='password' placeholder='License ID'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Last Name</FormLabel>
-                <Input onChange={handleChangeLastName} type='text' placeholder='Last Name'/>
+                <FormLabel mt={6} color={DARK_GREEN}>Biography</FormLabel>
+                <Input onChange={handleChangeBio} type='text' placeholder='Biography'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Email address</FormLabel>
-                <Input onChange={handleChangeEmail} type='email' placeholder='We will never share your email'/>
+                <FormLabel mt={6} color={DARK_GREEN}>Degree</FormLabel>
+                <Input onChange={handleChangeDegree} type='text' placeholder='Degree'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Password</FormLabel>
-                <Input onChange={handleChangePassword} type='password' style={{color:'teal'}} placeholder="Enter Password" />            </FormControl>
+                <FormLabel mt={6} color={DARK_GREEN}>Current Position</FormLabel>
+                <Input onChange={handleChangeCurrentPos} type='text' style={{color:'teal'}} placeholder="Current Position" />           
+             </FormControl>
+
+             <FormControl>
+                <FormLabel mt={6} color={DARK_GREEN}>Phone</FormLabel>
+                <Input onChange={handleChangePhone} type='text' style={{color:'teal'}} placeholder="Phone" />           
+             </FormControl>
             
             <Button onClick={onSubmit} width="full" mt={4} colorScheme='teal' variant="solid" >
-                    Continue
+                Add Doctor
             </Button>
         </form>
     )
 }
 
-function AddDoctor_user(){
+function UpdateDoctor_user(){
     const location = useLocation();
     const navigate = useNavigate(); 
 
-  
     const onClickDoctors = ()=>{
+        // console.log(location.state)
         navigate('/doctor',{
             state:location.state
         })
@@ -137,7 +145,7 @@ function AddDoctor_user(){
                                     <Heading color={DARK_GREEN}>Enter Doctor's Data</Heading>
                                 </GridItem>
                                 <GridItem colSpan={2} rowSpan={2} mr='5em'>
-                                        <UserForm data={location.state}/>
+                                        <UserForm response={location.state}/>
                                 </GridItem>                               
                             </Grid>           
                         </GridItem>
@@ -150,6 +158,6 @@ function AddDoctor_user(){
 }
 
 
-export default AddDoctor_user; 
+export default UpdateDoctor_user; 
 
  

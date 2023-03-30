@@ -5,15 +5,28 @@ import logo from "../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie,faDatabase,faStethoscope,faCirclePlus } from '@fortawesome/free-solid-svg-icons'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-function Doctor(){
-    // const location = useLocation();
 
-    // useEffect(()=>{
-    //     console.log(location.state.response)
-    // },[])
+const onAddDoctor = (data,navigate) =>{
+    
+    console.log(data)
+    navigate("/adddoctor/page1",{
+        state:data
+    })
+
+}
+
+function Doctor(){
+    
+    const location = useLocation();
+    const navigate = useNavigate(); 
+
+    useEffect(()=>{
+        console.log(location.state)
+    })
+    
     return(
         <div>
             <Grid
@@ -53,8 +66,8 @@ function Doctor(){
                                 </GridItem>
 
                                 <GridItem rowSpan={2} colSpan={1}  >
-                                    <Button  colorScheme='teal' size='md' style={{color:"black"}}>
-                                    <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
+                                    <Button onClick={()=>onAddDoctor(location.state,navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
+                                        <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
                                     </Button>
                                 </GridItem>
 

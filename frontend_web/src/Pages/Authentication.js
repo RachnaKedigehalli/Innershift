@@ -22,7 +22,9 @@ function Auth(){
         axios.post('http://172.16.141.35:8080/api/v1/auth/authenticate',credentials)
             .then(response=>{
                 console.log(response.data)
-                navigate("/home",{state:{response:response.data}})
+                navigate("/home",{
+                    state:{response:response.data}}
+                )
             })
     }
     return(

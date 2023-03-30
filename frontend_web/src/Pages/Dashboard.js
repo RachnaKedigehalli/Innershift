@@ -15,7 +15,7 @@ function Dashboard(){
 
     const onClickDoctors = ()=>{
         navigate('/doctor',{
-            state:location.state.response
+            state:location.state.response,
         })
     }
 
