@@ -1,111 +1,113 @@
-import { Flex, Grid, GridItem, Center, Button, ButtonGroup, Image, Spacer, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
-import Navbar from "../../Components/Navbar";
-import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM, DARK_OLIVE, LIGHT_GREEN, DARK_GREEN,} from "../../Constants";
-import logo from "../../Assets/Logo/Logo_name.png";
+import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody } from '@chakra-ui/react'
+import SideDoctor from "../../Components/SideDoctor";
+import { DESKTOP_BG_LIGHT} from "../../Constants";
+
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faChartPie,
-    faDatabase,
-    faStethoscope,
     faCirclePlus,
-    faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
-function PatientCard({name, photo, desc}){
-	return(<div>
-		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-			<CardHeader>
-				<HStack>
-					<Image
-						src='/default_user.jpg'
-						alt='Picture'
-						borderRadius='full'
-						w='20%'
-					/>
-					<Heading> <Text color='teal'> {name}</Text> </Heading>
-				</HStack>
-			</CardHeader>
-			<CardBody>
-				<VStack w='flex'>
-					<Text  h={75} color='teal' noOfLines={3}> {desc} </Text>
-					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-						<Button bg='teal' color='white' size='md'>Chat</Button>
-						<Button bg='teal' color='white' size='md'>Module Progress</Button>
-					</ButtonGroup>
-				</VStack>
-			</CardBody>
+import { useNavigate, useLocation, } from 'react-router-dom'
 
-		</Card>
-	</div>);
-}
 
-function RequestPatientCard({ name, photo, desc }) {
-	return (<div>
-		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-			<CardHeader>
-				<HStack>
-					<Image
-						src='/default_user.jpg'
-						alt='Picture'
-						borderRadius='full'
-						w='20%'
-					/>
-					<Heading> <Text color='teal'> {name}</Text> </Heading>
-				</HStack>
-			</CardHeader>
-			<CardBody>
-				<VStack w='flex'>
-					<Text h={50} color='teal' noOfLines={2}> {desc} </Text>
-						<Button bg='teal' color='white' size='md'>Accept</Button>
-					
-				</VStack>
-			</CardBody>
 
-		</Card>
-	</div>);
-}
+function DoctorPatients(){
+	const navigate = useNavigate();
+	const location = useLocation();
+	const clickChat = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
 
-function EmptyPatient(){
-	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk"/>;
-}
+	const clickModule = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
 
-function EmptyRequestPatient() {
-	return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-}
+	const clickAccept = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
 
-function Doctor_Patients(){
+	const clickSearch = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
+	const PatientCard = ({ name, photo, desc }) => {
+		return (<div>
+			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+				<CardHeader>
+					<HStack>
+						<Image
+							src='/default_user.jpg'
+							alt='Picture'
+							borderRadius='full'
+							w='20%'
+						/>
+						<Heading> <Text color='teal'> {name}</Text> </Heading>
+					</HStack>
+				</CardHeader>
+				<CardBody>
+					<VStack w='flex'>
+						<Text h={75} color='teal' noOfLines={3}> {desc} </Text>
+						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
+							<Button bg='teal' color='white' onClick={clickChat} size='md'>Chat</Button>
+							<Button bg='teal' color='white' onClick={clickModule} size='md'>Module Progress</Button>
+						</ButtonGroup>
+					</VStack>
+				</CardBody>
+
+			</Card>
+		</div>);
+	}
+
+	const RequestPatientCard = ({ name, photo, desc }) => {
+		return (<div>
+			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+				<CardHeader>
+					<HStack>
+						<Image
+							src='/default_user.jpg'
+							alt='Picture'
+							borderRadius='full'
+							w='20%'
+						/>
+						<Heading> <Text color='teal'> {name}</Text> </Heading>
+					</HStack>
+				</CardHeader>
+				<CardBody>
+					<VStack w='flex'>
+						<Text h={50} color='teal' noOfLines={2}> {desc} </Text>
+						<Button bg='teal' color='white' onClick={clickAccept} size='md'>Accept</Button>
+
+					</VStack>
+				</CardBody>
+
+			</Card>
+		</div>);
+	}
+
+	const EmptyPatient = () => {
+		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	}
+
+	const EmptyRequestPatient = () => {
+		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	}
+
 	return(<div> 
 		<Flex>
 
 			{/* This be side nav bar */}
-			<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh'>
-				<VStack spacing={3} align='center'>
-						<Image src={logo} h='9em' />
-						<Box>
-
-						</Box>
-						<Button ml='5em' w='12em' colorScheme='teal' variant='solid'>
-							<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
-						</Button>
-
-						<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-							<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Doctors
-						</Button>
-
-						<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-							<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
-						</Button>
-
-					
-
-				</VStack>
-			</Box>
+			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg={DESKTOP_BG_LIGHT} flex='1' minHeight='100vh'>
+			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
@@ -120,6 +122,7 @@ function Doctor_Patients(){
 
 						<GridItem align='right' mr={10}>
 							<Button
+								onClick={clickSearch}
 								colorScheme="teal"
 								size="md"
 								style={{ color: "black" }}
@@ -171,4 +174,4 @@ function Doctor_Patients(){
 	
 }
 
-export default Doctor_Patients;
+export default DoctorPatients;
