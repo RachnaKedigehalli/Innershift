@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Center, Button, ButtonGroup, Image, Spacer, Text, Box, VStack, HStack, Heading, Input, Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Center, Button, ButtonGroup, Image, Spacer, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import Navbar from "../../Components/Navbar";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM, DARK_OLIVE, LIGHT_GREEN, DARK_GREEN,} from "../../Constants";
 import logo from "../../Assets/Logo/Logo_name.png";
@@ -22,7 +22,7 @@ function PatientCard({name, photo, desc}){
 					<Image
 						src='/default_user.jpg'
 						alt='Picture'
-						borderRadius='lg'
+						borderRadius='full'
 						w='20%'
 					/>
 					<Heading> <Text color='teal'> {name}</Text> </Heading>
@@ -30,7 +30,7 @@ function PatientCard({name, photo, desc}){
 			</CardHeader>
 			<CardBody>
 				<VStack w='flex'>
-					<Text color='teal'> {desc} </Text>
+					<Text  h={75} color='teal' noOfLines={3}> {desc} </Text>
 					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 						<Button bg='teal' color='white' size='md'>Chat</Button>
 						<Button bg='teal' color='white' size='md'>Module Progress</Button>
@@ -42,8 +42,38 @@ function PatientCard({name, photo, desc}){
 	</div>);
 }
 
+function RequestPatientCard({ name, photo, desc }) {
+	return (<div>
+		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+			<CardHeader>
+				<HStack>
+					<Image
+						src='/default_user.jpg'
+						alt='Picture'
+						borderRadius='full'
+						w='20%'
+					/>
+					<Heading> <Text color='teal'> {name}</Text> </Heading>
+				</HStack>
+			</CardHeader>
+			<CardBody>
+				<VStack w='flex'>
+					<Text h={50} color='teal' noOfLines={2}> {desc} </Text>
+						<Button bg='teal' color='white' size='md'>Accept</Button>
+					
+				</VStack>
+			</CardBody>
+
+		</Card>
+	</div>);
+}
+
 function EmptyPatient(){
 	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk"/>;
+}
+
+function EmptyRequestPatient() {
+	return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
 }
 
 function Doctor_Patients(){
@@ -76,19 +106,15 @@ function Doctor_Patients(){
 
 			{/* This be main screen */}
 			<Box bg={DESKTOP_BG_LIGHT} flex='1' minHeight='100vh'>
-				<Flex flexDirection='column'>
-					{/* Top padding */}
-					<Box h={10}>
-
-					</Box>
+				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
-					<Grid templateColumns='repeat(4, 1fr)' w='flex' gap={6} margin={3}>
-						<GridItem colSpan={1} ml={1}>
-							<Heading>Existing Patients</Heading>
+					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3}>
+						<GridItem colSpan={2} ml={7}>
+							<Heading color='teal'>Existing Patients</Heading>
 						</GridItem>
 
-						<GridItem colSpan={2}>
+						<GridItem colSpan={4}>
 							<Input placeholder='SEARCH'></Input>
 						</GridItem>
 
@@ -121,8 +147,24 @@ function Doctor_Patients(){
 						
 					</Grid>
 
-					<Box h='flex' bg='teal'></Box>
-				</Flex>
+					{/* <Spacer /> */}
+					{/* Request header */}
+					<Heading ml={10}> <Text color='teal' align='left'> Pending Requests </Text></Heading>
+
+					{/* Request Cards */}
+					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
+						<GridItem>
+							<RequestPatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
+						</GridItem>
+						<GridItem>
+							<EmptyRequestPatient />
+						</GridItem>
+						<GridItem>
+							<EmptyRequestPatient />
+						</GridItem>
+
+					</Grid>
+				</VStack>
 			</Box>
 			
 		</Flex>
