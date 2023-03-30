@@ -15,25 +15,45 @@ import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 
 import Doctor_Dashboard from './Pages/Doctor/Dashboard';
 import Doctor_Patients from './Pages/Doctor/Patients';
+import { StateProvider } from "./StateProvider";
 
 function App() {
+  let initialState = {
+    adminToken: null,
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "setAdminToken":
+        return {
+          ...state,
+          adminToken: action.payload.adminToken,
+        };
+        default: return {
+          state
+        };
+      }
+  }
+  
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} /> 
-        <Route path="/home" element={<Dashboard/>} />
-        <Route path="/auth" element={<Auth />} /> 
-        <Route path="/doctor" element={<Doctor />} /> 
-        <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
-        <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
-        <Route path="/profile" element={<Profile />} />
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} /> 
+          <Route path="/home" element={<Dashboard/>} />
+          <Route path="/auth" element={<Auth />} /> 
+          <Route path="/doctor" element={<Doctor />} /> 
+          <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
+          <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
+          <Route path="/profile" element={<Profile />} />
 
 
-        {/* Doctor */}
-        <Route path="/doctor/dashboard" element={<Doctor_Dashboard />} />
-        <Route path="/doctor/patients" element={<Doctor_Patients />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Doctor */}
+          <Route path="/doctor/dashboard" element={<Doctor_Dashboard />} />
+          <Route path="/doctor/patients" element={<Doctor_Patients />} />
+        </Routes>
+      </BrowserRouter>
+    </StateProvider>
   );
 }
 

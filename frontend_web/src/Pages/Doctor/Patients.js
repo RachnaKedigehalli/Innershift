@@ -162,7 +162,6 @@ function Doctor_Patients(){
 						<GridItem>
 							<EmptyRequestPatient />
 						</GridItem>
-
 					</Grid>
 				</VStack>
 			</Box>

@@ -20,7 +20,7 @@ const custom = defineStyle({
 })
 
 function UserForm(response){
-    
+    const navigate = useNavigate(); 
 
     const [license,setLicense] = useState("")
     const [bio,setBio] = useState("")
@@ -44,7 +44,6 @@ function UserForm(response){
             phoneNumber:phone
         }
 
-        console.log(`Bearer ${response.response.adminToken}`)
         const auth = {
             headers: {
                 Authorization: `Bearer ${response.response.adminToken}`
@@ -55,6 +54,10 @@ function UserForm(response){
             .then(response=>{
                 console.log(response.data)
             })
+
+        // navigate('/doctor',{
+        //     state:response
+        // })
     }
 
     return(
@@ -94,6 +97,10 @@ function UserForm(response){
 function UpdateDoctor_user(){
     const location = useLocation();
     const navigate = useNavigate(); 
+
+    useEffect(()=>{
+        console.log("UpdateDoctor Location Response - ",location.state)
+    })
 
     const onClickDoctors = ()=>{
         // console.log(location.state)
