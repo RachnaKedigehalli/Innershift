@@ -6,7 +6,13 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import React, { useRef, useState, useCallback, useMemo } from "react";
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomTextInput from "../components/CustomTextInput";
 import AppStyles from "../AppStyles";
@@ -19,6 +25,9 @@ import {
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_APP_URL } from "../../config";
 
 const SearchDoctor = (props) => {
   const [searchString, setSearchString] = useState("");
@@ -26,6 +35,8 @@ const SearchDoctor = (props) => {
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     "Search for a doctor"
   );
+  const [doctors, setDoctors] = useState([]);
+  const [doctor, setDoctor] = useState([]);
   //   const bottomSheetModalRef = BottomSheetModal();
   const bottomSheetModalRef = useRef(BottomSheetModal);
   const handlePresentModalPress = useCallback(() => {
@@ -37,6 +48,27 @@ const SearchDoctor = (props) => {
   // callbacks
   const handleSheetChanges = useCallback((index) => {
     console.log("handleSheetChanges", index);
+  }, []);
+
+  useEffect(() => {
+    const apiCall = async () => {
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+      console.log("token", token);
+      console.log("userDetails", userDetails);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      axios
+        .get(`${BASE_APP_URL}/getAllDoctors`, config)
+        .then((res) => {
+          console.log(res.data);
+          setDoctors(res.data);
+        })
+        .catch(console.log);
+    };
+    apiCall();
   }, []);
 
   return (
@@ -68,15 +100,23 @@ const SearchDoctor = (props) => {
                 marginTop: 20,
               }}
             >
-              {
-                <Pressable onPress={handlePresentModalPress}>
-                  <DoctorCard
-                    name="Dr. Kedigehalli"
-                    qualifications="MBBS, MD, PhD"
-                    // navigation={props.navigation}
-                  />
-                </Pressable>
-              }
+              {doctors.map((doctor, did) => {
+                return (
+                  <Pressable
+                    onPress={() => {
+                      setDoctor(doctor);
+                      handlePresentModalPress();
+                    }}
+                    key={did}
+                  >
+                    <DoctorCard
+                      name={`${doctor[4]} ${doctor[5]}`}
+                      qualifications={`${doctor[3]}`}
+                      // navigation={props.navigation}
+                    />
+                  </Pressable>
+                );
+              })}
             </View>
             {/* <View style={styles.container}> */}
 
@@ -94,7 +134,10 @@ const SearchDoctor = (props) => {
             >
               <View style={styles.contentContainer}>
                 <View>
-                  <DoctorDetails />
+                  <DoctorDetails
+                    doctor={doctor}
+                    navigation={props.navigation}
+                  />
                 </View>
               </View>
             </BottomSheetModal>

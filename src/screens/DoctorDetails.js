@@ -3,8 +3,39 @@ import React from "react";
 import dp from "../../assets/images/dummy/profile1.jpg";
 import AppStyles from "../AppStyles";
 import CustomButton from "../components/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_APP_URL } from "../../config";
 
 const DoctorDetails = (props) => {
+  const consultDoctor = async () => {
+    let token = await AsyncStorage.getItem("userToken");
+    let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const bodyParameters = {
+      patientId: userDetails.id,
+      doctorId: props.doctor[0],
+    };
+    axios
+      .post(`${BASE_APP_URL}/addConsultation`, bodyParameters, config)
+      .then((res) => {
+        console.log(res.data);
+        AsyncStorage.setItem(
+          "consultation",
+          JSON.stringify({
+            ...res.data,
+            doctor: props.doctor,
+          })
+        );
+        props.navigation.navigate("chats", {
+          doctor: props.doctor,
+        });
+      })
+      .catch(console.log);
+  };
+
   // renders
   return (
     <View style={styles.container}>
@@ -40,7 +71,7 @@ const DoctorDetails = (props) => {
               color: AppStyles.colour.darkGreen,
             }}
           >
-            Dr. Rachna Kedigehalli
+            {`Dr. ${props.doctor[4]} ${props.doctor[5]}`}
           </Text>
           <Text
             style={{
@@ -50,7 +81,7 @@ const DoctorDetails = (props) => {
               color: "#5EA49B",
             }}
           >
-            MBBS, MD, PhD
+            {`${props.doctor[3]}`}
           </Text>
           <Text
             style={{
@@ -59,7 +90,7 @@ const DoctorDetails = (props) => {
               fontWeight: "regular",
             }}
           >
-            HoD, Dept. Psychiatry, Narayana Hospital
+            {`${props.doctor[2]}`}
           </Text>
         </View>
         <View
@@ -92,7 +123,9 @@ const DoctorDetails = (props) => {
           title={"Consult"}
           accessibilityLabel={"Consult"}
           //   loading={isLoading}
-          onPress={async () => {}}
+          onPress={async () => {
+            consultDoctor();
+          }}
         />
       </View>
     </View>

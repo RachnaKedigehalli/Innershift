@@ -20,134 +20,128 @@ const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = (props) => {
-    const [showBack, setShowBack] = useState(false);
-    const [isDoctorAssigned, setIsDoctorAssigned] = useState(true);
+  const [showBack, setShowBack] = useState(false);
+  const [isDoctorAssigned, setIsDoctorAssigned] = useState(false);
 
-    useEffect(() => {
-        const apiCall = async () => {
-            let token = await AsyncStorage.getItem("userToken");
-            let userDetails = JSON.parse(
-                await AsyncStorage.getItem("userDetails")
+  useEffect(() => {
+    const apiCall = async () => {
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+      console.log("token", token);
+      console.log("userDetails", userDetails);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const bodyParameters = {
+        patientId: await userDetails.id,
+      };
+      console.log("patient_id", bodyParameters.patientId);
+
+      axios
+        .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
+        .then((res) => {
+          console.log(JSON.stringify(res.data));
+          console.log(typeof res.data);
+          if (JSON.stringify(res.data) == "[]") {
+            console.log("empty");
+          } else {
+            setIsDoctorAssigned(true);
+          }
+        })
+        .catch(console.log);
+    };
+    apiCall();
+  });
+
+  return (
+    // <View>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: styles.bottomTab,
+      }}
+      initialRouteName="home"
+      tabBarShowLabel={false}
+      sceneContainerStyle={{ backgroundColor: "white" }}
+    >
+      <Tab.Screen
+        name="home"
+        component={Home}
+        options={{
+          header: ({ navigation, route, options, back }) => {
+            return <TopBar showBack={showBack} />;
+          },
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <>
+                {focused ? (
+                  <Image source={home_active} size={size} />
+                ) : (
+                  <Image source={home} size={size} />
+                )}
+              </>
             );
-            console.log("token", token);
-            console.log("userDetails", userDetails);
-            const config = {
-                headers: { Authorization: `Bearer ${token}` },
-            };
-
-            const bodyParameters = {
-                patientId: await userDetails.id,
-            };
-            console.log("patient_id", bodyParameters.patientId);
-
-            axios
-                .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
-                .then((res) => {
-                    console.log(JSON.stringify(res.data));
-                    console.log(typeof res.data);
-                    if (JSON.stringify(res.data) == "[]") {
-                        console.log("empty");
-                    } else {
-                        setIsDoctorAssigned(true);
-                    }
-                })
-                .catch(console.log);
-        };
-        apiCall();
-    });
-
-    return (
-        // <View>
-        <Tab.Navigator
-            screenOptions={{
-                tabBarStyle: styles.bottomTab,
-            }}
-            initialRouteName="home"
-            tabBarShowLabel={false}
-            sceneContainerStyle={{ backgroundColor: "white" }}
-        >
-            <Tab.Screen
-                name="home"
-                component={Home}
-                options={{
-                    header: ({ navigation, route, options, back }) => {
-                        return <TopBar showBack={showBack} />;
-                    },
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return (
-                            <>
-                                {focused ? (
-                                    <Image source={home_active} size={size} />
-                                ) : (
-                                    <Image source={home} size={size} />
-                                )}
-                            </>
-                        );
-                    },
-                }}
-            />
-            <Tab.Screen
-                name="calender"
-                component={CalenderScreen}
-                options={{
-                    header: ({ navigation, route, options, back }) => {
-                        return <TopBar showBack={false} />;
-                    },
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return (
-                            <>
-                                {focused ? (
-                                    <Image source={cal_active} size={size} />
-                                ) : (
-                                    <Image source={cal} size={size} />
-                                )}
-                            </>
-                        );
-                    },
-                }}
-            />
-            <Tab.Screen
-                name="chats"
-                component={isDoctorAssigned ? Chat : SearchDoctor}
-                options={{
-                    header: ({ navigation, route, options, back }) => {
-                        // return <TopBar showBack={false} />;
-                        return isDoctorAssigned ? (
-                            <></>
-                        ) : (
-                            <TopBar showBack={false} />
-                        );
-                    },
-                    tabBarShowLabel: false,
-                    tabBarIcon: ({ focused, color, size }) => {
-                        return (
-                            <>
-                                {focused ? (
-                                    <Image source={chat_active} size={size} />
-                                ) : (
-                                    <Image source={chat} size={size} />
-                                )}
-                            </>
-                        );
-                    },
-                    tabBarStyle: { display: "none" },
-                }}
-            />
-        </Tab.Navigator>
-        // </View>
-    );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="calender"
+        component={CalenderScreen}
+        options={{
+          header: ({ navigation, route, options, back }) => {
+            return <TopBar showBack={false} />;
+          },
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <>
+                {focused ? (
+                  <Image source={cal_active} size={size} />
+                ) : (
+                  <Image source={cal} size={size} />
+                )}
+              </>
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="chats"
+        component={isDoctorAssigned ? Chat : SearchDoctor}
+        options={{
+          header: ({ navigation, route, options, back }) => {
+            // return <TopBar showBack={false} />;
+            return isDoctorAssigned ? <></> : <TopBar showBack={false} />;
+          },
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <>
+                {focused ? (
+                  <Image source={chat_active} size={size} />
+                ) : (
+                  <Image source={chat} size={size} />
+                )}
+              </>
+            );
+          },
+          tabBarStyle: { display: "none" },
+        }}
+      />
+    </Tab.Navigator>
+    // </View>
+  );
 };
 
 export default BottomTabNavigator;
 
 const styles = StyleSheet.create({
-    bottomTab: {
-        borderRadius: 15,
-        borderTopColor: AppStyles.colour.darkGreen,
-        borderTopWidth: 2.5,
-        height: 75,
-        // opacity: 0,
-    },
+  bottomTab: {
+    borderRadius: 15,
+    borderTopColor: AppStyles.colour.darkGreen,
+    borderTopWidth: 2.5,
+    height: 75,
+    // opacity: 0,
+  },
 });
