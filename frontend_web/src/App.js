@@ -10,6 +10,7 @@ import Dashboard from './Pages/Dashboard';
 import Auth from './Pages/Authentication';
 import Doctor from './Pages/Doctor';
 import AddDoctor_user from './Pages/AddDoctor_user';
+import Profile from './Pages/Profile';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/auth" element={<Auth />} /> 
         <Route path="/doctor" element={<Doctor />} /> 
         <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
