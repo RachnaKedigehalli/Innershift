@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Center, Button, Image, Spacer, Box, VStack, Heading, Input} from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Center, Button, ButtonGroup, Image, Spacer, Text, Box, VStack, HStack, Heading, Input, Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import Navbar from "../../Components/Navbar";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM, DARK_OLIVE, LIGHT_GREEN, DARK_GREEN,} from "../../Constants";
 import logo from "../../Assets/Logo/Logo_name.png";
@@ -14,6 +14,37 @@ import {
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
+function PatientCard({name, photo, desc}){
+	return(<div>
+		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+			<CardHeader>
+				<HStack>
+					<Image
+						src='/default_user.jpg'
+						alt='Picture'
+						borderRadius='lg'
+						w='20%'
+					/>
+					<Heading> <Text color='teal'> {name}</Text> </Heading>
+				</HStack>
+			</CardHeader>
+			<CardBody>
+				<VStack w='flex'>
+					<Text color='teal'> {desc} </Text>
+					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
+						<Button bg='teal' color='white' size='md'>Chat</Button>
+						<Button bg='teal' color='white' size='md'>Module Progress</Button>
+					</ButtonGroup>
+				</VStack>
+			</CardBody>
+
+		</Card>
+	</div>);
+}
+
+function EmptyPatient(){
+	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk"/>;
+}
 
 function Doctor_Patients(){
 	return(<div> 
@@ -51,6 +82,7 @@ function Doctor_Patients(){
 
 					</Box>
 					
+					{/* existing patients heading */}
 					<Grid templateColumns='repeat(4, 1fr)' w='flex' gap={6} margin={3}>
 						<GridItem colSpan={1} ml={1}>
 							<Heading>Existing Patients</Heading>
@@ -73,6 +105,20 @@ function Doctor_Patients(){
 								Search
 							</Button>
 						</GridItem>
+					</Grid>
+
+					{/* Existing patients cards */}
+					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
+						<GridItem>
+							<PatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk'/>
+						</GridItem>
+						<GridItem>
+							<EmptyPatient/>
+						</GridItem>
+						<GridItem>
+							<EmptyPatient />
+						</GridItem>
+						
 					</Grid>
 
 					<Box h='flex' bg='teal'></Box>
