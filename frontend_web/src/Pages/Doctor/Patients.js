@@ -81,7 +81,7 @@ function Doctor_Patients(){
 		<Flex>
 
 			{/* This be side nav bar */}
-			<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh'>
+			<Box  bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' position='fixed'>
 				<VStack spacing={3} align='center'>
 						<Image src={logo} h='9em' />
 						<Box>
@@ -105,7 +105,7 @@ function Doctor_Patients(){
 			</Box>
 
 			{/* This be main screen */}
-			<Box bg={DESKTOP_BG_LIGHT} flex='1' minHeight='100vh'>
+			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
