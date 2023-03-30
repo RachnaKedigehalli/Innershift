@@ -13,6 +13,9 @@ import AddDoctor_user from './Pages/AddDoctor_user';
 import Profile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 
+import Doctor_Dashboard from './Pages/Doctor/Dashboard';
+import Doctor_Patients from './Pages/Doctor/Patients';
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +27,11 @@ function App() {
         <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
         <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
         <Route path="/profile" element={<Profile />} />
+
+
+        {/* Doctor */}
+        <Route path="/doctor/dashboard" element={<Doctor_Dashboard />} />
+        <Route path="/doctor/patients" element={<Doctor_Patients />} />
       </Routes>
     </BrowserRouter>
   );
