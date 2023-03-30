@@ -13,35 +13,55 @@ import AddDoctor_user from './Pages/AddDoctor_user';
 import Profile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 
+
+import { StateProvider } from "./StateProvider";
+
 import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
 import SideDoctor from './Components/SideDoctor';
 
+
 function App() {
+  let initialState = {
+    adminToken: null,
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "setAdminToken":
+        return {
+          ...state,
+          adminToken: action.payload.adminToken,
+        };
+        default: return {
+          state
+        };
+      }
+  }
+  
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} /> 
-        <Route path="/home" element={<Dashboard/>} />
-        <Route path="/auth" element={<Auth />} /> 
-        <Route path="/doctor" element={<Doctor />} /> 
-        <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
-        <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
-        <Route path="/profile" element={<Profile />} />
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} /> 
+          <Route path="/home" element={<Dashboard/>} />
+          <Route path="/auth" element={<Auth />} /> 
+          <Route path="/doctor" element={<Doctor />} /> 
+          <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
+          <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
+          <Route path="/profile" element={<Profile />} />
 
-        <Route path="/scsduiasdisd" element={<SideDoctor />} />
 
+          {/* Doctor */}
+          <Route path="/doctor/home" element={<DoctorDashboard />} />
+          <Route path="/doctor/patients" element={<DoctorPatients />} />
 
-        {/* Doctor */}
-        <Route path="/doctor/home" element={<DoctorDashboard />} />
-        <Route path="/doctor/patients" element={<DoctorPatients />} />
-
-        <Route path="/dummyloc" element={<Dummypage />} />
-
-      </Routes>
-    </BrowserRouter>
+          <Route path="/dummyloc" element={<Dummypage />} />
+        </Routes>
+      </BrowserRouter>
+    </StateProvider>
   );
 }
 

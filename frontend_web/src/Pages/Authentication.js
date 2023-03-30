@@ -7,11 +7,12 @@ import logo from "../Assets/Logo/Logo_white.png"
 import { useState } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+import { useStateValue } from '../StateProvider';
 
 function Auth(){
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
-
+    const [state, dispatch] = useStateValue();
     const handleChangeEmail = (event) => setEmail(event.target.value)
     const handleChangePassword = (event) => setPassword(event.target.value)
 
@@ -20,13 +21,20 @@ function Auth(){
     const onSubmit = ()=>{
         const credentials = {email:email,password:password}
         axios.post('http://172.16.141.35:8080/api/v1/auth/authenticate',credentials)
-            .then(response=>{
-                console.log(response.data)
+            .then(async (response)=>{
+                console.log("Authentication Response Data : ", response.data)
+                await dispatch({
+                    type: "setAdminToken",
+                    payload: {
+                      adminToken: response.data.token,
+                    },
+                  });
                 navigate("/home",{
                     state:{response:response.data}}
                 )
             })
     }
+
     return(
         <div>
             
