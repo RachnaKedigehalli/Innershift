@@ -9,69 +9,95 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 
-function PatientCard({name, photo, desc}){
-	return(<div>
-		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-			<CardHeader>
-				<HStack>
-					<Image
-						src='/default_user.jpg'
-						alt='Picture'
-						borderRadius='full'
-						w='20%'
-					/>
-					<Heading> <Text color='teal'> {name}</Text> </Heading>
-				</HStack>
-			</CardHeader>
-			<CardBody>
-				<VStack w='flex'>
-					<Text  h={75} color='teal' noOfLines={3}> {desc} </Text>
-					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-						<Button bg='teal' color='white' size='md'>Chat</Button>
-						<Button bg='teal' color='white' size='md'>Module Progress</Button>
-					</ButtonGroup>
-				</VStack>
-			</CardBody>
 
-		</Card>
-	</div>);
-}
 
-function RequestPatientCard({ name, photo, desc }) {
-	return (<div>
-		<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-			<CardHeader>
-				<HStack>
-					<Image
-						src='/default_user.jpg'
-						alt='Picture'
-						borderRadius='full'
-						w='20%'
-					/>
-					<Heading> <Text color='teal'> {name}</Text> </Heading>
-				</HStack>
-			</CardHeader>
-			<CardBody>
-				<VStack w='flex'>
-					<Text h={50} color='teal' noOfLines={2}> {desc} </Text>
-						<Button bg='teal' color='white' size='md'>Accept</Button>
-					
-				</VStack>
-			</CardBody>
-
-		</Card>
-	</div>);
-}
-
-function EmptyPatient(){
-	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk"/>;
-}
-
-function EmptyRequestPatient() {
-	return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-}
 
 function Doctor_Patients(){
+	const clickChat = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
+
+	const clickModule = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
+
+	const clickAccept = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
+
+	const clickSearch = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
+	const PatientCard = ({ name, photo, desc }) => {
+		return (<div>
+			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+				<CardHeader>
+					<HStack>
+						<Image
+							src='/default_user.jpg'
+							alt='Picture'
+							borderRadius='full'
+							w='20%'
+						/>
+						<Heading> <Text color='teal'> {name}</Text> </Heading>
+					</HStack>
+				</CardHeader>
+				<CardBody>
+					<VStack w='flex'>
+						<Text h={75} color='teal' noOfLines={3}> {desc} </Text>
+						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
+							<Button bg='teal' color='white' onClick={clickChat} size='md'>Chat</Button>
+							<Button bg='teal' color='white' onClick={clickModule} size='md'>Module Progress</Button>
+						</ButtonGroup>
+					</VStack>
+				</CardBody>
+
+			</Card>
+		</div>);
+	}
+
+	const RequestPatientCard = ({ name, photo, desc }) => {
+		return (<div>
+			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+				<CardHeader>
+					<HStack>
+						<Image
+							src='/default_user.jpg'
+							alt='Picture'
+							borderRadius='full'
+							w='20%'
+						/>
+						<Heading> <Text color='teal'> {name}</Text> </Heading>
+					</HStack>
+				</CardHeader>
+				<CardBody>
+					<VStack w='flex'>
+						<Text h={50} color='teal' noOfLines={2}> {desc} </Text>
+						<Button bg='teal' color='white' onClick={clickAccept} size='md'>Accept</Button>
+
+					</VStack>
+				</CardBody>
+
+			</Card>
+		</div>);
+	}
+
+	const EmptyPatient = () => {
+		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	}
+
+	const EmptyRequestPatient = () => {
+		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	}
+
 	return(<div> 
 		<Flex>
 
@@ -94,6 +120,7 @@ function Doctor_Patients(){
 
 						<GridItem align='right' mr={10}>
 							<Button
+								onClick={clickSearch}
 								colorScheme="teal"
 								size="md"
 								style={{ color: "black" }}

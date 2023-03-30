@@ -5,6 +5,23 @@ import { Button, Image, Box, VStack} from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function SideDoctor(){
+	const clickDashBoard = () => {
+		navigate('/doctor/home', {
+			state: location.state
+		})
+	}
+
+	const clickPatients = () => {
+		navigate('/doctor/patients', {
+			state: location.state
+		})
+	}
+
+	const clickModules = () => {
+		navigate('/dummyloc', {
+			state: location.state
+		})
+	}
 	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' position='fixed'>
 		<VStack spacing={3} align='center'>
 			<Image src={logo} h='9em' />
@@ -12,15 +29,15 @@ function SideDoctor(){
 
 			</Box>
 			<Button ml='5em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
+				<FontAwesomeIcon onClick={clickDashBoard} icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 			</Button>
 
 			<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
+				<FontAwesomeIcon onClick={clickPatients} icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 			</Button>
 
 			<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
+				<FontAwesomeIcon onClick={clickModules} icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
 			</Button>
 
 
