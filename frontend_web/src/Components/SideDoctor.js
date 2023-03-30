@@ -4,14 +4,21 @@ import { DESKTOP_BG_MEDIUM, } from "../Constants";
 import { Button, Image, Box, VStack} from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function SideDoctor(){
+import { useNavigate, useLocation, } from 'react-router-dom'
+
+function SideDoctor() {
+	const navigate = useNavigate();
+	const location = useLocation();
+
 	const clickDashBoard = () => {
-		navigate('/doctor/home', {
-			state: location.state
+		console.log("dashboard clicked");
+		navigate('/dummyloc', {
+			// state: location.state
 		})
 	}
 
 	const clickPatients = () => {
+		console.log("i cri");
 		navigate('/doctor/patients', {
 			state: location.state
 		})
@@ -19,7 +26,7 @@ function SideDoctor(){
 
 	const clickModules = () => {
 		navigate('/dummyloc', {
-			state: location.state
+			// state: location.state
 		})
 	}
 	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' position='fixed'>
@@ -28,16 +35,16 @@ function SideDoctor(){
 			<Box>
 
 			</Box>
-			<Button ml='5em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon onClick={clickDashBoard} icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
+			<Button onClick={clickDashBoard} ml='5em' w='12em' colorScheme='teal' variant='solid'>
+				<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 			</Button>
 
-			<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon onClick={clickPatients} icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
+			<Button onClick={clickPatients} ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
+				<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 			</Button>
 
-			<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon onClick={clickModules} icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
+			<Button onClick={clickModules} ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
+				<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
 			</Button>
 
 

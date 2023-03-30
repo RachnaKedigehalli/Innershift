@@ -1,13 +1,6 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody } from '@chakra-ui/react'
-import SideDoctor from "../../Components/SideDoctor";
-import { DESKTOP_BG_LIGHT } from "../../Constants";
-
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
-
+import { Flex, Box, Heading, } from '@chakra-ui/react'
+import SideDoctor from "../Components/SideDoctor";
+import { DESKTOP_BG_LIGHT } from "../Constants";
 
 
 

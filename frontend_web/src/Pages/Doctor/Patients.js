@@ -8,11 +8,13 @@ import {
     faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { useNavigate, useLocation, } from 'react-router-dom'
 
 
 
-
-function Doctor_Patients(){
+function DoctorPatients(){
+	const navigate = useNavigate();
+	const location = useLocation();
 	const clickChat = () => {
 		navigate('/dummyloc', {
 			state: location.state
@@ -173,4 +175,4 @@ function Doctor_Patients(){
 	
 }
 
-export default Doctor_Patients;
+export default DoctorPatients;

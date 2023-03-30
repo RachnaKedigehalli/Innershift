@@ -13,10 +13,11 @@ import AddDoctor_user from './Pages/AddDoctor_user';
 import Profile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 
-import Doctor_Dashboard from './Pages/Doctor/Dashboard';
-import Doctor_Patients from './Pages/Doctor/Patients';
+import DoctorDashboard from './Pages/Doctor/Dashboard';
+import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
+import SideDoctor from './Components/SideDoctor';
 
 function App() {
   return (
@@ -30,10 +31,12 @@ function App() {
         <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
         <Route path="/profile" element={<Profile />} />
 
+        <Route path="/scsduiasdisd" element={<SideDoctor />} />
+
 
         {/* Doctor */}
-        <Route path="/doctor/home" element={<Doctor_Dashboard />} />
-        <Route path="/doctor/patients" element={<Doctor_Patients />} />
+        <Route path="/doctor/home" element={<DoctorDashboard />} />
+        <Route path="/doctor/patients" element={<DoctorPatients />} />
 
         <Route path="/dummyloc" element={<Dummypage />} />
 
