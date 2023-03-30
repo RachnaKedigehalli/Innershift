@@ -92,7 +92,7 @@ function Doctor_Patients(){
 						</Button>
 
 						<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-							<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Doctors
+							<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 						</Button>
 
 						<Button ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
