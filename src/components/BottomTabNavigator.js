@@ -126,7 +126,7 @@ const BottomTabNavigator = (props) => {
               </>
             );
           },
-          tabBarStyle: { display: "none" },
+          tabBarStyle: isDoctorAssigned ? { display: "none" } : {},
         }}
       />
     </Tab.Navigator>

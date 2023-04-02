@@ -5,6 +5,7 @@ import {
   Image,
   TextInput,
   Dimensions,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import AppStyles from "../AppStyles";
@@ -13,12 +14,14 @@ import Message from "../components/Message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
+import { useNavigation } from "@react-navigation/native";
 
-const Chat = ({ navigation }) => {
+const Chat = () => {
   const [messagePlaceHolder, setMessagePlaceHolder] = useState("Type here...");
   const [currentMessage, setCurrentMessage] = useState("");
   const [cons, setCons] = useState();
   const [messages, setMessages] = useState([]);
+  const navigation = useNavigation();
 
   const callApi = async () => {
     let consultation = await AsyncStorage.getItem("consultation");
@@ -69,6 +72,7 @@ const Chat = ({ navigation }) => {
     const mBodyParameters = {
       patientId: cons.patientId,
     };
+    console.log("params sent ", mBodyParameters);
     await axios
       .post(`${BASE_APP_URL}/getAllMessagesByPId`, mBodyParameters, mConfig)
       .then((res) => {
@@ -82,11 +86,12 @@ const Chat = ({ navigation }) => {
       {/* <View style={styles.container}> */}
       <View style={styles.topBarContainer}>
         <View style={styles.topBar}>
-          <Image
-            style={styles.back}
-            source={require("../../assets/icons/chevron-left.png")}
-            onPress={navigation.goBack}
-          />
+          <Pressable onPress={navigation.goBack}>
+            <Image
+              style={styles.back}
+              source={require("../../assets/icons/chevron-left.png")}
+            />
+          </Pressable>
           <View style={styles.doctorDetails}>
             <Avatar
               imageSrc={require("../../assets/images/dummy/profile1.jpg")}

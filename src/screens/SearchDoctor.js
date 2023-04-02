@@ -24,7 +24,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
@@ -98,9 +98,31 @@ const SearchDoctor = (props) => {
             <View
               style={{
                 marginTop: 20,
+                marginBottom: 130,
               }}
             >
-              {doctors.map((doctor, did) => {
+              <FlatList
+                data={doctors}
+                renderItem={({ item }) => {
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        setDoctor(item);
+                        handlePresentModalPress();
+                      }}
+                      // key={did}
+                    >
+                      <DoctorCard
+                        name={`${item[4]} ${item[5]}`}
+                        qualifications={`${item[3]}`}
+                        // navigation={props.navigation}
+                      />
+                    </Pressable>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+              {/* {doctors.map((doctor, did) => {
                 return (
                   <Pressable
                     onPress={() => {
@@ -116,7 +138,7 @@ const SearchDoctor = (props) => {
                     />
                   </Pressable>
                 );
-              })}
+              })} */}
             </View>
             {/* <View style={styles.container}> */}
 
