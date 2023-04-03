@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppStyles from "./AppStyles";
 import Home from "./screens/Home";
 import { useState } from "react";
-import Mood from "./screens/Mood";
+
 import BottomTabNavigator from "./components/BottomTabNavigator";
 import Chat from "./screens/Chat";
 import DoctorDetails from "./screens/DoctorDetails";
@@ -11,8 +11,6 @@ import DoctorDetails from "./screens/DoctorDetails";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
-  const [isMoodSet, setIsMoodSet] = useState(false);
-
   const discreteHeader = {
     headerShown: true,
     title: "",
@@ -27,10 +25,11 @@ const AppStack = () => {
   return (
     <>
       <Stack.Navigator
-        initialRouteName={isMoodSet ? "BottomTabNavigator" : "Mood"}
+        // initialRouteName={isMoodSet ? "BottomTabNavigator" : "Mood"}
+        initialRouteName={"BottomTabNavigator"}
       >
         <Stack.Screen name="Home" component={Home} options={noHeader} />
-        <Stack.Screen name="Mood" component={Mood} options={noHeader} />
+        {/* <Stack.Screen name="Mood" component={Mood} options={noHeader} /> */}
         <Stack.Screen name="Chat" component={Chat} options={noHeader} />
         <Stack.Screen
           name="BottomTabNavigator"

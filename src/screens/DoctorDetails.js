@@ -18,22 +18,20 @@ const DoctorDetails = (props) => {
       patientId: userDetails.id,
       doctorId: props.doctor[0],
     };
-    axios
+    await axios
       .post(`${BASE_APP_URL}/addConsultation`, bodyParameters, config)
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
-        AsyncStorage.setItem(
+        await AsyncStorage.setItem(
           "consultation",
           JSON.stringify({
             ...res.data,
             doctor: props.doctor,
           })
         );
-        props.navigation.navigate("chats", {
-          doctor: props.doctor,
-        });
       })
       .catch(console.log);
+    props.setIsDoctorAssigned(true);
   };
 
   // renders

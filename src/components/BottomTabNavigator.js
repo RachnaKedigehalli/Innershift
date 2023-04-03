@@ -36,23 +36,24 @@ const BottomTabNavigator = (props) => {
       const bodyParameters = {
         patientId: await userDetails.id,
       };
-      console.log("patient_id", bodyParameters.patientId);
+      // console.log("patient_id", bodyParameters.patientId);
 
-      axios
+      await axios
         .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
         .then((res) => {
-          console.log(JSON.stringify(res.data));
+          console.log("isCOns data: ", JSON.stringify(res.data));
           console.log(typeof res.data);
           if (JSON.stringify(res.data) == "[]") {
             console.log("empty");
           } else {
+            console.log("hey hey hey");
             setIsDoctorAssigned(true);
           }
         })
         .catch(console.log);
     };
     apiCall();
-  });
+  }, []);
 
   return (
     // <View>
@@ -108,7 +109,6 @@ const BottomTabNavigator = (props) => {
       />
       <Tab.Screen
         name="chats"
-        component={isDoctorAssigned ? Chat : SearchDoctor}
         options={{
           header: ({ navigation, route, options, back }) => {
             // return <TopBar showBack={false} />;
@@ -128,7 +128,16 @@ const BottomTabNavigator = (props) => {
           },
           tabBarStyle: isDoctorAssigned ? { display: "none" } : {},
         }}
-      />
+      >
+        {() => {
+          console.log("isDocAssigned: ", isDoctorAssigned);
+          return isDoctorAssigned ? (
+            <Chat />
+          ) : (
+            <SearchDoctor setIsDoctorAssigned={setIsDoctorAssigned} />
+          );
+        }}
+      </Tab.Screen>
     </Tab.Navigator>
     // </View>
   );

@@ -103,6 +103,7 @@ const SearchDoctor = (props) => {
             >
               <FlatList
                 data={doctors}
+                keyExtractor={(item, index) => item.key}
                 renderItem={({ item }) => {
                   return (
                     <Pressable
@@ -110,7 +111,6 @@ const SearchDoctor = (props) => {
                         setDoctor(item);
                         handlePresentModalPress();
                       }}
-                      // key={did}
                     >
                       <DoctorCard
                         name={`${item[4]} ${item[5]}`}
@@ -120,7 +120,6 @@ const SearchDoctor = (props) => {
                     </Pressable>
                   );
                 }}
-                keyExtractor={(item) => item.id}
               />
               {/* {doctors.map((doctor, did) => {
                 return (
@@ -159,6 +158,7 @@ const SearchDoctor = (props) => {
                   <DoctorDetails
                     doctor={doctor}
                     navigation={props.navigation}
+                    setIsDoctorAssigned={props.setIsDoctorAssigned}
                   />
                 </View>
               </View>

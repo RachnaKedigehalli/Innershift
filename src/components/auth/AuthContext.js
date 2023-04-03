@@ -105,6 +105,7 @@ export const AuthProvider = (props) => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("refreshToken");
     await AsyncStorage.removeItem("userDetails");
+    await AsyncStorage.removeItem("consultation");
     setIsLoading(false);
   };
 
