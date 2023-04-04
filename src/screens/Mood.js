@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopBar from "../components/TopBar";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import AppStyles from "../AppStyles";
@@ -46,6 +46,29 @@ const Mood = (props) => {
   const [moodId, setMoodId] = useState();
   const [moodQues, setmoodQues] = useState("How are you feeling today?");
   const [buttonText, setButtonText] = useState("Get Started");
+
+  useEffect(() => {
+    const isMoodSet = async () => {
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const bodyParameters = {
+        patientId: await userDetails.id,
+      };
+      await axios
+        .post(`${BASE_APP_URL}/isMoodSet`, bodyParameters, config)
+        .then(async (res) => {
+          console.log("isMoodSet: ", res.data);
+          if (res.data) {
+            props.setIsMoodSet(true);
+          }
+        })
+        .catch(console.log);
+    };
+    isMoodSet();
+  });
 
   const handleSubmitMood = () => {
     // api call to set mood for day
