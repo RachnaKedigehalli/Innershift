@@ -120,7 +120,7 @@ function AdminModules() {
 									icon={faCirclePlus}
 									style={{ marginRight: "0.5em" }}
 								/>{" "}
-								Search
+								ADD
 							</Button>
 						</GridItem>
 					</Grid>
