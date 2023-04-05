@@ -26,8 +26,10 @@ public class Message {
 
     private Integer consultationId;
     private Integer senderId;
+
+    private Integer recipientId;
     private String content;
     private Date timeStamp;
-    private Boolean readRecipt;
+    private Boolean readReceipt;
 
 }

@@ -14,10 +14,17 @@ import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,20 +40,34 @@ public class ApplicationController {
     private final PatientService patientService;
     private final UserRepository userRepository;
 
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    @CrossOrigin
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
-    @CrossOrigin
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from a secured endpoint!");
     }
 
+
     @PostMapping("/createDoctor")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Doctor> createDoctor(@Valid @RequestBody Doctor doc) {
         return ResponseEntity.ok(
                 doctorService.createDoctor(doc)
                         .orElseThrow(()-> new IllegalStateException("Could not create doctor"))
+        );
+    }
+
+
+    @GetMapping("/getAllDoctors")
+    @CrossOrigin
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<Object>> getAllDoctors() {
+        return ResponseEntity.ok(
+                doctorService.getAllDoctors()
+                        .orElseThrow(()-> new IllegalStateException("Could not get doctors"))
         );
     }
 
@@ -75,7 +96,7 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<Message> addMessage(@Valid @RequestBody Message m) {
         return ResponseEntity.ok(
-                consultationService.addMessageToConsultation(m.getConsultationId(), m.getContent())
+                consultationService.addMessageToConsultation(m.getConsultationId(), m.getContent(), m.getSenderId(), m.getRecipientId())
                         .orElseThrow(()-> new IllegalStateException("Could not add consultations"))
         );
     }
@@ -86,6 +107,14 @@ public class ApplicationController {
     public ResponseEntity<Mood> addMood(@Valid @RequestBody Mood m) {
         return ResponseEntity.ok(
                 moodService.addMood(m));
+    }
+
+    @PostMapping("/isMoodSet")
+    @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
+    public ResponseEntity<Boolean> isMoodSet(@Valid @RequestBody Mood m) {
+        return ResponseEntity.ok(
+                moodService.isMoodSet(m.getPatientId()));
     }
 
     @GetMapping("/getAllPatients")
@@ -118,11 +147,11 @@ public class ApplicationController {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    @GetMapping("/getAllMessagesByPId")
+    @PostMapping("/getAllMessagesByPId")
     @PreAuthorize("hasAuthority('USER')")
     @CrossOrigin
-    public ResponseEntity<List<Message>> getAllMessagesByPId(@Valid @RequestBody Integer pid){
-        return ResponseEntity.ok(consultationService.getAllMessagesByPid(pid));
+    public ResponseEntity<List<Message>> getAllMessagesByPId(@Valid @RequestBody Patient p){
+        return ResponseEntity.ok(consultationService.getAllMessagesByPid(p.getPatientId()));
     }
 
     @GetMapping("/acceptConsultation")
@@ -130,6 +159,17 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<Consultation> acceptConsultation(@Valid @RequestBody Map<String, String> json){
         return  ResponseEntity.ok(consultationService.setConsultationStatus(Integer.parseInt(json.get("consultationId")),Boolean.parseBoolean(json.get("status"))).orElseThrow(()->new IllegalStateException("Unable to set Consultation status")));
+    }
+
+    @MessageMapping("/chat")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public void processMessage(@Payload Message chatMessage) {
+        Message m = consultationService.addMessageToConsultation(chatMessage.getConsultationId(), chatMessage.getContent(), chatMessage.getSenderId(), chatMessage.getRecipientId()).orElseThrow(()-> new IllegalStateException("Could not add consultations"));
+
+        simpMessagingTemplate.convertAndSendToUser(
+                m.getConsultationId().toString(),"/queue/messages",
+                m);
     }
 
 }

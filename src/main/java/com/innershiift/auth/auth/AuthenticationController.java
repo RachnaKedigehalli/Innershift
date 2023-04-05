@@ -57,7 +57,7 @@ public class AuthenticationController {
     @CrossOrigin
     public ResponseEntity<?> getOTP(@Valid @RequestBody EmailRequest request) {
         System.out.println("in verify email");
-        String token = UUID.randomUUID().toString();
+        String token = String.valueOf((int)(Math.floor(Math.random() *( 999999 - 100000 + 1) + 100000)));
         EmailToken emailToken = new EmailToken(
                 token,
                 request.getEmail(),

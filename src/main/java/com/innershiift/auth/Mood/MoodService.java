@@ -3,6 +3,8 @@ package com.innershiift.auth.Mood;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.type.descriptor.DateTimeUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,20 @@ public class MoodService {
             }
         }
         return ret;
+    }
+
+    public boolean isMoodSet(Integer pid) {
+        List<Mood> lm = moodRepository.findAll();
+        boolean isMoodSet = false;
+        for(Mood m: lm){
+            if(m.getPatientId() == pid){
+                if(DateUtils.isSameDay(m.getDate(), new Date())) {
+                    isMoodSet = true;
+                    break;
+                }
+            }
+        }
+        return isMoodSet;
     }
 
 

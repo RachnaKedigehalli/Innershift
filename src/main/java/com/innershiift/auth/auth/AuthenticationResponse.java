@@ -17,7 +17,7 @@ public class AuthenticationResponse {
     private RefreshToken refreshToken;
 
     private String email;
-
+    private Integer id;
     private String firstName;
     private String lastName;
 

@@ -51,12 +51,14 @@ public class ConsultationService {
         }
         return  Optional.of(null);
     }
-    public Optional<Message> addMessageToConsultation(Integer cid,String message){
+    public Optional<Message> addMessageToConsultation(Integer cid,String message, Integer senderId, Integer recipientId){
         Message m = new Message();
         m.setConsultationId(cid);
         m.setContent(message);
         m.setTimeStamp(new Date());
-        m.setReadRecipt(false);
+        m.setReadReceipt(false);
+        m.setSenderId(senderId);
+        m.setSenderId(senderId);
         Message ret = messageRepository.save(m);
         Optional<Consultation> c = consultationRepository.findById(cid);
         if(c.isPresent()){
@@ -64,6 +66,7 @@ public class ConsultationService {
             List<Integer> messageIdHistory = consultation.getMessageIdHistory();
             messageIdHistory.add(ret.getMessageId());
             consultation.setMessageIdHistory(messageIdHistory);
+            consultationRepository.save(consultation);
             return Optional.of(ret);
         }
         else return Optional.of(new Message());
@@ -73,7 +76,7 @@ public class ConsultationService {
         List<Message> ret = new ArrayList<Message>();
         List<Consultation> cl = consultationRepository.findAll();
         for(Consultation c : cl){
-            if(c.getPatientId()== pid || c.getDoctorId()== pid){
+            if(Objects.equals(c.getPatientId(), pid) || Objects.equals(c.getDoctorId(), pid)){
                 Optional<List<Message>> temp = getAllMessageForConsultationId(c.getConsultationId());
                 if(temp.isPresent()){
                     for(Message m: temp.get()){

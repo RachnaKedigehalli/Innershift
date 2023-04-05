@@ -13,8 +13,8 @@ public class DoctorService {
 
     private final DoctorRepository doctorRepository;
 
-    public Optional<List<Doctor>> getAllDoctors(){
-        return Optional.of(doctorRepository.findAll());
+    public Optional<List<Object>> getAllDoctors(){
+        return Optional.of(doctorRepository.getAllDoctors());
     }
 
     public  Optional<Doctor> getDoctorByID(Integer id){
@@ -39,7 +39,7 @@ public class DoctorService {
         return dbDoctor;
     }
 
-    public Optional<Doctor> updateDoctorDegree(Integer id,Integer degree){
+    public Optional<Doctor> updateDoctorDegree(Integer id,String degree){
         Optional<Doctor> dbDoctor = doctorRepository.findById(id);
         if(dbDoctor.isPresent()){
             doctorRepository.updateDoctorDegree(id,degree);

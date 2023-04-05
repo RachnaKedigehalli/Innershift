@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor,Integer> {
@@ -42,7 +43,14 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer> {
     @Modifying
     @Query("UPDATE Doctor d SET d.degree= ?2 WHERE d.doctorId = ?1")
         // returns 1 for success
-    int updateDoctorDegree(Integer id,Integer degree);
+    int updateDoctorDegree(Integer id,String degree);
+
+
+    @Transactional
+    @Modifying
+    @Query("SELECT d.doctorId, d.biography, d.currentPos, d.degree, u.firstName, u.lastName from Doctor d INNER JOIN User u on d.doctorId=u.id" )
+        // returns 1 for success
+    List<Object> getAllDoctors();
 
 
 }

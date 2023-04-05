@@ -21,12 +21,11 @@ import lombok.experimental.SuperBuilder;
 public class Doctor {
 
     @Id
-    @GeneratedValue
     private Integer doctorId;
 
     private  String licenseId;
     private  String biography;
-    private  Integer degree;
+    private  String degree;
     private String currentPos;
     private String phoneNumber;
 }
