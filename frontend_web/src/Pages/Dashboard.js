@@ -13,6 +13,10 @@ function Dashboard(){
     const location = useLocation();
     const navigate = useNavigate(); 
 
+    useEffect(()=>{
+        console.log("Dashboard Location Response - ",location.state)
+    },[location])
+
     const onClickDoctors = ()=>{
         navigate('/doctor',{
             state:location.state.response,
