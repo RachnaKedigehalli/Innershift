@@ -17,12 +17,12 @@ import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 import { StateProvider } from "./StateProvider";
 
 import AdminModules from './Pages/Admin/Modules';
+import AddModule from './Pages/Admin/AddModule';
 
 import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
-import SideDoctor from './Components/SideDoctor';
 
 
 function App() {
@@ -55,7 +55,8 @@ function App() {
           <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
           <Route path="/profile" element={<Profile />} />
 
-        <Route path="/admin/modules" element={<AdminModules />} />
+          <Route path="/admin/modules" element={<AdminModules />} />
+          <Route path="/admin/addmodule" element={<AddModule />} />
 
 
           {/* Doctor */}
