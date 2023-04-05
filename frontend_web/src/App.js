@@ -13,6 +13,8 @@ import AddDoctor_user from './Pages/AddDoctor_user';
 import Profile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/UpdateDoctor_user';
 
+import AdminModules from './Pages/Admin/Modules';
+
 import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
 
@@ -30,6 +32,8 @@ function App() {
         <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
         <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
         <Route path="/profile" element={<Profile />} />
+
+        <Route path="/admin/modules" element={<AdminModules />} />
 
         <Route path="/scsduiasdisd" element={<SideDoctor />} />
 
