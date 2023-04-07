@@ -13,6 +13,8 @@ import {
 	FormHelperText,
 } from '@chakra-ui/react'
 
+import react, {useState} from 'react';
+
 import { useNavigate, useLocation, } from 'react-router-dom'
 
 
@@ -32,6 +34,29 @@ function AddModule() {
 
 	}
 
+	
+
+	function AddModuleForm(){
+
+		const [moduleName, setModuleName] = useState('');
+		const [moduleDescription, setModuleDescription] = useState('');
+		const clickAddTask = () => {
+
+		}
+
+		return (<form>
+			<FormControl>
+				<FormLabel>Module Name</FormLabel>
+				<Input type='text' value={moduleName}/>
+			</FormControl>
+			<FormControl mt={3}>
+				<FormLabel> Description</FormLabel>
+				<Input type='text' value={moduleDescription}/>
+			</FormControl>
+			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Add Tasks </Button>
+		</form>);
+	}
+
 
 	return (<div>
 		<Flex>
@@ -44,17 +69,9 @@ function AddModule() {
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Module </Text> </Heading>
 
-					<Box w='50%' color='teal.700' padding={3}>
-						<form method='POST'>
-							<FormControl>
-								<FormLabel>Module Name</FormLabel>
-								<Input type='text' />
-							</FormControl>
-							<FormControl mt={3}>
-								<FormLabel> Description</FormLabel>
-								<Input type='text' />
-							</FormControl>
-						</form>
+
+					<Box w='50%' color='teal.700' padding={3} align='center'>
+						<AddModuleForm/>
 					</Box>
 					
 					
