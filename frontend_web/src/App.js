@@ -18,6 +18,7 @@ import { StateProvider } from "./StateProvider";
 
 import AdminModules from './Pages/Admin/Modules';
 import AddModule from './Pages/Admin/AddModule';
+import AddQuestions from './Pages/Admin/AddQuestions';
 
 import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
@@ -57,6 +58,8 @@ function App() {
 
           <Route path="/admin/modules" element={<AdminModules />} />
           <Route path="/admin/addmodule" element={<AddModule />} />
+          <Route path="/admin/addquestions" element={<AddQuestions />} />
+          
 
 
           {/* Doctor */}

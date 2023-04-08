@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Center, form } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberDecrementStepper, HStack, StackDivider, Heading, Input, Center, form, NumberInputStepper, Radio, RadioGroup } from '@chakra-ui/react'
 import SideAdmin from "../../Components/SideAdmin";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -36,12 +36,14 @@ function AddModule() {
 
 	
 
+	
+
 	function AddModuleForm(){
 
 		const [moduleName, setModuleName] = useState('');
 		const [moduleDescription, setModuleDescription] = useState('');
-		const clickAddTask = () => {
-
+		const clickAddTask = () =>{
+			navigate('/admin/addquestions', {});
 		}
 
 		return (<form>
@@ -53,7 +55,29 @@ function AddModule() {
 				<FormLabel> Description</FormLabel>
 				<Input type='text' value={moduleDescription}/>
 			</FormControl>
-			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Add Tasks </Button>
+			<FormControl mt={3}>
+                <FormLabel>Module Type</FormLabel>
+                <RadioGroup defaultValue='Form'>
+                    <HStack spacing='24px'>
+                        <Radio value='Form'>Form</Radio>
+                        <Radio value='Audio'>Audio</Radio>
+                        <Radio value='Video'>Video</Radio>
+                        <Radio value='Reading'>Reading</Radio>
+                    </HStack>
+                </RadioGroup>
+            </FormControl>
+			<FormControl mt={3}>
+				<FormLabel>Number of questions</FormLabel>
+				<NumberInput max={50} min={10}>
+					<NumberInputField />
+					<NumberInputStepper>
+						<NumberIncrementStepper />
+						<NumberDecrementStepper />
+					</NumberInputStepper>
+				</NumberInput>
+			</FormControl>
+
+			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Add Questions </Button>
 		</form>);
 	}
 
