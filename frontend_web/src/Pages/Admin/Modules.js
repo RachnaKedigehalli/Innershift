@@ -21,18 +21,9 @@ function AdminModules() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const dummyFunction = () => {
-		console.log("dashboard clicked");
-		navigate('/dummyloc', {
-			// state: location.state
-		})
-	}
-
 	const clickAddModule = () => {
 		console.log("dashboard clicked");
-		navigate('/admin/addmodule', {
-			// state: location.state
-		})
+		navigate('/admin/addmodule')
 	}
 
 	const clickEditModule = () => {

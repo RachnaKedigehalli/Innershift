@@ -20,7 +20,7 @@ function Auth(){
 
     const onSubmit = ()=>{
         const credentials = {email:email,password:password}
-        axios.post('http://172.16.141.35:8080/api/v1/auth/authenticate',credentials)
+        axios.post('http://localhost:8080/api/v1/auth/authenticate',credentials)
             .then(async (response)=>{
                 console.log("Authentication Response Data : ", response.data)
                 await dispatch({

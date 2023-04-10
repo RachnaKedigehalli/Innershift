@@ -45,7 +45,7 @@ function UserForm(data){
 
         
 
-        axios.post('http://172.16.141.35:8080/api/v1/auth/register',credentials)
+        axios.post('http://localhost:8080/api/v1/auth/register',credentials)
             .then(response=>{
                 console.log(response.data)
                 const newDict = {...response.data,adminToken:data.data.token}

@@ -58,7 +58,7 @@ function Doctor(){
             }
         }
 
-        axios.get('http://172.16.141.35:8080/api/v1/app/getAllDoctors',auth)
+        axios.get('http://localhost:8080/api/v1/app/getAllDoctors',auth)
         .then(response=>{
             console.log(response.data)
             setAllDoctors(response.data)

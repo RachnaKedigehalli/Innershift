@@ -34,30 +34,43 @@ function AddModule() {
 
 	}
 
-	
-
-	
-
 	function AddModuleForm(){
 
 		const [moduleName, setModuleName] = useState('');
 		const [moduleDescription, setModuleDescription] = useState('');
+		const [moduleType,setModuleType] = useState('')
+		const [numberOfQuestions,setNumberOfQuestions] = useState(0)
+
 		const clickAddTask = () =>{
-			navigate('/admin/addquestions', {});
+			const module = {
+				moduleName: moduleName, 
+				moduleDescription:moduleDescription,
+				moduleType:moduleType,
+				numberOfQuestions:numberOfQuestions
+			}
+			console.log(module)
+			navigate('/admin/addquestions', {
+				state:module
+			});
 		}
+
+		const handleChangeModuleName = (event) => setModuleName(event.target.value); 
+		const handleChangeModuleDescription = (event) => setModuleDescription(event.target.value);
+		const handleChangeModuleType = (event) => setModuleType(event);
+		const handleChangeNumberOfQuestions = (event) => setNumberOfQuestions(event);
 
 		return (<form>
 			<FormControl>
 				<FormLabel>Module Name</FormLabel>
-				<Input type='text' value={moduleName}/>
+				<Input type='text' value={moduleName} onChange={handleChangeModuleName}/>
 			</FormControl>
 			<FormControl mt={3}>
 				<FormLabel> Description</FormLabel>
-				<Input type='text' value={moduleDescription}/>
+				<Input type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
 			</FormControl>
 			<FormControl mt={3}>
                 <FormLabel>Module Type</FormLabel>
-                <RadioGroup defaultValue='Form'>
+                <RadioGroup defaultValue='Form' onChange={handleChangeModuleType}>
                     <HStack spacing='24px'>
                         <Radio value='Form'>Form</Radio>
                         <Radio value='Audio'>Audio</Radio>
@@ -68,7 +81,7 @@ function AddModule() {
             </FormControl>
 			<FormControl mt={3}>
 				<FormLabel>Number of questions</FormLabel>
-				<NumberInput max={50} min={10}>
+				<NumberInput max={50} min={1} onChange={handleChangeNumberOfQuestions}>
 					<NumberInputField />
 					<NumberInputStepper>
 						<NumberIncrementStepper />

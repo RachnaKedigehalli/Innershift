@@ -29,6 +29,9 @@ function Dashboard(){
         })
     }
 
+    const onClickModules = () => {
+        navigate('/admin/modules')
+    }
     return(
         <div>
             <Grid
@@ -50,7 +53,7 @@ function Dashboard(){
                         <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
                     </Button>
 
-                    <Button ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
+                    <Button onClick={onClickModules} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
                     </Button>
 

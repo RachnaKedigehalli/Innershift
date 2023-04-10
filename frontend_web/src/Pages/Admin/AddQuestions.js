@@ -13,7 +13,7 @@ import {
 	FormHelperText,
 } from '@chakra-ui/react'
 
-import react, {useState} from 'react';
+import react, {useEffect, useState} from 'react';
 
 import { useNavigate, useLocation, Form, } from 'react-router-dom'
 
@@ -22,45 +22,59 @@ import { useNavigate, useLocation, Form, } from 'react-router-dom'
 function AddQuestions() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [numberOfQuestions,setNumberOfQuestions] = useState(0)
+	const [questions,setQuestions] = useState([])
 
-	const dummyFunction = () => {
-		console.log("dashboard clicked");
-		navigate('/dummyloc', {
-			// state: location.state
-		})
+	useEffect(()=>{
+		setNumberOfQuestions(location.state.numberOfQuestions)
+		var temp = []
+		for(var i=1; i<=numberOfQuestions; i++){
+            temp.push("")
+        }
+		setQuestions(temp) 
+	},[])
+
+
+
+	const clickAddTask = () =>{
+		var dict = {...location.state,questions:questions}
+		console.log(dict) 
+
+		// axios.post('http://localhost:8080/api/v1/auth/register',credentials)
+        //     .then(response=>{
+        //         console.log(response.data)
+        //         const newDict = {...response.data,adminToken:data.data.token}
+        //         navigate("/updatedoctor",{
+        //             state:newDict
+        //         })
+        // })
 	}
-	
+
+	const onQuestionChange = (event,qno)=>{
+		var temp = questions
+		temp[qno-1] = event.target.value 
+		setQuestions(temp) 
+	}
+
     function FormQuestions(qno){
-        console.log(qno);
         return(<div>
-            {/* <Heading as='h4' size='md'> <Text align='left'>Question {qno.qno} </Text></Heading> */}
             <FormControl>
                 <FormLabel> <Text> Question {qno.qno} Description</Text> </FormLabel>
-                <Input type='text'/>
+                <Input type='text' onChange={(event) => onQuestionChange(event,qno.qno)}/>
             </FormControl>
         </div>);
     }
 
 	function QuestionsForm(number){
-
-		
-		const clickAddTask = () => {
-
-		}
-        console.log(number);
-
         var questions = [];
         
         for(var i=1; i<=number.number; i++){
-            console.log(i);
             questions.push(<FormQuestions key={i} qno={i}/>)
         }
 
         console.log(1, questions);
 		return (<form>
             {questions}
-
-              {/* <QuestionElement/> */}
 
 			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Submit </Button>
 		</form>);
@@ -78,11 +92,9 @@ function AddQuestions() {
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Questions </Text> </Heading>
 
-
 					<Box w='50%' color='teal.700' padding={3} align='center'>
-						<QuestionsForm number={5}/>
+						<QuestionsForm number={numberOfQuestions}/>
 					</Box>
-					
 					
 				</VStack>
 			</Box>

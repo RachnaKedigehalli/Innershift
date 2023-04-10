@@ -50,7 +50,7 @@ function UserForm(response){
             }
         }
 
-        axios.post('http://172.16.141.35:8080/api/v1/app/createDoctor',credentials, auth)
+        axios.post('http://localhost:8080/api/v1/app/createDoctor',credentials, auth)
             .then(response=>{
                 console.log(response.data)
             })
