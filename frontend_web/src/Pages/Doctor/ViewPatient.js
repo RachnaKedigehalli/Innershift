@@ -1,13 +1,20 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
-import { DESKTOP_BG_LIGHT} from "../../Constants";
+import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faCirclePlus,
+    faCirclePlus, 
+    faComments,
+    faHeadphones,
+	faBookOpen,
+	faCirclePlay,
+	faListUl,
+	faQuestion
 } from "@fortawesome/free-solid-svg-icons";
 
+import React from 'react';
 import { useNavigate, useLocation, } from 'react-router-dom'
 
 
@@ -38,66 +45,87 @@ function ViewPatient(){
 			state: location.state
 		})
 	}
-	const PatientCard = ({ name, photo, desc }) => {
+
+    function UnAssignDialog() {
+		const { isOpen, onOpen, onClose } = useDisclosure()
+		const cancelRef = React.useRef()
+
+		return (
+			<>
+				<Button bg='teal.700' color='white' w='50%' onClick={onOpen}>
+					Unassign
+				</Button>
+
+				<AlertDialog
+					isOpen={isOpen}
+					leastDestructiveRef={cancelRef}
+					onClose={onClose}
+				>
+					<AlertDialogOverlay>
+						<AlertDialogContent>
+							<AlertDialogHeader fontSize='lg' fontWeight='bold'>
+								<Text color='teal.700'> Confirm Action </Text>
+							</AlertDialogHeader>
+
+							<AlertDialogBody>
+								<Text color='teal.700'> Are you sure? You can't undo this action afterwards. </Text>
+							</AlertDialogBody>
+
+							<AlertDialogFooter>
+								<Button color='teal.700' ref={cancelRef} onClick={onClose}>
+									Cancel
+								</Button>
+								<Button bg='teal.700' color='white' onClick={onClose} ml={3}>
+									Unassign
+								</Button>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialogOverlay>
+				</AlertDialog>
+			</>
+		)
+	}
+    
+    const ModuleIcon = ({type}) => {
+		if(type === "audio"){
+			return <FontAwesomeIcon icon={faHeadphones} size="2xl" style={{ color: "#285e61", }} />
+		}
+		if(type === "reading"){
+			return <FontAwesomeIcon icon={faBookOpen} size="2xl" style={{ color: "#285e61", }} />
+		}
+		if (type === "video") {
+			return <FontAwesomeIcon icon={faCirclePlay} size="2xl" style={{ color: "#285e61", }} />
+		}
+		if (type === "form") {
+			return <FontAwesomeIcon icon={faListUl} size="2xl" style={{ color: "#285e61", }} />
+		}
+		return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
+	}
+	
+	const ModuleCard = ({ name, type, desc, status }) => {
 		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-				<CardHeader>
-					<HStack>
-						<Image
-							src='/default_user.jpg'
-							alt='Picture'
-							borderRadius='full'
-							w='20%'
-						/>
-						<Heading> <Text color='teal.700'> {name}</Text> </Heading>
-					</HStack>
-				</CardHeader>
+			<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
 				<CardBody>
-					<VStack w='flex'>
+					<VStack spacing={3} align='left'>
+						<HStack>
+							<ModuleIcon type={type} />
+							<Heading flex={1}> <Text noOdLines={1} color='#285e61'> {name}</Text> </Heading>
+						</HStack>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-							<Button bg='teal.700' color='white' onClick={clickChat} size='md'>Chat</Button>
-							<Button bg='teal.700' color='white' onClick={clickModule} size='md'>Module Progress</Button>
+							<Button bg='teal.700' color='white' width='50%'>Review</Button>
+							<UnAssignDialog/>
+							{/* <Button bg='teal.700' color='white' onClick={clickEditModule} size='md'>Delete</Button> */}
 						</ButtonGroup>
 					</VStack>
+					
 				</CardBody>
-
 			</Card>
 		</div>);
 	}
 
-	const RequestPatientCard = ({ name, photo, desc }) => {
-		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
-				<CardHeader>
-					<HStack>
-						<Image
-							src='/default_user.jpg'
-							alt='Picture'
-							borderRadius='full'
-							w='20%'
-						/>
-						<Heading> <Text color='teal.700'> {name}</Text> </Heading>
-					</HStack>
-				</CardHeader>
-				<CardBody>
-					<VStack w='flex'>
-						<Text h={50} color='teal.700' noOfLines={2}> {desc} </Text>
-						<Button bg='teal.700' color='white' onClick={clickAccept} size='md'>Accept</Button>
-
-					</VStack>
-				</CardBody>
-
-			</Card>
-		</div>);
-	}
-
-	const EmptyPatient = () => {
-		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-	}
-
-	const EmptyRequestPatient = () => {
-		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	const BasicModuleCard = () => {
+		return <ModuleCard name="Module Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" type="unknown" />;
 	}
 
 	return(<div> 
@@ -117,7 +145,7 @@ function ViewPatient(){
 						</GridItem>
 
 						<GridItem colSpan={4}>
-							<Input placeholder='SEARCH'></Input>
+							{/* <Input placeholder='SEARCH'></Input> */}
 						</GridItem>
 
 						<GridItem align='right' mr={10}>
@@ -126,47 +154,34 @@ function ViewPatient(){
 								bg="teal.700"
                                 color='white'
 								size="md"
+                                w='100%'
 								// style={{ color: "black" }}
 							>
 								<FontAwesomeIcon
-									icon={faCirclePlus}
+									icon={faComments}
 									style={{ marginRight: "0.5em" }}
 								/>{" "}
-								Search
+								Chat
 							</Button>
 						</GridItem>
 					</Grid>
 
 					{/* Existing patients cards */}
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
-						<GridItem>
-							<PatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk'/>
-						</GridItem>
-						<GridItem>
-							<EmptyPatient/>
-						</GridItem>
-						<GridItem>
-							<EmptyPatient />
-						</GridItem>
-						
-					</Grid>
-
-					{/* <Spacer /> */}
-					{/* Request header */}
-					<Heading ml={10}> <Text color='teal.700' align='left'> Pending Requests </Text></Heading>
-
-					{/* Request Cards */}
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
-						<GridItem>
-							<RequestPatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
-						</GridItem>
-						<GridItem>
-							<EmptyRequestPatient />
-						</GridItem>
-						<GridItem>
-							<EmptyRequestPatient />
-						</GridItem>
-					</Grid>
+					<HStack w='100%'>
+                        <Box w = '50%'>
+                            <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                            </Grid>
+                        </Box>
+                    </HStack>
 				</VStack>
 			</Box>
 			

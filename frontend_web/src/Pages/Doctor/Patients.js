@@ -140,7 +140,7 @@ function DoctorPatients(){
 					{/* Existing patients cards */}
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
 						<GridItem>
-							<PatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk'/>
+							<PatientCard name="Neelabh" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk'/>
 						</GridItem>
 						<GridItem>
 							<EmptyPatient/>
@@ -158,13 +158,16 @@ function DoctorPatients(){
 					{/* Request Cards */}
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
 						<GridItem>
-							<RequestPatientCard name="Avantika" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
+							<RequestPatientCard name="Neelabh" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
 						</GridItem>
 						<GridItem>
 							<EmptyRequestPatient />
 						</GridItem>
 						<GridItem>
 							<EmptyRequestPatient />
+						</GridItem>
+						<GridItem>
+							<RequestPatientCard name="Nandu Menon" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
 						</GridItem>
 					</Grid>
 				</VStack>

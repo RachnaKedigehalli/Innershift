@@ -66,7 +66,7 @@ function App() {
           {/* Doctor */}
           <Route path="/doctor/home" element={<DoctorDashboard />} />
           <Route path="/doctor/patients" element={<DoctorPatients />} />
-          <Route path="/doctor/patient" element={<ViewPatient />} />
+          <Route path="/doctor/viewpatient" element={<ViewPatient />} />
 
           <Route path="/dummyloc" element={<Dummypage />} />
         </Routes>

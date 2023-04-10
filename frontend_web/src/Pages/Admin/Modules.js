@@ -30,7 +30,7 @@ function AdminModules() {
 		console.log("edit clicked");
 	}
 
-	function AlertDialogExample() {
+	function DeleteAlertDialog() {
 		const { isOpen, onOpen, onClose } = useDisclosure()
 		const cancelRef = React.useRef()
 
@@ -98,7 +98,7 @@ function AdminModules() {
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' onClick={clickEditModule} width='50%'>Edit</Button>
-							<AlertDialogExample/>
+							<DeleteAlertDialog/>
 							{/* <Button bg='teal.700' color='white' onClick={clickEditModule} size='md'>Delete</Button> */}
 						</ButtonGroup>
 					</VStack>
