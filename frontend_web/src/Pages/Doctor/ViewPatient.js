@@ -12,7 +12,7 @@ import { useNavigate, useLocation, } from 'react-router-dom'
 
 
 
-function DoctorPatients(){
+function ViewPatient(){
 	const navigate = useNavigate();
 	const location = useLocation();
 	const clickChat = () => {
@@ -124,7 +124,7 @@ function DoctorPatients(){
 							<Button
 								onClick={clickSearch}
 								bg="teal.700"
-								color='white'
+                                color='white'
 								size="md"
 								// style={{ color: "black" }}
 							>
@@ -175,4 +175,4 @@ function DoctorPatients(){
 	
 }
 
-export default DoctorPatients;
+export default ViewPatient;
