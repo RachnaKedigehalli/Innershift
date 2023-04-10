@@ -24,6 +24,7 @@ import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
+import ViewPatient from './Pages/Doctor/ViewPatient';
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           {/* Doctor */}
           <Route path="/doctor/home" element={<DoctorDashboard />} />
           <Route path="/doctor/patients" element={<DoctorPatients />} />
+          <Route path="/doctor/patient" element={<ViewPatient />} />
 
           <Route path="/dummyloc" element={<Dummypage />} />
         </Routes>

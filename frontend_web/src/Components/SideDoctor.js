@@ -1,7 +1,7 @@
 import { faChartPie, faDatabase, faStethoscope } from "@fortawesome/free-solid-svg-icons";
 import logo from "../Assets/Logo/Logo_name.png";
 import { DESKTOP_BG_MEDIUM, } from "../Constants";
-import { Button, Image, Box, VStack} from '@chakra-ui/react'
+import { Button, Image, Box, VStack, Center} from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useNavigate, useLocation, } from 'react-router-dom'
@@ -18,7 +18,7 @@ function SideDoctor() {
 	}
 
 	const clickPatients = () => {
-		console.log("i cri");
+		// console.log("i cri");
 		navigate('/doctor/patients', {
 			state: location.state
 		})
@@ -35,17 +35,22 @@ function SideDoctor() {
 			<Box>
 
 			</Box>
-			<Button onClick={clickDashBoard} ml='5em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
-			</Button>
+			<Center>
+				<VStack width="100%">
+					<Button onClick={clickDashBoard} width='100%' bg='teal.700' color='white'>
+						<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
+					</Button>
 
-			<Button onClick={clickPatients} ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
-			</Button>
+					<Button onClick={clickPatients} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
+						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
+					</Button>
 
-			<Button onClick={clickModules} ml='5em' mt='2em' w='12em' colorScheme='teal' variant='solid'>
-				<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
-			</Button>
+					<Button onClick={clickModules} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
+						<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
+					</Button>
+				</VStack>
+			</Center>
+			
 
 
 

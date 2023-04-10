@@ -18,7 +18,7 @@ function SideAdmin() {
 	}
 
 	const clickDoctors = () => {
-		console.log("i cri");
+		// console.log("i cri");
 		navigate('/doctor', {
 			state: location.state
 		})
