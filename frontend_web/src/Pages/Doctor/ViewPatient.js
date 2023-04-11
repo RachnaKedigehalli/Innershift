@@ -180,11 +180,12 @@ function ViewPatient(){
           <ReactTooltip/> */}
 
             <h1>react-calendar-heatmap demos</h1>
-            <p>Random values with onClick and react-tooltip</p>
+            {/* <p>Random values with onClick and react-tooltip</p> */}
             <CalendarHeatmap
                 startDate={new Date('2023-01-01')}
                 endDate={new Date('2023-04-01')}
                 values={data}
+                horizontal={false}
                 classForValue={value => {
                 if (!value) {
                     return 'color-empty';
