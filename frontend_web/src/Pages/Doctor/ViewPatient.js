@@ -1,15 +1,16 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
 import CalendarHeatmap from 'react-calendar-heatmap';
-import 'react-calendar-heatmap/dist/styles.css';
+import './HeatMap.css';
+
 
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faCirclePlus, 
+    // faCirclePlus, 
     faComments,
     faHeadphones,
 	faBookOpen,
@@ -26,23 +27,23 @@ import { useNavigate, useLocation, } from 'react-router-dom'
 function ViewPatient(){
 	const navigate = useNavigate();
 	const location = useLocation();
-	const clickChat = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
-	}
+	// const clickChat = () => {
+	// 	navigate('/dummyloc', {
+	// 		state: location.state
+	// 	})
+	// }
 
-	const clickModule = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
-	}
+	// const clickModule = () => {
+	// 	navigate('/dummyloc', {
+	// 		state: location.state
+	// 	})
+	// }
 
-	const clickAccept = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
-	}
+	// const clickAccept = () => {
+	// 	navigate('/dummyloc', {
+	// 		state: location.state
+	// 	})
+	// }
 
 	const clickSearch = () => {
 		navigate('/dummyloc', {
@@ -115,7 +116,7 @@ function ViewPatient(){
 							<ModuleIcon type={type} />
 							<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
 						</HStack>
-						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
+						<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' width='50%'>Review</Button>
 							<UnAssignDialog/>
@@ -146,64 +147,54 @@ function ViewPatient(){
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function getMoodColor(val){
-        console.log("mood", val)
-        if (val == 1){ return '#ff0000'; }
-        
-        if (val == 2){ return '#ffff00' };
-
-        if (val == 3){ return '#0000ff' };
-
-        if (val == 4){ return '#00ff00' };
-
-        if (val == 5){ return '#ff00ff' };
-
-        return '#00ffff';
+    function intToMood(val){
+        if(val === 1){ return "Energetic" };
+        if(val === 2){ return "Happy" };
+        if(val === 3){ return "Calm" };
+        if(val === 4){ return "Mood Swings" };
+        if(val === 5){ return "Sad" };
+        if(val === 6){ return "Irritated" };
+        return "Unknown"
     }
 
-    const HeatMap = ({data}) => {
+    const CalHeatMap = ({data}) => {
         // console.log("hi", data);
         const today = new Date();
         const randomValues = getRange(200).map(index => {
             return {
               date: shiftDate(today, -index),
-              count: getRandomInt(1, 3),
+              count: getRandomInt(1, 6),
             };
           });
         // console.log(randomValues)
-        return(<div>
-            {/* <CalendarHeatmap
-            startDate={new Date('2023-01-01')}
-            endDate={new Date('2023-02-01')}
-            values={data}
-          />
-          <ReactTooltip/> */}
-
-            <h1>react-calendar-heatmap demos</h1>
-            {/* <p>Random values with onClick and react-tooltip</p> */}
+        return(<div w='100%'>
+            <Heading color='teal.700'> Moods Recorded </Heading>
             <CalendarHeatmap
-                startDate={new Date('2023-01-01')}
-                endDate={new Date('2023-04-01')}
-                values={data}
-                horizontal={false}
-                classForValue={value => {
+              startDate={shiftDate(today, -100)}
+              endDate={today}
+              values={randomValues}
+              width='100%'
+              classForValue={(value) => {
                 if (!value) {
-                    return 'color-empty';
+                  return "color-empty";
                 }
-                return `color-github-${value.count}`;
-                }}
-                // tooltipDataAttrs={value => {
-                //     return {
-                //         'data-tip': `${value.date.toISOString().slice(0, 10)} has count: ${
-                //         value.count
-                //         }`,
-                //     };
-                // }}
-                showWeekdayLabels={true}
-                // onClick={value => alert(`Clicked on value with count: ${value.count}`)}
+                return `color-mood-${value.count}`;
+              }}
+              tooltipDataAttrs={(value) => {
+                return {
+                  "tooltip": `${value.date.toISOString().slice(0, 10)} has count: ${
+                    value.count
+                  }`
+                };
+              }}
+              horizontal={false}
+              onClick={(value) =>
+                alert(`Mood on ${value.date.toISOString().slice(0, 10)}: ${intToMood(value.count)}`)
+              }
             />
             <ReactTooltip />
-        </div>)
+          </div>
+        );
     }
 
     var values = [
@@ -211,9 +202,9 @@ function ViewPatient(){
         { date: new Date("2023/01/02"), count: 2 },
         { date: new Date("2023/01/03"), count: 2 },
         { date: new Date("2023/01/04"), count: 3 },
-        { date: new Date("2023/01/05"), count: 1 },
-        { date: new Date("2023/01/22"), count: 5 },
-        { date: new Date("2023/01/30"), count: 3 }
+        { date: new Date("2023/01/05"), count: 100 },
+        { date: new Date("2023/01/06"), count: 5 },
+        { date: new Date("2023/01/07"), count: 3 }
     ];
 
 	return(<div> 
@@ -227,16 +218,16 @@ function ViewPatient(){
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
-					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3}>
-						<GridItem colSpan={2} ml={7}>
-							<Heading color='teal.700'>Existing Patients</Heading>
+					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3} minHeight='5vh' maxHeight='5vh'>
+						<GridItem colSpan={2}>
+							<Heading color='teal.700'> Patient name </Heading>
 						</GridItem>
 
 						<GridItem colSpan={4}>
 							{/* <Input placeholder='SEARCH'></Input> */}
 						</GridItem>
 
-						<GridItem align='right' mr={10}>
+						<GridItem align='right'>
 							<Button
 								onClick={clickSearch}
 								bg="teal.700"
@@ -256,8 +247,14 @@ function ViewPatient(){
 
 					<HStack w='100%'>
                         {/* module cards */}
-                        <Box w = '50%'>
+                        <Box minWidth='25%'>
+                            <CalHeatMap data={values}/>
+                        </Box>
+                        <Box w='flex' maxHeight='80vh' overflowY='scroll' display='block'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
+                                {/* <GridItem> 
+                                    <CalHeatMap data={values}/>
+                                </GridItem> */}
                                 <GridItem> 
                                     <BasicModuleCard/>
                                 </GridItem>
@@ -267,12 +264,32 @@ function ViewPatient(){
                                 <GridItem> 
                                     <BasicModuleCard/>
                                 </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+                                <GridItem> 
+                                    <BasicModuleCard/>
+                                </GridItem>
+
                             </Grid>
                         </Box>
                         {/* calendar */}
-                        <Box w='flex' minHeight='100%' bg='teal'>
-                            <HeatMap data={values}/>
-                        </Box>
+                        
                     </HStack>
 				</VStack>
 			</Box>
