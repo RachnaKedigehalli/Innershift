@@ -2,6 +2,10 @@ import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HS
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css';
+
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -109,7 +113,7 @@ function ViewPatient(){
 					<VStack spacing={3} align='left'>
 						<HStack>
 							<ModuleIcon type={type} />
-							<Heading flex={1}> <Text noOdLines={1} color='#285e61'> {name}</Text> </Heading>
+							<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
 						</HStack>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
@@ -127,6 +131,89 @@ function ViewPatient(){
 	const BasicModuleCard = () => {
 		return <ModuleCard name="Module Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" type="unknown" />;
 	}
+
+    function shiftDate(date, numDays) {
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + numDays);
+        return newDate;
+    }
+
+    function getRange(count) {
+        return Array.from({ length: count }, (_, i) => i);
+    }
+      
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getMoodColor(val){
+        console.log("mood", val)
+        if (val == 1){ return '#ff0000'; }
+        
+        if (val == 2){ return '#ffff00' };
+
+        if (val == 3){ return '#0000ff' };
+
+        if (val == 4){ return '#00ff00' };
+
+        if (val == 5){ return '#ff00ff' };
+
+        return '#00ffff';
+    }
+
+    const HeatMap = ({data}) => {
+        // console.log("hi", data);
+        const today = new Date();
+        const randomValues = getRange(200).map(index => {
+            return {
+              date: shiftDate(today, -index),
+              count: getRandomInt(1, 3),
+            };
+          });
+        // console.log(randomValues)
+        return(<div>
+            {/* <CalendarHeatmap
+            startDate={new Date('2016-01-01')}
+            endDate={new Date('2016-02-01')}
+            values={data}
+          />
+          <ReactTooltip/> */}
+
+            <h1>react-calendar-heatmap demos</h1>
+            <p>Random values with onClick and react-tooltip</p>
+            <CalendarHeatmap
+                startDate={new Date('2016-01-01')}
+                endDate={new Date('2016-04-01')}
+                values={data}
+                classForValue={value => {
+                if (!value) {
+                    return 'color-empty';
+                }
+                return `color-github-${value.count}`;
+                }}
+                // tooltipDataAttrs={value => {
+                //     return {
+                //         'data-tip': `${value.date.toISOString().slice(0, 10)} has count: ${
+                //         value.count
+                //         }`,
+                //     };
+                // }}
+                showWeekdayLabels={true}
+                // onClick={value => alert(`Clicked on value with count: ${value.count}`)}
+            />
+            <ReactTooltip />
+        </div>)
+    }
+
+    var values = [
+        { date: new Date("2016/01/01"), count: 1 },
+        { date: new Date("2016/01/02"), count: 2 },
+        { date: new Date("2016/01/03"), count: 2 },
+        { date: new Date("2016/01/04"), count: 3 },
+        { date: new Date("2016/01/05"), count: 1 },
+        { date: new Date("2016/01/22"), count: 5 },
+        { date: new Date("2016/01/30"), count: 3 }
+    ];
 
 	return(<div> 
 		<Flex>
@@ -166,8 +253,8 @@ function ViewPatient(){
 						</GridItem>
 					</Grid>
 
-					{/* Existing patients cards */}
 					<HStack w='100%'>
+                        {/* module cards */}
                         <Box w = '50%'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
                                 <GridItem> 
@@ -180,6 +267,10 @@ function ViewPatient(){
                                     <BasicModuleCard/>
                                 </GridItem>
                             </Grid>
+                        </Box>
+                        {/* calendar */}
+                        <Box w='flex' minHeight='100%' bg='teal'>
+                            <HeatMap data={values}/>
                         </Box>
                     </HStack>
 				</VStack>
