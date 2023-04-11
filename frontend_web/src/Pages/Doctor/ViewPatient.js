@@ -173,8 +173,8 @@ function ViewPatient(){
         // console.log(randomValues)
         return(<div>
             {/* <CalendarHeatmap
-            startDate={new Date('2016-01-01')}
-            endDate={new Date('2016-02-01')}
+            startDate={new Date('2023-01-01')}
+            endDate={new Date('2023-02-01')}
             values={data}
           />
           <ReactTooltip/> */}
@@ -182,8 +182,8 @@ function ViewPatient(){
             <h1>react-calendar-heatmap demos</h1>
             <p>Random values with onClick and react-tooltip</p>
             <CalendarHeatmap
-                startDate={new Date('2016-01-01')}
-                endDate={new Date('2016-04-01')}
+                startDate={new Date('2023-01-01')}
+                endDate={new Date('2023-04-01')}
                 values={data}
                 classForValue={value => {
                 if (!value) {
@@ -206,13 +206,13 @@ function ViewPatient(){
     }
 
     var values = [
-        { date: new Date("2016/01/01"), count: 1 },
-        { date: new Date("2016/01/02"), count: 2 },
-        { date: new Date("2016/01/03"), count: 2 },
-        { date: new Date("2016/01/04"), count: 3 },
-        { date: new Date("2016/01/05"), count: 1 },
-        { date: new Date("2016/01/22"), count: 5 },
-        { date: new Date("2016/01/30"), count: 3 }
+        { date: new Date("2023/01/01"), count: 1 },
+        { date: new Date("2023/01/02"), count: 2 },
+        { date: new Date("2023/01/03"), count: 2 },
+        { date: new Date("2023/01/04"), count: 3 },
+        { date: new Date("2023/01/05"), count: 1 },
+        { date: new Date("2023/01/22"), count: 5 },
+        { date: new Date("2023/01/30"), count: 3 }
     ];
 
 	return(<div> 
