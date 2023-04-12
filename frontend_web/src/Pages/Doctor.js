@@ -51,7 +51,7 @@ function Doctor(){
 
     useEffect(()=>{
         console.log("Doctor Location Response - ",location.state)
-
+        console.log(state)
         const auth = {
             headers: {
                 Authorization: `Bearer ${state.adminToken}`

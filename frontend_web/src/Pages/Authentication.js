@@ -29,10 +29,18 @@ function Auth(){
                       adminToken: response.data.token,
                     },
                   });
+                await dispatch({
+                    type:"setRole",
+                    payload: {
+                        role:response.data.role,
+                    },
+                })
+                
                 navigate("/home",{
                     state:{response:response.data}}
                 )
             })
+        
     }
 
     return(

@@ -8,13 +8,15 @@ import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
+import { useStateValue } from '../StateProvider'
 
 function Dashboard(){
     const location = useLocation();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const [state, dispatch] = useStateValue(); 
 
     useEffect(()=>{
-        console.log("Dashboard Location Response - ",location.state)
+        console.log(state)
     },[location])
 
     const onClickDoctors = ()=>{
@@ -32,6 +34,10 @@ function Dashboard(){
     const onClickModules = () => {
         navigate('/admin/modules')
     }
+
+    const onClickPatients = () => {
+        navigate("/doctor/patients")
+    }
     return(
         <div>
             <Grid
@@ -48,10 +54,17 @@ function Dashboard(){
                     <Button onClick={onClickDashboard} ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
                     </Button>
+
                     
-                    <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
-                    </Button>
+                    {(state.role == 'ADMIN')?
+                        <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
+                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
+                        </Button>:
+                        <Button onClick={onClickPatients} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
+                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
+                        </Button>
+                    }
+                    
 
                     <Button onClick={onClickModules} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules

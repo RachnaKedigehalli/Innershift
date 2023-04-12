@@ -30,6 +30,7 @@ import ViewPatient from './Pages/Doctor/ViewPatient';
 function App() {
   let initialState = {
     adminToken: null,
+    role: null
   }
 
   const reducer = (state, action) => {
@@ -39,6 +40,11 @@ function App() {
           ...state,
           adminToken: action.payload.adminToken,
         };
+      case "setRole":
+        return{
+          ...state,
+          role:action.payload.role,
+        }
         default: return {
           state
         };
@@ -64,7 +70,6 @@ function App() {
 
 
           {/* Doctor */}
-          <Route path="/doctor/home" element={<DoctorDashboard />} />
           <Route path="/doctor/patients" element={<DoctorPatients />} />
           <Route path="/doctor/viewpatient" element={<ViewPatient />} />
 

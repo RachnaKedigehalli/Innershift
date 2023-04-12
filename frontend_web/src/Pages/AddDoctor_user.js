@@ -41,9 +41,6 @@ function UserForm(data){
             email:email,
             password:password
         }
-        console.log(credentials)
-
-        
 
         axios.post('http://localhost:8080/api/v1/auth/register',credentials)
             .then(response=>{
@@ -86,11 +83,6 @@ function UserForm(data){
 function AddDoctor_user(){
     const location = useLocation();
     const navigate = useNavigate(); 
-
-    useEffect(()=>{
-        console.log("AddDoctor Location Response - ",location.state)
-    })
-
   
     const onClickDoctors = ()=>{
         navigate('/doctor',{
