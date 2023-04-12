@@ -1,18 +1,17 @@
 import { Grid, GridItem ,Heading,Image, Button,Center,Input,Card,CardHeader,HStack,CardBody,VStack,Text,ButtonGroup} from '@chakra-ui/react'
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../Constants" 
-import logo from "../Assets/Logo/Logo_name.png"
-import face from "../Assets/Images/profile1.jpg"
+import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../../Constants" 
+import logo from "../../Assets/Logo/Logo_name.png"
+import face from "../../Assets/Images/profile1.jpg"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie,faDatabase,faStethoscope,faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { useLocation, useNavigate} from 'react-router-dom';
 import { useEffect,useState} from 'react';
 import axios from 'axios'
-import { useStateValue } from '../StateProvider'
+import { useStateValue } from '../../StateProvider'
 
 
 const onAddDoctor = (data,navigate) =>{
-    console.log(data)
     navigate("/adddoctor/page1",{
         state:data
     })
@@ -50,8 +49,7 @@ function Doctor(){
     const [allDoctors, setAllDoctors] = useState([]); 
 
     useEffect(()=>{
-        console.log("Doctor Location Response - ",location.state)
-        console.log(state)
+        console.log(location.state)
         const auth = {
             headers: {
                 Authorization: `Bearer ${state.adminToken}`
@@ -60,7 +58,6 @@ function Doctor(){
 
         axios.get('http://localhost:8080/api/v1/app/getAllDoctors',auth)
         .then(response=>{
-            console.log(response.data)
             setAllDoctors(response.data)
         })
     },[])

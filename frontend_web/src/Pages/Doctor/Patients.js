@@ -9,34 +9,46 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate, useLocation, } from 'react-router-dom'
-
+import { useEffect,useState} from 'react';
+import axios from 'axios'
+import { useStateValue } from '../../StateProvider'
 
 
 function DoctorPatients(){
 	const navigate = useNavigate();
-	const location = useLocation();
+	const [state, dispatch] = useStateValue();
+    const [allPatients, setAllPatients] = useState([]);
+
+	useEffect(()=>{
+	
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+        axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
+        .then(response=>{
+            setAllPatients(response.data)
+			//console.log(response.data)
+        })
+		
+    },[])
+
 	const clickChat = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
+		navigate('/dummyloc')
 	}
 
 	const clickModule = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
+		navigate('/dummyloc')
 	}
 
 	const clickAccept = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
+		navigate('/dummyloc')
 	}
 
 	const clickSearch = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
+		navigate('/dummyloc')
 	}
 	const PatientCard = ({ name, photo, desc }) => {
 		return (<div>
@@ -139,16 +151,13 @@ function DoctorPatients(){
 
 					{/* Existing patients cards */}
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
-						<GridItem>
-							<PatientCard name="Neelabh" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk'/>
-						</GridItem>
-						<GridItem>
-							<EmptyPatient/>
-						</GridItem>
-						<GridItem>
-							<EmptyPatient />
-						</GridItem>
-						
+						{allPatients.map((item,index)=>{
+							return(
+								<GridItem>
+										<PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
+								</GridItem>
+							)
+                        })}
 					</Grid>
 
 					{/* <Spacer /> */}

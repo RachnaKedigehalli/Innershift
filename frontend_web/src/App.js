@@ -8,10 +8,10 @@ import './App.css';
 import Home from './Pages/Home';
 import Dashboard from './Pages/Dashboard';
 import Auth from './Pages/Authentication';
-import Doctor from './Pages/Doctor';
-import AddDoctor_user from './Pages/AddDoctor_user';
+import Doctor from './Pages/Admin/Doctor';
+import AddDoctor_user from './Pages/Admin/AddDoctor_user';
 import Profile from './Pages/Profile';
-import UpdateDoctor_user from './Pages/UpdateDoctor_user';
+import UpdateDoctor_user from './Pages/Admin/UpdateDoctor_user';
 
 
 import { StateProvider } from "./StateProvider";
@@ -20,7 +20,6 @@ import AdminModules from './Pages/Admin/Modules';
 import AddModule from './Pages/Admin/AddModule';
 import AddQuestions from './Pages/Admin/AddQuestions';
 
-import DoctorDashboard from './Pages/Doctor/Dashboard';
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
@@ -30,7 +29,9 @@ import ViewPatient from './Pages/Doctor/ViewPatient';
 function App() {
   let initialState = {
     adminToken: null,
-    role: null
+    role: null,
+    firstName:"Dave",
+    lastName:"Phillips"
   }
 
   const reducer = (state, action) => {
@@ -45,6 +46,17 @@ function App() {
           ...state,
           role:action.payload.role,
         }
+      case "setFirstName":
+        return{
+          ...state,
+          firstName:action.payload.firstName, 
+        }
+      case "setLastName":
+          return{
+            ...state,
+            lasttName:action.payload.lastName, 
+          }  
+
         default: return {
           state
         };
@@ -67,7 +79,6 @@ function App() {
           <Route path="/admin/addmodule" element={<AddModule />} />
           <Route path="/admin/addquestions" element={<AddQuestions />} />
           
-
 
           {/* Doctor */}
           <Route path="/doctor/patients" element={<DoctorPatients />} />

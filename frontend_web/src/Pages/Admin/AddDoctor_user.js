@@ -1,7 +1,7 @@
 import { Grid, GridItem ,Heading,Image, Button,Center,Input, defineStyle, defineStyleConfig, Text} from '@chakra-ui/react'
-import Navbar from '../Components/Navbar';
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../Constants" 
-import logo from "../Assets/Logo/Logo_name.png"
+import Navbar from '../../Components/Navbar';
+import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../../Constants" 
+import logo from "../../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartPie,faDatabase,faStethoscope,faCirclePlus } from '@fortawesome/free-solid-svg-icons'
@@ -13,106 +13,84 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+import { useStateValue } from '../../StateProvider'
+
 
 
 const custom = defineStyle({
     color: "DARK_OLIVE"
 })
 
-function UserForm(response){
+function UserForm(){ 
+    const [state, dispatch] = useStateValue();
+
     const navigate = useNavigate(); 
 
-    const [license,setLicense] = useState("")
-    const [bio,setBio] = useState("")
-    const [degree,setDegree] = useState("")
-    const [currentPos,setCurrentPos] = useState("")
-    const [phone,setPhone] = useState("")
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+    const [firstName,setFirstName] = useState("")
+    const [lastName,setLastName] = useState("")
      
-    const handleChangeLicense = (event) => setLicense(event.target.value)
-    const handleChangeBio = (event) => setBio(event.target.value)
-    const handleChangeDegree= (event) => setDegree(event.target.value)
-    const handleChangeCurrentPos= (event) => setCurrentPos(event.target.value)
-    const handleChangePhone= (event) => setPhone(event.target.value)
+    const handleChangeEmail = (event) => setEmail(event.target.value)
+    const handleChangePassword = (event) => setPassword(event.target.value)
+    const handleChangeFirstName= (event) => setFirstName(event.target.value)
+    const handleChangeLastName= (event) => setLastName(event.target.value)
 
     const onSubmit = ()=>{
         const credentials = {
-            doctorId:response.response.id,
-            licenseId:license,
-            biography:bio,
-            degree:degree,
-            currentPos:currentPos,
-            phoneNumber:phone
+            firstName:firstName,
+            lastName:lastName,
+            email:email,
+            password:password
         }
 
-        const auth = {
-            headers: {
-                Authorization: `Bearer ${response.response.adminToken}`
-            }
-        }
-
-        axios.post('http://localhost:8080/api/v1/app/createDoctor',credentials, auth)
+        axios.post('http://localhost:8080/api/v1/auth/register',credentials)
             .then(response=>{
-                console.log(response.data)
+                
+                const newDict = {...response.data}
+                navigate("/updatedoctor",{
+                    state:newDict
+                })
             })
-
-        // navigate('/doctor',{
-        //     state:response
-        // })
     }
 
     return(
         <form>
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>License ID</FormLabel>
-                <Input onChange={handleChangeLicense} type='password' placeholder='License ID'/>
+                <FormLabel mt={6} color={DARK_GREEN}>First Name</FormLabel>
+                <Input onChange={handleChangeFirstName} type='text' placeholder='First Name'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Biography</FormLabel>
-                <Input onChange={handleChangeBio} type='text' placeholder='Biography'/>
+                <FormLabel mt={6} color={DARK_GREEN}>Last Name</FormLabel>
+                <Input onChange={handleChangeLastName} type='text' placeholder='Last Name'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Degree</FormLabel>
-                <Input onChange={handleChangeDegree} type='text' placeholder='Degree'/>
+                <FormLabel mt={6} color={DARK_GREEN}>Email address</FormLabel>
+                <Input onChange={handleChangeEmail} type='email' placeholder='We will never share your email'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Current Position</FormLabel>
-                <Input onChange={handleChangeCurrentPos} type='text' style={{color:'teal'}} placeholder="Current Position" />           
-             </FormControl>
-
-             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Phone</FormLabel>
-                <Input onChange={handleChangePhone} type='text' style={{color:'teal'}} placeholder="Phone" />           
-             </FormControl>
+                <FormLabel mt={6} color={DARK_GREEN}>Password</FormLabel>
+                <Input onChange={handleChangePassword} type='password' style={{color:'teal'}} placeholder="Enter Password" />            </FormControl>
             
             <Button onClick={onSubmit} width="full" mt={4} colorScheme='teal' variant="solid" >
-                Add Doctor
+                    Continue
             </Button>
         </form>
     )
 }
 
-function UpdateDoctor_user(){
-    const location = useLocation();
+function AddDoctor_user(){
     const navigate = useNavigate(); 
-
-    useEffect(()=>{
-        console.log("UpdateDoctor Location Response - ",location.state)
-    })
-
+  
     const onClickDoctors = ()=>{
-        // console.log(location.state)
-        navigate('/doctor',{
-            state:location.state
-        })
+        navigate('/doctor')
     }
 
     const onClickDashboard = ()=>{
-        navigate('/home',{
-            state:location.state
-        })
+        navigate('/home')
     }
 
     return(
@@ -152,7 +130,7 @@ function UpdateDoctor_user(){
                                     <Heading color={DARK_GREEN}>Enter Doctor's Data</Heading>
                                 </GridItem>
                                 <GridItem colSpan={2} rowSpan={2} mr='5em'>
-                                        <UserForm response={location.state}/>
+                                        <UserForm/>
                                 </GridItem>                               
                             </Grid>           
                         </GridItem>
@@ -165,6 +143,6 @@ function UpdateDoctor_user(){
 }
 
 
-export default UpdateDoctor_user; 
+export default AddDoctor_user; 
 
  

@@ -35,6 +35,18 @@ function Auth(){
                         role:response.data.role,
                     },
                 })
+                await dispatch({
+                    type:"setFirstName",
+                    payload: {
+                        role:response.data.firstName,
+                    },
+                })
+                await dispatch({
+                    type:"setLastName",
+                    payload: {
+                        role:response.data.lastName,
+                    },
+                })
                 
                 navigate("/home",{
                     state:{response:response.data}}

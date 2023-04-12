@@ -26,9 +26,7 @@ function Dashboard(){
     }
 
     const onClickDashboard = ()=>{
-        navigate('/home',{
-            state:location.state.response
-        })
+        navigate('/home')
     }
 
     const onClickModules = () => {
@@ -60,10 +58,11 @@ function Dashboard(){
                         <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
                             <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
                         </Button>:
-                        <Button onClick={onClickPatients} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
-                        </Button>
+                        <></>
                     }
+                    <Button onClick={onClickPatients} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
+                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
+                    </Button>
                     
 
                     <Button onClick={onClickModules} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
