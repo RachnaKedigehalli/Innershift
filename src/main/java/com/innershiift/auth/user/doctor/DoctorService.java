@@ -20,8 +20,8 @@ public class DoctorService {
         return Optional.of(doctorRepository.getAllDoctors());
     }
 
-    public  Optional<Doctor> getDoctorByID(Integer id){
-        return doctorRepository.findById(id);
+    public  Optional<Object> getDoctorByID(Integer id){
+        return Optional.of(doctorRepository.getDoctorById(id));
     }
 
     public Optional<Doctor> updateDoctorLicense(Integer id,String license){

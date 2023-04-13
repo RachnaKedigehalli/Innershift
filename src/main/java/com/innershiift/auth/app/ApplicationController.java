@@ -23,6 +23,7 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -68,6 +69,17 @@ public class ApplicationController {
         return ResponseEntity.ok(
                 doctorService.getAllDoctors()
                         .orElseThrow(()-> new IllegalStateException("Could not get doctors"))
+        );
+    }
+
+    @PostMapping("/getDoctorById")
+    @CrossOrigin
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Object> getDoctorById(@Valid @RequestBody Doctor d) {
+        System.out.println("doctor: " + d);
+        return ResponseEntity.ok(
+                doctorService.getDoctorByID(d.getDoctorId())
+                        .orElseThrow(()-> new IllegalStateException("Could not get doctor"))
         );
     }
 
@@ -162,14 +174,39 @@ public class ApplicationController {
     }
 
     @MessageMapping("/chat")
-    @PreAuthorize("hasAnyAuthority('USER')")
+//    @PreAuthorize("hasAnyAuthority('USER')")
     @CrossOrigin
     public void processMessage(@Payload Message chatMessage) {
+        System.out.println("message : " + chatMessage);
         Message m = consultationService.addMessageToConsultation(chatMessage.getConsultationId(), chatMessage.getContent(), chatMessage.getSenderId(), chatMessage.getRecipientId()).orElseThrow(()-> new IllegalStateException("Could not add consultations"));
 
         simpMessagingTemplate.convertAndSendToUser(
                 m.getConsultationId().toString(),"/queue/messages",
                 m);
+    }
+
+//    @GetMapping("/messages/{senderId}/{recipientId}/count")
+//    public ResponseEntity<Long> countNewMessages(
+//            @PathVariable String senderId,
+//            @PathVariable String recipientId) {
+//
+//        return ResponseEntity
+//                .ok(consultationService.countNewMessages(senderId, recipientId));
+//    }
+
+//    @GetMapping("/messages/{senderId}/{recipientId}")
+//    public ResponseEntity<?> findChatMessages ( @PathVariable String senderId,
+//                                                @PathVariable String recipientId) {
+//        return ResponseEntity
+//                .ok(chatMessageService.findChatMessages(senderId, recipientId));
+//    }
+
+    @GetMapping("/messages/{id}")
+//    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public ResponseEntity<?> findMessage ( @PathVariable Integer id) {
+        return ResponseEntity
+                .ok(consultationService.getAllMessageForConsultationId(id));
     }
 
 }

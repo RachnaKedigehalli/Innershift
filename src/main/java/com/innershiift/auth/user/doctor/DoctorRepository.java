@@ -47,10 +47,14 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer> {
 
 
     @Transactional
-    @Modifying
     @Query("SELECT d.doctorId, d.biography, d.currentPos, d.degree, u.firstName, u.lastName from Doctor d INNER JOIN User u on d.doctorId=u.id" )
         // returns 1 for success
     List<Object> getAllDoctors();
+
+    @Transactional
+    @Query("SELECT (d.doctorId, d.biography, d.currentPos, d.degree, u.firstName, u.lastName) as t from Doctor d INNER JOIN User u on d.doctorId=u.id WHERE d.doctorId=?1" )
+        // returns 1 for success
+    Object getDoctorById(Integer id);
 
 
 }

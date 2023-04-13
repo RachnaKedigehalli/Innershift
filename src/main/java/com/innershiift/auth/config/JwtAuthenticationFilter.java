@@ -6,7 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 //import com.google.gson.*;
 
+import java.sql.SQLOutput;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,16 +47,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        RefreshToken u = gson.fromJson(requestData, RefreshToken.class);
 //        System.out.println("Auth body " + request.getReader().toString());
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            System.out.println("Filtered out!");
-            return;
+
+            if(request.getRequestURI().startsWith("/api/v1/app/ws/")) {
+                System.out.println("Websocket: " + request.getRequestURI());
+                filterChain.doFilter(request, response);
+            }
+            else {
+                System.out.println("Filtered out!");
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
+        if(!request.getRequestURI().startsWith("/api/v1/app/ws/")) {
         jwt = authHeader.substring(7);
          userEmail = jwtService.extractUsername(jwt);
-        System.out.println("filter!");
          if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
              UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-             if(jwtService.isTokenValid(jwt, userDetails)) {
+             if (jwtService.isTokenValid(jwt, userDetails)) {
                  System.out.println("is valid!");
                  UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                          userDetails,
@@ -64,12 +75,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                  );
                  SecurityContextHolder.getContext().setAuthentication(authToken);
                  filterChain.doFilter(request, response);
-             }
-             else {
+             } else {
                  filterChain.doFilter(request, response);
 //                 System.out.println("Filtered out!");
                  return;
              }
+         }
          }
     }
 }

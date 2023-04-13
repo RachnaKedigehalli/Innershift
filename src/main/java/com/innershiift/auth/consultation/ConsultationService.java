@@ -1,6 +1,7 @@
 package com.innershiift.auth.consultation;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,7 @@ public class ConsultationService {
         }
         return  Optional.of(null);
     }
+    @Transactional
     public Optional<Message> addMessageToConsultation(Integer cid,String message, Integer senderId, Integer recipientId){
         Message m = new Message();
         m.setConsultationId(cid);
@@ -58,7 +60,7 @@ public class ConsultationService {
         m.setTimeStamp(new Date());
         m.setReadReceipt(false);
         m.setSenderId(senderId);
-        m.setSenderId(senderId);
+        m.setRecipientId(recipientId);
         Message ret = messageRepository.save(m);
         Optional<Consultation> c = consultationRepository.findById(cid);
         if(c.isPresent()){
