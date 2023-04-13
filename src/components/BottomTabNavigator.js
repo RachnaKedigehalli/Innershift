@@ -37,20 +37,36 @@ const BottomTabNavigator = (props) => {
         patientId: await userDetails.id,
       };
       // console.log("patient_id", bodyParameters.patientId);
-
+      var consultation_var = undefined;
       await axios
         .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
-        .then((res) => {
+        .then(async (res) => {
           console.log("isCOns data: ", JSON.stringify(res.data));
           console.log(typeof res.data);
           if (JSON.stringify(res.data) == "[]") {
             console.log("empty");
           } else {
-            console.log("hey hey hey");
+            console.log("data : ", typeof res.data[0].doctorId);
+            var docbody = {
+              doctorId: await res.data[0].doctorId,
+            };
+
+            await axios
+              .post(`${BASE_APP_URL}/getDoctorById`, docbody, config)
+              .then(async (res2) => {
+                console.log("doc data: ", JSON.stringify(res2.data));
+                consultation_var = { ...res.data[0], doctor: res2.data };
+              })
+              .catch(console.log);
             setIsDoctorAssigned(true);
           }
         })
         .catch(console.log);
+      await AsyncStorage.setItem(
+        "consultation",
+        JSON.stringify(consultation_var)
+      );
+      console.log(consultation_var);
     };
     apiCall();
   }, []);
@@ -126,7 +142,9 @@ const BottomTabNavigator = (props) => {
               </>
             );
           },
-          tabBarStyle: isDoctorAssigned ? { display: "none" } : {},
+          tabBarStyle: isDoctorAssigned
+            ? { display: "none" }
+            : styles.bottomTab,
         }}
       >
         {() => {

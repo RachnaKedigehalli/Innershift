@@ -98,12 +98,19 @@ const Home = ({ navigation }) => {
         </View>
 
         <View style={styles.tasksList}></View>
+        <View
+          style={{
+            marginTop: 150,
+            marginHorizontal: 20,
+          }}
+        >
+          <CustomButton
+            title="logout"
+            onPress={async () => await logout()}
+          ></CustomButton>
+        </View>
       </View>
       {/* <BottomTabNavigator></BottomTabNavigator> */}
-      <CustomButton
-        title="logout"
-        onPress={async () => await logout()}
-      ></CustomButton>
     </View>
   );
 };

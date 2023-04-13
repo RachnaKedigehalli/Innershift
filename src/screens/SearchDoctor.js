@@ -103,7 +103,7 @@ const SearchDoctor = (props) => {
             >
               <FlatList
                 data={doctors}
-                keyExtractor={(item, index) => item.key}
+                keyExtractor={(item, index) => item[0]}
                 renderItem={({ item }) => {
                   return (
                     <Pressable
@@ -111,6 +111,7 @@ const SearchDoctor = (props) => {
                         setDoctor(item);
                         handlePresentModalPress();
                       }}
+                      // key={item[0]}
                     >
                       <DoctorCard
                         name={`${item[4]} ${item[5]}`}
