@@ -20,14 +20,13 @@ import { Stomp } from "@stomp/stompjs";
 import { TextEncoder } from "text-encoding";
 import { set } from "react-native-reanimated";
 
-const Chat = () => {
+const Chat = ({ navigation }) => {
   const [messagePlaceHolder, setMessagePlaceHolder] = useState("Type here...");
   const [currentMessage, setCurrentMessage] = useState("");
   const [cons, setCons] = useState();
   const [isConnected, setIsConnected] = useState(false);
   const [userDetails, setUserDetails] = useState();
   const [messageList, setMessageList] = useState([]);
-  const navigation = useNavigation();
   const [stompClient, setStompClient] = useState();
 
   const sendMessage = async () => {

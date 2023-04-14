@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home";
 import TopBar from "./TopBar";
 import SearchDoctor from "../screens/SearchDoctor";
-import CalenderScreen from "../screens/ProfileScreen";
+import CalenderScreen from "../screens/CalendarScreen";
 import Chat from "../screens/Chat";
 import home from "../../assets/icons/home_inactive.png";
 import home_active from "../../assets/icons/home_active.png";
@@ -79,6 +79,7 @@ const BottomTabNavigator = (props) => {
       }}
       initialRouteName="home"
       tabBarShowLabel={false}
+      backBehavior={"history"}
       sceneContainerStyle={{ backgroundColor: "white" }}
     >
       <Tab.Screen
@@ -147,10 +148,10 @@ const BottomTabNavigator = (props) => {
             : styles.bottomTab,
         }}
       >
-        {() => {
+        {(props) => {
           console.log("isDocAssigned: ", isDoctorAssigned);
           return isDoctorAssigned ? (
-            <Chat />
+            <Chat {...props} />
           ) : (
             <SearchDoctor setIsDoctorAssigned={setIsDoctorAssigned} />
           );
