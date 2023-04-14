@@ -129,6 +129,14 @@ public class ApplicationController {
                 moodService.isMoodSet(m.getPatientId()));
     }
 
+    @PostMapping("/getMoodsByPid")
+    @PreAuthorize("hasAuthority('USER')")
+    @CrossOrigin
+    public ResponseEntity<List<Mood>> getMoodsByPid(@Valid @RequestBody Patient p) {
+        return ResponseEntity.ok(
+                moodService.getMoodByPatientId(p.getPatientId()));
+    }
+
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAuthority('USER')")
     @CrossOrigin
