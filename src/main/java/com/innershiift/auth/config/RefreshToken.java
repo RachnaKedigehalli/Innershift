@@ -11,23 +11,20 @@ import java.time.Instant;
 
 
 
-@Entity(name = "refreshtoken")
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "refreshtoken")
 public class RefreshToken {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Integer id;
+
+    private String userEmail;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
-
-    @Column(nullable = false, unique = true)
     private String token;
-
-    @Column(nullable = false)
     private Instant expiryDate;
 }

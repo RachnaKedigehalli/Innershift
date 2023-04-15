@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,7 @@ public class AuthenticationService {
     private final RefreshTokenService refreshTokenService;
 
     private final EmailTokenService emailTokenService;
+    private final UserDetailsService userDetailsService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -88,19 +91,23 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse refresh(TokenRefreshRequest request) {
+    public TokenRefreshResponse refresh(TokenRefreshRequest request) {
         System.out.println("request in refresh: " + request);
         String requestRefreshToken = request.getRefreshToken();
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
+                .map(refreshToken->{
+                    System.out.println("user in map: " + refreshToken);
+                    return refreshToken.getUserEmail();
+                })
+                .map(userEmail -> {
+                    System.out.println("user in map: " + userEmail);
+                    UserDetails user = userDetailsService.loadUserByUsername(userEmail);
                     String token = jwtService.generateToken(user);
-                    return AuthenticationResponse.builder()
-                            .token(token)
-                            .email(user.getEmail())
-                            .firstName(user.getFirstName())
-                            .lastName(user.getLastName())
+                    RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(userEmail);
+                    return TokenRefreshResponse.builder()
+                            .accessToken(token)
+                            .refreshToken(newRefreshToken.getToken())
                             .build();
                 })
                 .orElseThrow(() -> new RefreshTokenException(requestRefreshToken,
