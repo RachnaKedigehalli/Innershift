@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
+import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
@@ -33,4 +34,8 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     @Modifying
     @Query("UPDATE Patient p SET p.condition= ?2 WHERE p.patientId = ?1")
     int updateConditionByID(Integer id,Integer condition);
+
+    @Transactional
+    @Query("SELECT p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName from Patient p INNER JOIN User u on p.patientId=u.id" )
+    List<Object> getAllPatients();
 }

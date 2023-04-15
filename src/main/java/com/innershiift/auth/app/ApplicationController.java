@@ -142,7 +142,7 @@ public class ApplicationController {
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @CrossOrigin
-    public ResponseEntity<List<Patient>> getAllPatients(){
+    public ResponseEntity<List<Object>> getAllPatients(){
         return ResponseEntity.ok(
                 patientService.getAllPatients()
                         .orElseThrow(()-> new IllegalStateException("Could not get all patients")

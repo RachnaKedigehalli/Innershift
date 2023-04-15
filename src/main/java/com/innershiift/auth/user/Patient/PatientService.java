@@ -82,8 +82,8 @@ public class PatientService {
         return dbPatient;
     }
 
-    public Optional<List<Patient>> getAllPatients(){
-        return Optional.of(patientRepository.findAll());
+    public Optional<List<Object>> getAllPatients(){
+        return Optional.of(patientRepository.getAllPatients());
     }
 
     public Optional<Patient> getPatientByID(Integer id){
