@@ -7,6 +7,7 @@ import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
 import com.innershiift.auth.user.Patient.Patient;
 import com.innershiift.auth.user.Patient.PatientService;
+import com.innershiift.auth.user.Role;
 import com.innershiift.auth.user.User;
 import com.innershiift.auth.user.UserRepository;
 import com.innershiift.auth.user.doctor.Doctor;
@@ -55,8 +56,9 @@ public class ApplicationController {
     @CrossOrigin
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Doctor> createDoctor(@Valid @RequestBody Doctor doc) {
-        return ResponseEntity.ok(
-                doctorService.createDoctor(doc)
+        Optional<Doctor> od= doctorService.createDoctor(doc);
+        od.ifPresent((doctor)-> userRepository.updateRole(doctor.getDoctorId(), Role.DOCTOR));
+        return ResponseEntity.ok(od
                         .orElseThrow(()-> new IllegalStateException("Could not create doctor"))
         );
     }
@@ -74,7 +76,7 @@ public class ApplicationController {
 
     @PostMapping("/getDoctorById")
     @CrossOrigin
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Object> getDoctorById(@Valid @RequestBody Doctor d) {
         System.out.println("doctor: " + d);
         return ResponseEntity.ok(
@@ -84,7 +86,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/isConsulting")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @CrossOrigin
     public ResponseEntity<List<Consultation>> isConsulting(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(
@@ -103,15 +105,15 @@ public class ApplicationController {
         );
     }
 
-    @PostMapping("/addMessage")
-    @PreAuthorize("hasAuthority('USER')")
-    @CrossOrigin
-    public ResponseEntity<Message> addMessage(@Valid @RequestBody Message m) {
-        return ResponseEntity.ok(
-                consultationService.addMessageToConsultation(m.getConsultationId(), m.getContent(), m.getSenderId(), m.getRecipientId())
-                        .orElseThrow(()-> new IllegalStateException("Could not add consultations"))
-        );
-    }
+//    @PostMapping("/addMessage")
+//    @PreAuthorize("hasAuthority('USER')")
+//    @CrossOrigin
+//    public ResponseEntity<Message> addMessage(@Valid @RequestBody Message m) {
+//        return ResponseEntity.ok(
+//                consultationService.addMessageToConsultation(m.getConsultationId(), m.getContent(), m.getSenderId(), m.getRecipientId())
+//                        .orElseThrow(()-> new IllegalStateException("Could not add consultations"))
+//        );
+//    }
 
     @PostMapping("/addMood")
     @PreAuthorize("hasAuthority('USER')")
@@ -130,7 +132,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/getMoodsByPid")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<List<Mood>> getMoodsByPid(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(
@@ -138,7 +140,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/getAllPatients")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @CrossOrigin
     public ResponseEntity<List<Patient>> getAllPatients(){
         return ResponseEntity.ok(
@@ -161,14 +163,14 @@ public class ApplicationController {
     }
 
     @GetMapping("/getAllUsers")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @CrossOrigin
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
     @PostMapping("/getAllMessagesByPId")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'DOCTOR')")
     @CrossOrigin
     public ResponseEntity<List<Message>> getAllMessagesByPId(@Valid @RequestBody Patient p){
         return ResponseEntity.ok(consultationService.getAllMessagesByPid(p.getPatientId()));
@@ -192,22 +194,6 @@ public class ApplicationController {
                 m.getConsultationId().toString(),"/queue/messages",
                 m);
     }
-
-//    @GetMapping("/messages/{senderId}/{recipientId}/count")
-//    public ResponseEntity<Long> countNewMessages(
-//            @PathVariable String senderId,
-//            @PathVariable String recipientId) {
-//
-//        return ResponseEntity
-//                .ok(consultationService.countNewMessages(senderId, recipientId));
-//    }
-
-//    @GetMapping("/messages/{senderId}/{recipientId}")
-//    public ResponseEntity<?> findChatMessages ( @PathVariable String senderId,
-//                                                @PathVariable String recipientId) {
-//        return ResponseEntity
-//                .ok(chatMessageService.findChatMessages(senderId, recipientId));
-//    }
 
     @GetMapping("/messages/{id}")
 //    @PreAuthorize("hasAnyAuthority('USER')")
