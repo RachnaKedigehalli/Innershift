@@ -26,11 +26,11 @@ function DoctorPatients(){
                 Authorization: `Bearer ${state.adminToken}`
             }
         }
-
+		console.log(state)
         axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
         .then(response=>{
+			console.log(response.data)
             setAllPatients(response.data)
-			//console.log(response.data)
         })
 		
     },[])
@@ -44,7 +44,7 @@ function DoctorPatients(){
 	}
 
 	const clickAccept = () => {
-		navigate('/dummyloc')
+		navigate('/doctor/viewpatient')
 	}
 
 	const clickSearch = () => {

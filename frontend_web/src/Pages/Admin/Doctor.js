@@ -49,7 +49,7 @@ function Doctor(){
     const [allDoctors, setAllDoctors] = useState([]); 
 
     useEffect(()=>{
-        console.log(location.state)
+        
         const auth = {
             headers: {
                 Authorization: `Bearer ${state.adminToken}`

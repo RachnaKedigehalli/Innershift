@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
-
+import axios from 'axios'
 import CalendarHeatmap from 'react-calendar-heatmap';
 import './HeatMap.css';
 
@@ -19,36 +19,17 @@ import {
 	faQuestion
 } from "@fortawesome/free-solid-svg-icons";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, } from 'react-router-dom'
-
-
+import { useStateValue } from '../../StateProvider'
 
 function ViewPatient(){
 	const navigate = useNavigate();
-	const location = useLocation();
-	// const clickChat = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
-
-	// const clickModule = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
-
-	// const clickAccept = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
+	const [state,dispatch] = useStateValue();
+    const [patientMoods, setPatienMoods]  = useState([]); 
 
 	const clickSearch = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
+		navigate('/dummyloc')
 	}
 
     function UnAssignDialog() {
@@ -206,6 +187,25 @@ function ViewPatient(){
         { date: new Date("2023/01/06"), count: 5 },
         { date: new Date("2023/01/07"), count: 3 }
     ];
+
+	
+	useEffect(()=>{
+		
+		const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+		const details = {
+			patientId:52
+		}
+
+        axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
+        .then(response=>{
+            setPatienMoods(response.data)
+        })
+	},[])
 
 	return(<div> 
 		<Flex>
