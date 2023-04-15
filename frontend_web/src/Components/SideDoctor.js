@@ -5,13 +5,15 @@ import { Button, Image, Box, VStack, Center} from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useNavigate, useLocation, } from 'react-router-dom'
+import { useStateValue } from '../StateProvider'
 
 function SideDoctor() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [state,dispatch] = useStateValue();
 
 	const clickDashBoard = () => {
-		console.log("dashboard clicked");
+		console.log(state);
 		navigate('/dummyloc', {
 			// state: location.state
 		})

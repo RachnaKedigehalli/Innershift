@@ -55,7 +55,7 @@ function App() {
       case "setLastName":
           return{
             ...state,
-            lasttName:action.payload.lastName, 
+            lastName:action.payload.lastName, 
           }  
 
         default: return {
