@@ -85,11 +85,12 @@ const Register = ({ route, navigation }) => {
               <CustomButton
                 title={continueText}
                 accessibilityLabel={continueText}
+                disabled={!otp}
                 onPress={async () => {
-                  const verified = verifyOTP(email, otp);
-                  setIsVerified(verified);
+                  const verified = await verifyOTP(email, otp);
+                  // setIsVerified(verified);
                   console.log(verified);
-                  if (await verified)
+                  if (verified)
                     navigation.navigate("RegisterName", { email: email });
                 }}
               />

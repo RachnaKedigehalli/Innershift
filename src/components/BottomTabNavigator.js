@@ -56,17 +56,17 @@ const BottomTabNavigator = (props) => {
               .then(async (res2) => {
                 console.log("doc data: ", JSON.stringify(res2.data));
                 consultation_var = { ...res.data[0], doctor: res2.data };
+                await AsyncStorage.setItem(
+                  "consultation",
+                  JSON.stringify(consultation_var)
+                );
               })
               .catch(console.log);
+            console.log(consultation_var);
             setIsDoctorAssigned(true);
           }
         })
         .catch(console.log);
-      await AsyncStorage.setItem(
-        "consultation",
-        JSON.stringify(consultation_var)
-      );
-      console.log(consultation_var);
     };
     apiCall();
   }, []);

@@ -54,7 +54,7 @@ const StartPage = ({ navigation }) => {
             title={registerOrLoginText[0]}
             accessibilityLabel={registerOrLoginText[0]}
             onPress={() => {
-              navigation.navigate("Register", { screen: "Register" });
+              navigation.navigate("TandC", { screen: "TandC" });
             }}
           />
           <Text

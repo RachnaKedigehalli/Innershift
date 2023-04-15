@@ -57,7 +57,11 @@ export const AuthProvider = (props) => {
         AsyncStorage.setItem("userToken", res.data.token);
         AsyncStorage.setItem(
           "userDetails",
-          JSON.stringify(res.data.refreshToken.user)
+          JSON.stringify({
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+            id: res.data.id,
+          })
         );
         AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
@@ -86,7 +90,11 @@ export const AuthProvider = (props) => {
         AsyncStorage.setItem("userToken", res.data.token);
         AsyncStorage.setItem(
           "userDetails",
-          JSON.stringify(res.data.refreshToken.user)
+          JSON.stringify({
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+            id: res.data.id,
+          })
         );
         AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
@@ -112,12 +120,12 @@ export const AuthProvider = (props) => {
   const isLoggedIn = async () => {
     try {
       setIsLoading(true);
-      let token = AsyncStorage.getItem("userToken");
-      let userDetails = AsyncStorage.getItem("userDetails");
-      let reftoken = AsyncStorage.getItem("refreshToken");
-      console.log(await token);
-      console.log((await userDetails).toString());
-      console.log(await reftoken);
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = await AsyncStorage.getItem("userDetails");
+      let reftoken = await AsyncStorage.getItem("refreshToken");
+      // console.log(await token);
+      // console.log((await userDetails).toString());
+      // console.log(await reftoken);
       setUserToken(await token);
       setUser(await userDetails);
       setRefreshToken(await reftoken);
@@ -125,14 +133,17 @@ export const AuthProvider = (props) => {
       if (token != null) {
         const decodedToken = jwtDecode(await token);
         console.log("decoded: ", decodedToken);
+        console.log("refresh token: ", reftoken);
         var dateNow = new Date();
-
+        console.log("current ", Date.now() / 1000);
         if (decodedToken.exp < Date.now() / 1000) {
+          console.log("expired");
           await axios
             .post(`${BASE_AUTH_URL}/refreshtoken`, {
               refreshToken: reftoken,
             })
             .then((res) => {
+              console.log("new token received ", res.data.token);
               setUserToken(res.data.token);
               // setRefreshToken(res.data.refreshToken);
             })
