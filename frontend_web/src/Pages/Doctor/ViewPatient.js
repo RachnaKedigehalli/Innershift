@@ -160,19 +160,14 @@ function ViewPatient(){
     const CalHeatMap = ({data}) => {
         // console.log("hi", data);
         const today = new Date();
-        const randomValues = getRange(200).map(index => {
-            return {
-              date: shiftDate(today, -index),
-              count: getRandomInt(1, 6),
-            };
-          });
+        
         // console.log(randomValues)
         return(<div w='100%'>
             <Heading color='teal.700'> Moods Recorded </Heading>
             <CalendarHeatmap
               startDate={shiftDate(today, -100)}
               endDate={today}
-              values={randomValues}
+              values={data}
               width='100%'
               classForValue={(value) => {
                 if (!value) {
@@ -197,15 +192,12 @@ function ViewPatient(){
         );
     }
 
-    var values = [
-        { date: new Date("2023/01/01"), count: 1 },
-        { date: new Date("2023/01/02"), count: 2 },
-        { date: new Date("2023/01/03"), count: 2 },
-        { date: new Date("2023/01/04"), count: 3 },
-        { date: new Date("2023/01/05"), count: 100 },
-        { date: new Date("2023/01/06"), count: 5 },
-        { date: new Date("2023/01/07"), count: 3 }
-    ];
+    var values = getRange(200).map(index => {
+		return {
+		  date: shiftDate(today, -index),
+		  count: getRandomInt(1, 6),
+		};
+	});
 
 	return(<div> 
 		<Flex>
