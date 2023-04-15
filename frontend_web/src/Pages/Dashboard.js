@@ -1,6 +1,6 @@
 import { Grid, GridItem ,Heading,Image, Button,Center} from '@chakra-ui/react'
-import Navbar from '../Components/Navbar';
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../Constants" 
+// import Navbar from '../Components/Navbar';
+import {DESKTOP_BG_MEDIUM, DARK_GREEN} from "../Constants" 
 import logo from "../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -54,7 +54,7 @@ function Dashboard(){
                     </Button>
 
                     
-                    {(state.role == 'ADMIN')?
+                    {(state.role === 'ADMIN')?
                         <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
                             <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
                         </Button>:

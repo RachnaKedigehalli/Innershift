@@ -24,26 +24,9 @@ import { useNavigate, useLocation, } from 'react-router-dom'
 
 
 
-function ViewPatient(){
+function DoctorProfile(){
 	const navigate = useNavigate();
 	const location = useLocation();
-	// const clickChat = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
-
-	// const clickModule = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
-
-	// const clickAccept = () => {
-	// 	navigate('/dummyloc', {
-	// 		state: location.state
-	// 	})
-	// }
 
 	const clickSearch = () => {
 		navigate('/dummyloc', {
@@ -157,7 +140,8 @@ function ViewPatient(){
         return "Unknown"
     }
 
-	const today = new Date();
+    const today = new Date();
+    
     const CalHeatMap = ({data}) => {
         // console.log("hi", data);
         
@@ -292,4 +276,4 @@ function ViewPatient(){
 	
 }
 
-export default ViewPatient;
+export default DoctorProfile;

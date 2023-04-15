@@ -1,12 +1,12 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Input, defineStyle, defineStyleConfig, Text} from '@chakra-ui/react'
-import Navbar from '../../Components/Navbar';
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../../Constants" 
+import { Grid, GridItem ,Heading,Image, Button,Center,Input } from '@chakra-ui/react'
+// import Navbar from '../../Components/Navbar';
+import { DESKTOP_BG_MEDIUM, DARK_GREEN} from "../../Constants" 
 import logo from "../../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie,faDatabase,faStethoscope,faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg-icons'
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
     FormControl,
     FormLabel,
@@ -16,9 +16,9 @@ import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 
 
-const custom = defineStyle({
-    color: "DARK_OLIVE"
-})
+// const custom = defineStyle({
+//     color: "DARK_OLIVE"
+// })
 
 function UserForm(response){
     const navigate = useNavigate(); 

@@ -24,6 +24,7 @@ import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
 import ViewPatient from './Pages/Doctor/ViewPatient';
+import DoctorProfile from './Pages/Doctor/Profile';
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
           {/* Doctor */}
           <Route path="/doctor/patients" element={<DoctorPatients />} />
           <Route path="/doctor/viewpatient" element={<ViewPatient />} />
+          <Route path="/doctor/profile" element={<DoctorProfile />} />
 
           <Route path="/dummyloc" element={<Dummypage />} />
         </Routes>

@@ -1,5 +1,5 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Input,Card,CardHeader,HStack,CardBody,VStack,Text,ButtonGroup} from '@chakra-ui/react'
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../../Constants" 
+import { Grid, GridItem ,Heading,Image, Button,Center,Input,Card,CardHeader,HStack,CardBody,VStack,Text } from '@chakra-ui/react'
+import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM } from "../../Constants" 
 import logo from "../../Assets/Logo/Logo_name.png"
 import face from "../../Assets/Images/profile1.jpg"
 

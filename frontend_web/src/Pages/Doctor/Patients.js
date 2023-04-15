@@ -8,7 +8,7 @@ import {
     faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useNavigate, useLocation, } from 'react-router-dom'
+import { useNavigate, } from 'react-router-dom'
 import { useEffect,useState} from 'react';
 import axios from 'axios'
 import { useStateValue } from '../../StateProvider'
@@ -104,9 +104,9 @@ function DoctorPatients(){
 		</div>);
 	}
 
-	const EmptyPatient = () => {
-		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-	}
+	// const EmptyPatient = () => {
+	// 	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	// }
 
 	const EmptyRequestPatient = () => {
 		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;

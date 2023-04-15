@@ -1,6 +1,6 @@
 import { Grid, GridItem, Image,Center,Heading,Input,Button} from '@chakra-ui/react'
-import Navbar from '../Components/Navbar';
-import {DARK_OLIVE,BRIGHT_GREEN, DARK_GREEN, LIGHT_GREEN} from "../Constants" 
+// import Navbar from '../Components/Navbar';
+import {DARK_OLIVE, LIGHT_GREEN} from "../Constants" 
 
 
 import logo from "../Assets/Logo/Logo_white.png"
