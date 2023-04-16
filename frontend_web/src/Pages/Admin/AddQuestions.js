@@ -24,44 +24,10 @@ function AddQuestions() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [numberOfQuestions,setNumberOfQuestions] = useState(0)
-	const [questions,setQuestions] = useState([])
+	const [tasks,setQuestions] = useState([])
 
-	useEffect(()=>{
-		// setNumberOfQuestions(location.state.numberOfQuestions)
-		
-		// var temp = []
-		// for(var i=1; i<=location.state.numberOfQuestions; i++){
-        //     temp.push({
-		// 		type:0,
-		// 		description:"",
-		// 		content:""
-		// 	})
-        // }	
-		// setQuestions(temp) 	
-
-		
-		var temp = []
-		
-		temp.push({
-			type:0,
-			description:"",
-			content:""
-		})
-
-        setNumberOfQuestions(1)
-		setQuestions([{
-			type:0,
-			title:"",
-			description:"",
-			content:""
-		}])
-		
-	},[])
-
-
-	const clickAddTask = () =>{
-		var dict = {...location.state,tasks:questions}
-		console.log(dict) 
+	const onSubmit = () =>{
+		var dict = {...location.state,tasks:tasks}
 
 		// axios.post('http://localhost:8080/api/v1/auth/register',credentials)
         //     .then(response=>{
@@ -74,37 +40,38 @@ function AddQuestions() {
 	}
 
 	const onTitleChange = (event,qno)=>{
-		var temp = questions
+		var temp = tasks
 		temp[qno-1].title = event.target.value 
 		setQuestions(temp) 
 	}
 
 	const onDescriptionChange = (event,qno)=>{
-		var temp = questions
+		var temp = tasks
 		temp[qno-1].description = event.target.value 
 		setQuestions(temp) 
 	}
 
 	const handleChangeModuleType = (event,qno) =>{
-		var temp = questions
+		var temp = tasks
 		temp[qno-1].type = parseInt(event) 
 		setQuestions(temp)
 	}
 
 	const handleContentChange =  (event,qno)=>{
-		var temp = questions
+		var temp = tasks
 		temp[qno-1].content = event.target.value 
 		setQuestions(temp) 
 	}
 
 	const addNewTask = () => {
 		setNumberOfQuestions(numberOfQuestions+1)
-		var temp = questions 
+		var temp = tasks
 		temp.push({
 			type:0,
 			description:"",
 			content:""
 		})
+		setQuestions(temp)
 	}
     function FormQuestions(qno){
         return(
@@ -138,16 +105,16 @@ function AddQuestions() {
     }
 
 	function QuestionsForm(number){
-        var questions = [];
+        var displayQuestions = [];
         
         for(var i=1; i<=number.number; i++){
-            questions.push(<FormQuestions key={i} qno={i}/>)
+            displayQuestions.push(<FormQuestions key={i} qno={i}/>)
         }
 
 		return (<form>
-            {questions}
+            {displayQuestions}
 
-			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Submit </Button>
+			<Button onClick={onSubmit} align='center' bg='teal.700' color='white' m={3}> Submit </Button>
 		</form>);
 	}
 
