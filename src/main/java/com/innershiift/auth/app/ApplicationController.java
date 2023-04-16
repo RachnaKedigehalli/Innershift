@@ -6,6 +6,7 @@ import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
 import com.innershiift.auth.user.Patient.Patient;
+import com.innershiift.auth.user.Patient.PatientResponseInterface;
 import com.innershiift.auth.user.Patient.PatientService;
 import com.innershiift.auth.user.Role;
 import com.innershiift.auth.user.User;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.Doc;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,11 +144,36 @@ public class ApplicationController {
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @CrossOrigin
-    public ResponseEntity<List<Object>> getAllPatients(){
+    public ResponseEntity<List<PatientResponseInterface>> getAllPatients(){
         return ResponseEntity.ok(
                 patientService.getAllPatients()
                         .orElseThrow(()-> new IllegalStateException("Could not get all patients")
         ));
+    }
+
+    @PostMapping("/getPatientByPid")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<PatientResponseInterface> getPatientByPid(@Valid @RequestBody Patient p){
+        return ResponseEntity.ok(
+                patientService.getPatientByID(p.getPatientId())
+                        .orElseThrow(()-> new IllegalStateException("Could not get all patients")
+                        ));
+    }
+
+    @PostMapping("/getPatientsByDoctor")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<List<PatientResponseInterface>> getPatientsByDoctor(@Valid @RequestBody Doctor d){
+        List<PatientResponseInterface> ret = new ArrayList<>();
+        consultationService.getAllConsultationPerUser(d.getDoctorId()).ifPresent((cons)->{
+
+            for(Consultation c: cons) {
+                patientService.getPatientByID(c.getPatientId()).ifPresent(ret::add);
+            }
+
+        });
+        return ResponseEntity.ok(ret);
     }
 
     @PostMapping("/addPatient")

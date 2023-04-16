@@ -36,6 +36,10 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     int updateConditionByID(Integer id,Integer condition);
 
     @Transactional
-    @Query("SELECT p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName from Patient p INNER JOIN User u on p.patientId=u.id" )
-    List<Object> getAllPatients();
+    @Query("SELECT new com.innershiift.auth.user.Patient.PatientResponseInterface(p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName) from Patient p INNER JOIN User u on p.patientId=u.id" )
+    List<PatientResponseInterface> getAllPatients();
+
+    @Transactional
+    @Query("SELECT new com.innershiift.auth.user.Patient.PatientResponseInterface(p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName) from Patient p INNER JOIN User u on p.patientId=u.id WHERE p.patientId=?1" )
+    PatientResponseInterface getPatientByPid(Integer pid);
 }

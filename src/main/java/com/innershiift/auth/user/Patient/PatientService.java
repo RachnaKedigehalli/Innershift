@@ -82,11 +82,12 @@ public class PatientService {
         return dbPatient;
     }
 
-    public Optional<List<Object>> getAllPatients(){
+    public Optional<List<PatientResponseInterface>> getAllPatients(){
         return Optional.of(patientRepository.getAllPatients());
     }
 
-    public Optional<Patient> getPatientByID(Integer id){
-        return patientRepository.findById(id);
+    public Optional<PatientResponseInterface> getPatientByID(Integer id){
+        System.out.println("firstName " + patientRepository.getPatientByPid(id).getFirstName());
+        return Optional.of(patientRepository.getPatientByPid(id));
     }
 }
