@@ -5,10 +5,12 @@ import {
   StyleSheet,
   Pressable,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
-
+import modules from "../data/modules";
+import ModuleCard from "../components/ModuleCard";
 import AppStyles from "../AppStyles";
 
 const CalenderScreen = (props) => {
@@ -90,6 +92,21 @@ const CalenderScreen = (props) => {
           <Text style={styles.monthText}>{print_year()}</Text>
         </View>
       </View>
+      <ScrollView
+        style={styles.tasksList.container}
+        contentContainerStyle={styles.tasksList.contentContainer}
+      >
+        {modules.map((module, index) => {
+          return (
+            <ModuleCard
+              heading={module.heading}
+              description={module.description}
+              imageUri={module.imageUri}
+              key={index}
+            />
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
@@ -164,5 +181,19 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     backgroundColor: "#8AC8C2",
+  },
+  tasksList: {
+    container: {
+      marginTop: 50,
+      marginHorizontal: 20,
+      height: "100%",
+    },
+    contentContainer: {
+      display: "flex",
+      flexDirection: "column",
+      padding: 20,
+      // borderRadius: 20,
+      // backgroundColor: AppStyles.colour.lightGreen,
+    },
   },
 });

@@ -5,12 +5,13 @@ import {
   Text,
   View,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../components/auth/AuthContext";
 import { color, Image } from "@rneui/base";
 import modules from "../data/modules";
-import Module from "../components/Module";
+import ModuleCard from "../components/ModuleCard";
 import TopBar from "../components/TopBar";
 // import BottomTabNavigator from "../components/BottomTabNavigator";
 import AppStyles from "../AppStyles";
@@ -25,53 +26,9 @@ const Home = ({ navigation }) => {
   const [tasksListTag, setTasksListTag] = useState("Make progess bit by bit");
 
   const { logout, user } = useContext(AuthContext);
-  // console.log("Modules :",modules[0].heading)
-  return (
-    // <View
-    //   style={{
-    //     marginTop: 350,
-    //     flex: 1,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //   }}
-    // >
-    //   <Text
-    //     style={{
-    //       fontSize: 20,
-    //     }}
-    //   >
-    //     Welcome {user.firstName} {user.lastName}!
-    //   </Text>
-    //   <Text
-    //     style={{
-    //       fontSize: 20,
-    //     }}
-    //   >
-    //     Role assigned is {user.role}
-    //   </Text>
-    //   <CustomButton
-    //     title="logout"
-    //     onPress={async () => await logout()}
-    //   ></CustomButton>
-    // </View>
 
-    // <View style={{justifyContent:"space-around",flexDirection:"column"}}>
-    //   <Image source={require("./../data/banner.jpeg")} style={{height:150,width:"100%"}}/>
-    //   <Text style={{ fontWeight:"bold" }}>Tasks for the day</Text>
-    //   <FlatList
-    //     data={modules}
-    //     renderItem={(item) => {
-    //       console.log("ITEM: ",item);
-    //       const h=item.item.heading;
-    //       const img=item.item.imageUri;
-    //       const desc=item.item.description;
-    //       return <Module heading={h} description={desc} imageUri={img} />}
-    //     }
-    //     keyExtractor={(item) => item.heading}
-    //   >
-    //   </FlatList>
-    // </View>
-    <View>
+  return (
+    <ScrollView>
       <View style={styles.page}>
         <ImageBackground
           source={require("../../assets/images/banner.png")}
@@ -97,10 +54,21 @@ const Home = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.tasksList}></View>
+        <View style={styles.tasksList}>
+          {modules.map((module, index) => {
+            return (
+              <ModuleCard
+                heading={module.heading}
+                description={module.description}
+                imageUri={module.imageUri}
+                key={index}
+              />
+            );
+          })}
+        </View>
         <View
           style={{
-            marginTop: 150,
+            marginTop: 50,
             marginHorizontal: 20,
           }}
         >
@@ -111,7 +79,7 @@ const Home = ({ navigation }) => {
         </View>
       </View>
       {/* <BottomTabNavigator></BottomTabNavigator> */}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -148,7 +116,7 @@ const styles = StyleSheet.create({
       fontFamily: AppStyles.font.poppinsBold,
       color: AppStyles.colour.textGreen,
       textAlign: "center",
-      marginBottom: -15,
+      // marginBottom: -15,
     },
     bannerTextTag: {
       fontFamily: AppStyles.font.poppinsRegular,
@@ -171,7 +139,7 @@ const styles = StyleSheet.create({
       fontFamily: AppStyles.font.poppinsRegular,
       fontSize: 10,
       color: AppStyles.colour.darkGrey,
-      marginTop: -5,
+      // marginTop: -5,
     },
     progressBar: {
       borderRadius: 10,
@@ -187,5 +155,10 @@ const styles = StyleSheet.create({
       width: "50%",
     },
   },
-  tasksList: {},
+  tasksList: {
+    marginTop: 50,
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
 });
