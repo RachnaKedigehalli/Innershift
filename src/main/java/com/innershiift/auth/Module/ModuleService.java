@@ -1,7 +1,9 @@
 package com.innershiift.auth.Module;
 
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,11 +32,12 @@ public class ModuleService {
         moduleRepository.deleteById(moduleId);
     }
 
-    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Date start, String duration, Integer status){
+    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Integer order, Date start, String duration, Integer status){
         String response = "";
         ModuleAssignment moduleAssignment = new ModuleAssignment();
         moduleAssignment.setModuleId(mId);
         moduleAssignment.setPatientId(pId);
+        moduleAssignment.setModuleOrder(order);
         moduleAssignment.setDuration(duration);
         moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(status);
@@ -64,7 +67,7 @@ public class ModuleService {
 
     }
     public Optional<List<Module>> getModulesByPid(Integer pid) {
-        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientId(pid);
+        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientIdOrderByModuleOrder(pid);
         List<Module> ret = new ArrayList<>();
         moduleAssignments.ifPresent((mAs)->{
             for(ModuleAssignment mA: mAs) {
@@ -73,6 +76,10 @@ public class ModuleService {
             }
         });
         return Optional.of(ret);
+    }
+    @Transactional
+    public void updateOrderByModuleAssignedId(Integer mid, Integer order) {
+        moduleAssignmentRepository.updateOrderByModuleAssignedId(mid, order);
     }
 
 }

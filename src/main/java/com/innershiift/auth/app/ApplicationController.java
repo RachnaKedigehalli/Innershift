@@ -18,6 +18,7 @@ import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -249,7 +250,7 @@ public class ApplicationController {
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     public ResponseEntity<ModuleAssignment> assignModule(@Valid @RequestBody ModuleAssignment ma) {
         return ResponseEntity.ok(
-                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
+                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getModuleOrder(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
         );
     }
 
@@ -259,6 +260,13 @@ public class ApplicationController {
         return ResponseEntity.ok(
                 moduleService.getModulesByPid(p.getPatientId()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
         );
+    }
+
+    @PostMapping("/updateOrder")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    public ResponseEntity<?> updateOrderByModuleAssignedId(@Valid @RequestBody ModuleAssignment ma) {
+        moduleService.updateOrderByModuleAssignedId(ma.getModuleAssignedId(), ma.getModuleOrder());
+        return ResponseEntity.ok().build();
     }
 
 
