@@ -25,6 +25,8 @@ import { useStateValue } from '../../StateProvider'
 
 function ViewPatient(){
 	const navigate = useNavigate();
+	const location = useLocation(); 
+
 	const [state,dispatch] = useStateValue();
     const [patientMoods, setPatienMoods]  = useState([]); 
 
@@ -101,7 +103,6 @@ function ViewPatient(){
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' width='50%'>Review</Button>
 							<UnAssignDialog/>
-							{/* <Button bg='teal.700' color='white' onClick={clickEditModule} size='md'>Delete</Button> */}
 						</ButtonGroup>
 					</VStack>
 					
@@ -140,10 +141,6 @@ function ViewPatient(){
 
 	const today = new Date();
     const CalHeatMap = ({data}) => {
-        // console.log("hi", data);
-        
-        
-        // console.log(randomValues)
         return(<div w='100%'>
             <Heading color='teal.700'> Moods Recorded </Heading>
             <CalendarHeatmap
@@ -191,9 +188,10 @@ function ViewPatient(){
         }
 
 		const details = {
-			patientId:52
+			patientId:location.state
 		}
 
+		
         axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
         .then(response=>{
             setPatienMoods(response.data)
@@ -227,7 +225,6 @@ function ViewPatient(){
                                 color='white'
 								size="md"
                                 w='100%'
-								// style={{ color: "black" }}
 							>
 								<FontAwesomeIcon
 									icon={faComments}

@@ -22,7 +22,7 @@ function Auth(){
         const credentials = {email:email,password:password}
         axios.post('http://localhost:8080/api/v1/auth/authenticate',credentials)
             .then(async (response)=>{
-                console.log("Authentication Response Data : ", response.data)
+                
                 await dispatch({
                     type: "setAdminToken",
                     payload: {
@@ -34,19 +34,28 @@ function Auth(){
                     payload: {
                         role:response.data.role,
                     },
-                })
+                }); 
+
                 await dispatch({
                     type:"setFirstName",
                     payload: {
-                        role:response.data.firstName,
+                        firstName:response.data.firstName,
                     },
-                })
+                });
+
                 await dispatch({
                     type:"setLastName",
                     payload: {
-                        role:response.data.lastName,
+                        lastName:response.data.lastName,
                     },
-                })
+                });
+
+                await dispatch({
+                    type:"setUserId",
+                    payload: {
+                        id:response.data.id,
+                    },
+                });
                 
                 navigate("/home",{
                     state:{response:response.data}}

@@ -1,67 +1,85 @@
-import { Grid, GridItem ,Heading,Image, Button,Center} from '@chakra-ui/react'
-import Navbar from '../Components/Navbar';
-import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM,DARK_OLIVE, LIGHT_GREEN, DARK_GREEN} from "../Constants" 
-import logo from "../Assets/Logo/Logo_name.png"
+import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading } from '@chakra-ui/react'
+import SideDoctor from "../Components/SideDoctor";
+import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../Constants";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg-icons'
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import {useNavigate} from 'react-router-dom'
-import { Card } from 'react-bootstrap';
 
-function Profile(){
-    const location = useLocation();
-    const navigate = useNavigate(); 
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation, } from 'react-router-dom'
+import { useStateValue } from '../StateProvider'
+import axios from 'axios';
 
-    const onClickDoctors = ()=>{
-        navigate('/doctor')
+
+function DoctorProfile(){
+    const [state,dispatch] = useStateValue(); 
+    const [doctorDetails,setDoctorDetails] = useState([]); 
+
+    useEffect(()=>{
+
+		const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+		const details = {
+			doctorId:state.id
+		}
+        
+        console.log(details)
+        axios.post('http://localhost:8080/api/v1/app/getDoctorById',details,auth)
+        .then(response=>{
+            setDoctorDetails(response.data)
+        })
+    },[])
+
+    const InfoCard = ({field, value, nLines}) =>{
+        if(!nLines){
+            nLines = 1;
+        }
+        return(<HStack m={3}>
+            <Box w = {180}>
+                <Text color='teal.700' as='b' fontSize='xl'> {field}: </Text>
+            </Box>
+            <Box w = 'flex'>
+                <Text noOfLines={nLines} color='teal.700'> {value}</Text>
+            </Box>
+        </HStack>)
     }
 
-    const onClickDashboard = ()=>{
-        navigate('/home')
+    const ProfileDetails = ({name, email, phone, license, bio, degree, position}) => {
+        return (<Box>
+            <InfoCard field="Name" value={name}/>
+            <InfoCard field="Email" value={email}/>
+            <InfoCard field="Phone Number" value={phone}/>
+            <InfoCard field="License ID" value={license}/>
+            <InfoCard field="Biography" value={bio}/>
+            <InfoCard field="Degree" value={degree}/>
+            <InfoCard field="Current Position" value={position}/>
+            
+        </Box>);
     }
 
-    return(
-        <div>
-            <Grid
-                h='60em'
-                templateRows='repeat(20, 1fr)'
-                templateColumns='repeat(5, 1fr)'
-                >
+    
 
-                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <Center mt = '5em' mb = '12em'>  
-                        <Image src={logo} h='9em' />
-                    </Center>
+	return(<div> 
+		<Flex>
 
-                    <Button onClick={onClickDashboard} ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
-                    </Button>
-                    
-                    <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
-                    </Button>
+			{/* This be side nav bar */}
+			<SideDoctor/>
 
-                    <Button ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
-                    </Button>
-
-                </GridItem>
-                
-                
-                <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
-                   <Center>
-                        <Card>
-                            
-                        </Card>
-                   </Center>
-                </GridItem>
-            </Grid>
-        </div>
-    ); 
+			{/* This be main screen */}
+			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
+				<VStack flexDirection='column' align='left' m={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
+					
+                    <Heading color='teal.700' m={3}> My Profile </Heading>
+                    <ProfileDetails name= {doctorDetails[4] + " " + doctorDetails[5]}  email={doctorDetails[4]+"."+doctorDetails[5]+"@gmail.com"} phone="9876543210" license="1234567890" bio={doctorDetails[2]} degree={doctorDetails[3]} position={doctorDetails[1]}/>
+					
+				</VStack>
+			</Box>
+			
+		</Flex>
+	</div>);
+	
 }
 
-export default Profile; 
-
- 
+export default DoctorProfile;

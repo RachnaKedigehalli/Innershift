@@ -1,10 +1,6 @@
 import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberDecrementStepper, HStack, StackDivider, Heading, Input, Center, form, NumberInputStepper, Radio, RadioGroup } from '@chakra-ui/react'
 import SideAdmin from "../../Components/SideAdmin";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faCirclePlus,
-} from "@fortawesome/free-solid-svg-icons";
 
 import {
 	FormControl,
@@ -23,30 +19,16 @@ function AddModule() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const dummyFunction = () => {
-		console.log("dashboard clicked");
-		navigate('/dummyloc', {
-			// state: location.state
-		})
-	}
-
-	const clickEditModule = () => {
-
-	}
-
 	function AddModuleForm(){
 
 		const [moduleName, setModuleName] = useState('');
 		const [moduleDescription, setModuleDescription] = useState('');
-		const [moduleType,setModuleType] = useState('')
 		const [numberOfQuestions,setNumberOfQuestions] = useState(0)
 
 		const clickAddTask = () =>{
 			const module = {
-				moduleName: moduleName, 
-				moduleDescription:moduleDescription,
-				moduleType:moduleType,
-				numberOfQuestions:numberOfQuestions
+				title: moduleName, 
+				description:moduleDescription,
 			}
 			console.log(module)
 			navigate('/admin/addquestions', {
@@ -56,7 +38,6 @@ function AddModule() {
 
 		const handleChangeModuleName = (event) => setModuleName(event.target.value); 
 		const handleChangeModuleDescription = (event) => setModuleDescription(event.target.value);
-		const handleChangeModuleType = (event) => setModuleType(event);
 		const handleChangeNumberOfQuestions = (event) => setNumberOfQuestions(event);
 
 		return (<form>
@@ -68,17 +49,6 @@ function AddModule() {
 				<FormLabel> Description</FormLabel>
 				<Input type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
 			</FormControl>
-			<FormControl mt={3}>
-                <FormLabel>Module Type</FormLabel>
-                <RadioGroup defaultValue='Form' onChange={handleChangeModuleType}>
-                    <HStack spacing='24px'>
-                        <Radio value='Form'>Form</Radio>
-                        <Radio value='Audio'>Audio</Radio>
-                        <Radio value='Video'>Video</Radio>
-                        <Radio value='Reading'>Reading</Radio>
-                    </HStack>
-                </RadioGroup>
-            </FormControl>
 			<FormControl mt={3}>
 				<FormLabel>Number of questions</FormLabel>
 				<NumberInput max={50} min={1} onChange={handleChangeNumberOfQuestions}>

@@ -24,7 +24,7 @@ import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
 import ViewPatient from './Pages/Doctor/ViewPatient';
-import DoctorProfile from './Pages/Doctor/Profile';
+import DoctorProfile from './Pages/Profile';
 
 
 function App() {
@@ -32,7 +32,8 @@ function App() {
     adminToken: null,
     role: null,
     firstName:"Dave",
-    lastName:"Phillips"
+    lastName:"Phillips",
+    id:null, 
   }
 
   const reducer = (state, action) => {
@@ -56,7 +57,12 @@ function App() {
           return{
             ...state,
             lastName:action.payload.lastName, 
-          }  
+          } 
+      case "setUserId":
+        return{
+          ...state,
+          id:action.payload.id
+        } 
 
         default: return {
           state
@@ -74,7 +80,8 @@ function App() {
           <Route path="/doctor" element={<Doctor />} /> 
           <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
           <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<DoctorProfile />} />
+          
 
           <Route path="/admin/modules" element={<AdminModules />} />
           <Route path="/admin/addmodule" element={<AddModule />} />
@@ -84,7 +91,7 @@ function App() {
           {/* Doctor */}
           <Route path="/doctor/patients" element={<DoctorPatients />} />
           <Route path="/doctor/viewpatient" element={<ViewPatient />} />
-          <Route path="/doctor/profile" element={<DoctorProfile />} />
+          
 
           <Route path="/dummyloc" element={<Dummypage />} />
         </Routes>

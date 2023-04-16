@@ -4,7 +4,7 @@ import {DESKTOP_BG_MEDIUM, DARK_GREEN} from "../Constants"
 import logo from "../Assets/Logo/Logo_name.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartPie,faDatabase,faStethoscope } from '@fortawesome/free-solid-svg-icons'
+import { faChartPie,faDatabase,faStethoscope,faUser } from '@fortawesome/free-solid-svg-icons'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
@@ -25,10 +25,6 @@ function Dashboard(){
         })
     }
 
-    const onClickDashboard = ()=>{
-        navigate('/home')
-    }
-
     const onClickModules = () => {
         navigate('/admin/modules')
     }
@@ -36,6 +32,11 @@ function Dashboard(){
     const onClickPatients = () => {
         navigate("/doctor/patients")
     }
+
+    const onClickProfile = ()=>{
+        navigate("/profile")
+    }
+    
     return(
         <div>
             <Grid
@@ -45,11 +46,11 @@ function Dashboard(){
                 >
 
                 <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <Center mt = '5em' mb = '12em'>  
+                    <Center mt = '3em' mb = '12em'>  
                         <Image src={logo} h='9em' />
                     </Center>
 
-                    <Button onClick={onClickDashboard} ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
+                    <Button ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
                     </Button>
 
@@ -68,6 +69,13 @@ function Dashboard(){
                     <Button onClick={onClickModules} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
                         <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
                     </Button>
+                    
+                    {(state.role === 'DOCTOR')?     
+                        <Button onClick={onClickProfile} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
+                            <FontAwesomeIcon icon={faUser} style={{marginRight:"0.5em"}}/>  Profile
+                        </Button>
+                    :<></>}
+                    
 
                 </GridItem>
                 

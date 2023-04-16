@@ -8,7 +8,7 @@ import {
     faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useNavigate, } from 'react-router-dom'
+import { useNavigate, useLocation, } from 'react-router-dom'
 import { useEffect,useState} from 'react';
 import axios from 'axios'
 import { useStateValue } from '../../StateProvider'
@@ -26,11 +26,11 @@ function DoctorPatients(){
                 Authorization: `Bearer ${state.adminToken}`
             }
         }
-		console.log(state)
+		
         axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
         .then(response=>{
-			console.log(response.data)
             setAllPatients(response.data)
+			console.log(response.data)
         })
 		
     },[])
@@ -39,8 +39,10 @@ function DoctorPatients(){
 		navigate('/dummyloc')
 	}
 
-	const clickModule = () => {
-		navigate('/dummyloc')
+	const clickModule = (id) => {
+		navigate('/doctor/viewpatient',{
+			state:id
+		})
 	}
 
 	const clickAccept = () => {
@@ -50,7 +52,7 @@ function DoctorPatients(){
 	const clickSearch = () => {
 		navigate('/dummyloc')
 	}
-	const PatientCard = ({ name, photo, desc }) => {
+	const PatientCard = ({ name, photo, desc, patientId}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
 				<CardHeader>
@@ -69,7 +71,7 @@ function DoctorPatients(){
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' onClick={clickChat} size='md'>Chat</Button>
-							<Button bg='teal.700' color='white' onClick={clickModule} size='md'>Module Progress</Button>
+							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId)} size='md'>Module Progress</Button>
 						</ButtonGroup>
 					</VStack>
 				</CardBody>
@@ -104,9 +106,9 @@ function DoctorPatients(){
 		</div>);
 	}
 
-	// const EmptyPatient = () => {
-	// 	return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-	// }
+	const EmptyPatient = () => {
+		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
+	}
 
 	const EmptyRequestPatient = () => {
 		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
@@ -154,7 +156,7 @@ function DoctorPatients(){
 						{allPatients.map((item,index)=>{
 							return(
 								<GridItem>
-										<PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
+										<PatientCard name={item[4] + " " + item[5]} desc={item.des} key={index} patientId={item.patientId}/>
 								</GridItem>
 							)
                         })}
