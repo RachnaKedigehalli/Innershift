@@ -4,7 +4,9 @@ package com.innershiift.auth.Module;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,10 +19,10 @@ public class ModuleService {
         return  moduleRepository.save(m);
     }
 
-    public Module addModule(String content){
+    public Optional<Module> addModule(String content){
         Module m = new Module();
         m.setContent(content);
-        return moduleRepository.save(m);
+        return Optional.of(moduleRepository.save(m));
     }
 
     public void deleteModule(Integer moduleId){
@@ -28,7 +30,7 @@ public class ModuleService {
         moduleRepository.deleteById(moduleId);
     }
 
-    public ModuleAssignment assignModule(Integer pId, Integer mId, Date start, String duration, Integer status){
+    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Date start, String duration, Integer status){
         String response = "";
         ModuleAssignment moduleAssignment = new ModuleAssignment();
         moduleAssignment.setModuleId(mId);
@@ -36,7 +38,7 @@ public class ModuleService {
         moduleAssignment.setDuration(duration);
         moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(status);
-        return moduleAssignmentRepository.save(moduleAssignment);
+        return Optional.of(moduleAssignmentRepository.save(moduleAssignment));
     }
 
     public Optional<ModuleAssignment> setModuleStatus(Integer assignmentId,Integer status){
@@ -60,6 +62,17 @@ public class ModuleService {
         }
         return moduleAssignment;
 
+    }
+    public Optional<List<Module>> getModulesByPid(Integer pid) {
+        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientId(pid);
+        List<Module> ret = new ArrayList<>();
+        moduleAssignments.ifPresent((mAs)->{
+            for(ModuleAssignment mA: mAs) {
+                Optional<Module> m = moduleRepository.getModuleByModuleId(mA.getModuleId());
+                m.ifPresent(ret::add);
+            }
+        });
+        return Optional.of(ret);
     }
 
 }

@@ -1,5 +1,8 @@
 package com.innershiift.auth.app;
 
+import com.innershiift.auth.Module.Module;
+import com.innershiift.auth.Module.ModuleAssignment;
+import com.innershiift.auth.Module.ModuleService;
 import com.innershiift.auth.Mood.Mood;
 import com.innershiift.auth.Mood.MoodService;
 import com.innershiift.auth.consultation.Consultation;
@@ -45,6 +48,8 @@ public class ApplicationController {
     private final UserRepository userRepository;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+
+    private final ModuleService moduleService;
 
     @CrossOrigin
     @GetMapping
@@ -229,5 +234,33 @@ public class ApplicationController {
         return ResponseEntity
                 .ok(consultationService.getAllMessageForConsultationId(id));
     }
+
+
+
+    @PostMapping("/addModule")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<Module> addModule(@Valid @RequestBody Module m) {
+        return ResponseEntity.ok(
+                moduleService.addModule(m.getContent()).orElseThrow(()->new RuntimeException("Couldn't add module"))
+        );
+    }
+
+    @PostMapping("/assignModule")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    public ResponseEntity<ModuleAssignment> assignModule(@Valid @RequestBody ModuleAssignment ma) {
+        return ResponseEntity.ok(
+                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
+        );
+    }
+
+    @PostMapping("/getModulesByPid")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    public ResponseEntity<List<Module>> getModulesByPid(@Valid @RequestBody Patient p) {
+        return ResponseEntity.ok(
+                moduleService.getModulesByPid(p.getPatientId()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
+        );
+    }
+
+
 
 }

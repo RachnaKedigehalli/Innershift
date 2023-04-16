@@ -1,7 +1,11 @@
 package com.innershiift.auth.Module;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ModuleRepository extends JpaRepository<Module, Integer> {
+import java.util.Optional;
 
+public interface ModuleRepository extends JpaRepository<Module, Integer> {
+    @Transactional
+    Optional<Module> getModuleByModuleId(Integer mid);
 }
