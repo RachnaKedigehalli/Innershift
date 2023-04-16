@@ -48,7 +48,7 @@ public class AuthenticationController {
     @PostMapping("/refreshtoken")
     @CrossOrigin
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
-//        System.out.println("in refresh token");
+        System.out.println("in refresh token "+ request.getRefreshToken());
         return ResponseEntity.ok(service.refresh(request));
 
     }
