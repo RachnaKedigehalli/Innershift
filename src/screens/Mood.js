@@ -65,7 +65,7 @@ const Mood = (props) => {
             props.setIsMoodSet(true);
           }
         })
-        .catch(console.log);
+        .catch((e) => console.log("mood ", e));
     };
     isMoodSet();
   });

@@ -99,7 +99,11 @@ export const AuthProvider = (props) => {
         AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
         setRefreshToken(res.data.refreshToken.token);
-        setUser(res.data.refreshToken.user);
+        setUser({
+          firstName: res.data.firstName,
+          lastName: res.data.lastName,
+          id: res.data.id,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -108,6 +112,7 @@ export const AuthProvider = (props) => {
   };
 
   const logout = async () => {
+    console.log("logged out");
     setIsLoading(true);
     setUserToken(null);
     await AsyncStorage.removeItem("userToken");
@@ -124,7 +129,7 @@ export const AuthProvider = (props) => {
       let userDetails = await AsyncStorage.getItem("userDetails");
       let reftoken = await AsyncStorage.getItem("refreshToken");
       // console.log(await token);
-      // console.log((await userDetails).toString());
+      console.log(userDetails.toString());
       // console.log(await reftoken);
       setUserToken(await token);
       setUser(await userDetails);
@@ -142,13 +147,23 @@ export const AuthProvider = (props) => {
             .post(`${BASE_AUTH_URL}/refreshtoken`, {
               refreshToken: reftoken,
             })
-            .then((res) => {
-              console.log("new token received ", res.data.token);
-              setUserToken(res.data.token);
+            .then(async (res) => {
+              console.log("new token received ", res.data.refreshToken);
+              setUserToken(res.data.accessToken);
+              await AsyncStorage.setItem(
+                "refreshToken",
+                await res.data.refreshToken
+              );
+              await AsyncStorage.setItem(
+                "userToken",
+                await res.data.accessToken
+              );
               // setRefreshToken(res.data.refreshToken);
             })
             .catch((err) => {
+              console.log(err);
               console.log("login again!"); // refresh token expired
+              logout();
             });
         }
       }
