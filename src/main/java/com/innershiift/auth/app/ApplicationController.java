@@ -240,6 +240,7 @@ public class ApplicationController {
 
     @PostMapping("/addModule")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @CrossOrigin
     public ResponseEntity<Module> addModule(@Valid @RequestBody Module m) {
         return ResponseEntity.ok(
                 moduleService.addModule(m.getContent()).orElseThrow(()->new RuntimeException("Couldn't add module"))
@@ -248,6 +249,7 @@ public class ApplicationController {
 
     @PostMapping("/assignModule")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
     public ResponseEntity<ModuleAssignment> assignModule(@Valid @RequestBody ModuleAssignment ma) {
         return ResponseEntity.ok(
                 moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getModuleOrder(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
@@ -256,6 +258,7 @@ public class ApplicationController {
 
     @PostMapping("/getModulesByPid")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
     public ResponseEntity<List<Module>> getModulesByPid(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(
                 moduleService.getModulesByPid(p.getPatientId()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
@@ -264,6 +267,7 @@ public class ApplicationController {
 
     @PostMapping("/updateOrder")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
     public ResponseEntity<?> updateOrderByModuleAssignedId(@Valid @RequestBody ModuleAssignment ma) {
         moduleService.updateOrderByModuleAssignedId(ma.getModuleAssignedId(), ma.getModuleOrder());
         return ResponseEntity.ok().build();
