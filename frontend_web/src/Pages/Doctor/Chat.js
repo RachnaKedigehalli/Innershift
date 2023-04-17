@@ -1,7 +1,7 @@
 import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading, FormControl, Input, Center, Square } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
-
+import react, {useState} from 'react';
 
 
 // import { Tooltip as ReactTooltip } from 'react-tooltip'
@@ -17,7 +17,6 @@ import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 // 	faQuestion
 // } from "@fortawesome/free-solid-svg-icons";
 
-import React from 'react';
 import { useNavigate, useLocation, } from 'react-router-dom'
 
 
@@ -26,19 +25,13 @@ function DoctorChat(){
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const clickSearch = () => {
-		navigate('/dummyloc', {
-			state: location.state
-		})
-	}
-
 
     const Header = ({patientName}) =>{
         return(<Heading color='teal.700' m={4} mt={12}> {patientName} </Heading>)
     }
 
     const MyMessage = ({msgText}) =>{
-        return (<Flex color='white'>
+        return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
         <Center minWidth={30} padding={2}>
           {/* <Text>Box 1</Text> */}
         </Center>
@@ -55,7 +48,7 @@ function DoctorChat(){
     }
 
     const OtherMessage = ({msgText}) =>{
-        return (<Flex color='white'>
+        return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
             <Box bg={DESKTOP_BG_LIGHT} minWidth={5}></Box>
             <Box bg='gray.300' borderRadius={30} padding={2}>
                 <Text color='teal.700'>{msgText}</Text>
@@ -74,10 +67,17 @@ function DoctorChat(){
     }
 
 
-    var chatId = 0;
+    
 
     const Chat = ({messages, myId}) =>{
-        var chatMessages = []
+        const [newMessage, setMessage] = useState('');
+        // var chatMessages = [];
+        const [chatId, setChatId] = useState(0);
+        const [chatMessages, setChat] = useState([]);
+        // const [emptyString, clearMessage] = useState('');
+        
+        const handleChangeMessage = (event) => setMessage(event.target.value);         
+
 
         for(var msg in messages){
             // displayQuestions.push(<FormQuestions key={i} qno={i}/>)
@@ -87,27 +87,91 @@ function DoctorChat(){
             else{
                 chatMessages.push(<OtherMessage msgText={msg.content} key={chatId}/>)
             }
-            chatId++;
+            setChatId(chatId+1);
+            
         }
 
-        chatMessages.push(<MyMessage msgText='this is message from doctor' key={chatId}/>)
-        chatId+=1;
-        chatMessages.push(<OtherMessage msgText='patient says hi' key={chatId}/>)
-        chatId+=1;
+        // chatMessages.push(<MyMessage msgText='this is message from doctor' key={chatId}/>)
+        // chatId+=1;
+        // chatMessages.push(<OtherMessage msgText='patient says hi' key={chatId}/>)
+        // chatId+=1;
 
-        return(<Box w='100%' flex={1} overflowY='auto'>
-            {chatMessages}
-        </Box>);
-    }
+        
 
-    const Footer = ({}) => {
-        return(<Box w='100%' >
-            <FormControl>
-                <Input minHeight='100%' w='100%' borderColor='gray.300' placeholder='Type Here' />
-                {/* <Button >Send</Button> */}
+        const sendMessage = () => {
+            // console.log(newMessage);
+            if(newMessage == ''){
+                return;
+            }
+
+            var msg = {
+                "senderId": "me", 
+                "content": newMessage,
+                "timeStamp": new Date(),
+                "readReceipt": false,
+                // other keys to be added:
+                "messageId": "???",
+                "consultationId": "???",
+                "recepientId": "???",
+    
+            }
+    
+            // var msg = {"senderId": "me", "content": newMessage}
+            var temp = [...chatMessages,<MyMessage msgText={newMessage} key={chatId}/>]; 
+            setChat(temp);
+            setChatId(chatId+1);
+            // console.log(chatMessages);
+            setMessage('');
+        }
+
+        return(<Flex direction='column'>
+            <Box w='100%' flex={1} overflowY='auto'>
+                {chatMessages}
+            </Box>
+            <FormControl h={50}>
+                <Input w='85%' borderColor='gray.300'padding={3} m={3} onChange={handleChangeMessage} value={newMessage} placeholder='Type Here' autoFocus={true}/>
+                <Button w='10%' bg='teal.700' m={3} color={DESKTOP_BG_LIGHT} onClick={sendMessage}>Send</Button>
             </FormControl>
-        </Box>);
+        </Flex>);
     }
+
+    // var newMessage = "";
+    // const Footer = ({}) => {
+        
+    //     const [newMessage, setMessage] = useState('');
+    //     const [allMessages, setChat] = useState([]);
+    //     const handleChangeMessage = (event) => setMessage(event.target.value); 
+
+    //     const sendMessage = () => {
+    //         console.log(newMessage);
+    //         if(newMessage.size == 0){
+    //             return;
+    //         }
+    //         var msg = {
+    //             "senderId": "me", 
+    //             "content": newMessage,
+    //             "timeStamp": new Date(),
+    //             "readReceipt": false,
+    //             // other keys to be added:
+    //             "messageId": "???",
+    //             "consultationId": "???",
+    //             "recepientId": "???",
+    
+    //         }
+    
+    //         // var msg = {"senderId": "me", "content": newMessage}
+    //         chatMessages.push(<MyMessage msgText={newMessage} key={chatId}/>);
+    //         chatId++;
+    //         console.log(chatMessages);
+    //     }
+
+    //     return(<Box w='100%' >
+    //         <FormControl>
+    //             <Input minHeight='100%' w='85%' borderColor='gray.300'padding={3} m={3} onChange={handleChangeMessage} placeholder='Type Here' />
+    //             <Button w='10%' bg='teal.700' m={3} color={DESKTOP_BG_LIGHT} onClick={sendMessage}>Send</Button>
+    //         </FormControl>
+    //     </Box>);
+    // }
 
     
 
@@ -121,8 +185,8 @@ function DoctorChat(){
 			<Flex direction='column' bg={DESKTOP_BG_LIGHT} maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
 				{/* <VStack h='100%' flexDirection='column' align='left' m={3} divider={<StackDivider borderColor='gray.200' />}> */}
 					<Header patientName="test name"/>
-                    <Chat/>
-                    <Footer/>
+                    <Chat myId='me'/>
+                    {/* <Footer/> */}
 				{/* </VStack> */}
 			</Flex>
 			
