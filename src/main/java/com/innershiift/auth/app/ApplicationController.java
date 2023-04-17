@@ -256,6 +256,15 @@ public class ApplicationController {
         );
     }
 
+    @GetMapping("/getAllModules")
+    @PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<List<Module>> getAllModules() {
+        return ResponseEntity.ok(
+                moduleService.getAllModules().orElseThrow(()->new RuntimeException("Couldn't get all modules"))
+        );
+    }
+
     @PostMapping("/getModulesByPid")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin

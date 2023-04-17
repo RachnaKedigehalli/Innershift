@@ -77,6 +77,10 @@ public class ModuleService {
         });
         return Optional.of(ret);
     }
+
+    public Optional<List<Module>> getAllModules() {
+        return Optional.of(moduleRepository.findAll());
+    }
     @Transactional
     public void updateOrderByModuleAssignedId(Integer mid, Integer order) {
         moduleAssignmentRepository.updateOrderByModuleAssignedId(mid, order);
