@@ -1,4 +1,4 @@
-import { Flex, Card, Button, RadioGroup, Radio,Text, Box, VStack,  HStack,  Heading, Input, CardBody } from '@chakra-ui/react'
+import { Flex, Card, Button, RadioGroup, Radio,Text, Box, VStack,  HStack,  Heading, Input, CardBody, extendTheme, withDefaultVariant, ButtonGroup } from '@chakra-ui/react'
 import SideAdmin from "../../Components/SideAdmin";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,13 +17,18 @@ import react, {useEffect, useState} from 'react';
 
 import { useNavigate, useLocation, Form, } from 'react-router-dom'
 
-
+// const formInputTheme = extendTheme(
+// 	withDefaultVariant({
+// 	  variant: 'filled',
+// 	  components: ['Input'],
+// 	}),
+// )
 
 
 function AddQuestions() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [numberOfQuestions,setNumberOfQuestions] = useState(0)
+	const [numberOfQuestions,setNumberOfQuestions] = useState(1)
 	const [tasks,setQuestions] = useState([])
 
 	const onSubmit = () =>{
@@ -74,34 +79,33 @@ function AddQuestions() {
 		setQuestions(temp)
 	}
     function FormQuestions(qno){
-        return(
-		
-		<div>
-			<Card >
+        return(<Box w = 'flex' m={3} padding={2}>
+			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardBody color='teal.700'>
+					<Heading color='teal.700' align='left' size='lg'>Question {qno.qno} </Heading>
 					<FormControl>
-						<FormLabel>Module Type</FormLabel>
+						<FormLabel mt={2} m={1}> <Text as='b'> Module Type </Text></FormLabel>
 						<RadioGroup onChange={(event) => handleChangeModuleType(event,qno.qno)}>
-							<HStack spacing='24px'>
-								<Radio value='0'>Form</Radio>
-								<Radio value='1'>Video</Radio>
-								<Radio value='2'>Reading</Radio>
+							<HStack spacing='24px' ml={2}>
+								<Radio borderColor='gray.400' colorScheme='teal' value='0'>Form</Radio>
+								<Radio borderColor='gray.400' colorScheme='teal' value='1'>Video</Radio>
+								<Radio borderColor='gray.400' colorScheme='teal' value='2'>Reading</Radio>
 							</HStack>
 						</RadioGroup>
 
-						<FormLabel> <Text> Question {qno.qno} Title</Text> </FormLabel>
-						<Input  type='text' onChange={(event) => onTitleChange(event,qno.qno)}/>
+						<FormLabel mt={2} m={1}> <Text as='b'> Title</Text> </FormLabel>
+						<Input borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={(event) => onTitleChange(event,qno.qno)}/>
 
-						<FormLabel> <Text> Question {qno.qno} Description</Text> </FormLabel>
-						<Input  type='text' onChange={(event) => onDescriptionChange(event,qno.qno)}/>
+						<FormLabel mt={2} m={1}> <Text as='b'>Description</Text> </FormLabel>
+						<Input borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={(event) => onDescriptionChange(event,qno.qno)}/>
 
-						<FormLabel> <Text> Question {qno.qno} Content</Text> </FormLabel>
-						<Input type='text' onChange={(event) => handleContentChange(event,qno.qno)}/>
+						<FormLabel mt={2} m={1}> <Text as='b'> Content</Text> </FormLabel>
+						<Input borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={(event) => handleContentChange(event,qno.qno)}/>
 
 					</FormControl>
 				</CardBody>
 			</Card>
-        </div>);
+		</Box>);
     }
 
 	function QuestionsForm(number){
@@ -113,8 +117,11 @@ function AddQuestions() {
 
 		return (<form>
             {displayQuestions}
-
-			<Button onClick={onSubmit} align='center' bg='teal.700' color='white' m={3}> Submit </Button>
+			<ButtonGroup w='50%' align='center'>
+				<Button onClick={addNewTask} w='30%' align='center' bg='teal.700' color='white' m={3}>Add Question</Button>
+				<Button onClick={onSubmit} w='30%' align='center' bg='teal.700' color='white' m={3}> Submit </Button>
+			</ButtonGroup>
+			
 		</form>);
 	}
 
@@ -130,8 +137,8 @@ function AddQuestions() {
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Questions </Text> </Heading>
 
-					<Button onClick={addNewTask}>Add New</Button>
-					<Box w='50%' color='teal.700' padding={3} align='center'>
+					
+					<Box w='100%' color='teal.700' padding={3} align='center'>
 						<QuestionsForm number={numberOfQuestions}/>
 					</Box>
 					

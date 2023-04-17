@@ -49,7 +49,7 @@ function AddModule() {
 				<FormLabel> Description</FormLabel>
 				<Input type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
 			</FormControl>
-			<FormControl mt={3}>
+			{/* <FormControl mt={3}>
 				<FormLabel>Number of questions</FormLabel>
 				<NumberInput max={50} min={1} onChange={handleChangeNumberOfQuestions}>
 					<NumberInputField />
@@ -58,7 +58,7 @@ function AddModule() {
 						<NumberDecrementStepper />
 					</NumberInputStepper>
 				</NumberInput>
-			</FormControl>
+			</FormControl> */}
 
 			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Add Questions </Button>
 		</form>);
