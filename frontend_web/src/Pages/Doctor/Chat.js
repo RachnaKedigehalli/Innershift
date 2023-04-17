@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading, FormControl, Input } from '@chakra-ui/react'
+import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading, FormControl, Input, Center, Square } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
@@ -38,15 +38,39 @@ function DoctorChat(){
     }
 
     const MyMessage = ({msgText}) =>{
-        return (<Box ml={30} align='right' bg='teal.700'>
-            <Text color='gray.300'>{msgText}</Text>
-        </Box>);
+        return (<Flex color='white'>
+        <Center minWidth={30} padding={2}>
+          {/* <Text>Box 1</Text> */}
+        </Center>
+        <Box flex='1' padding={2}>
+          {/* <Text>Box 2</Text> */}
+        </Box>
+        <Box bg='teal.700' borderRadius={30} padding={2}>
+          <Text color='gray.300'>{msgText}</Text>
+        </Box>
+        <Box bg={DESKTOP_BG_LIGHT} minWidth={5}>
+          {/* <Text color='gray.300'>{msgText}</Text> */}
+        </Box>
+      </Flex>);
     }
 
     const OtherMessage = ({msgText}) =>{
-        return (<Box mr={30} bg='gray.300'>
-            <Text color='teal.700'>{msgText}</Text>
-        </Box>);
+        return (<Flex color='white'>
+            <Box bg={DESKTOP_BG_LIGHT} minWidth={5}></Box>
+            <Box bg='gray.300' borderRadius={30} padding={2}>
+                <Text color='teal.700'>{msgText}</Text>
+            </Box>
+
+            <Box flex='1' padding={2}>
+                {/* <Text>Box 2</Text> */}
+            </Box>
+            <Center minWidth={20} padding={2}>
+            {/* <Text>Box 1</Text> */}
+            </Center>
+        
+        
+        
+      </Flex>);
     }
 
 
@@ -66,10 +90,10 @@ function DoctorChat(){
             chatId++;
         }
 
-        // chatMessages.push(<MyMessage msgText='this is message from doctor' key={chatId}/>)
-        // chatId+=1;
-        // chatMessages.push(<OtherMessage msgText='patient says hi' key={chatId}/>)
-        // chatId+=1;
+        chatMessages.push(<MyMessage msgText='this is message from doctor' key={chatId}/>)
+        chatId+=1;
+        chatMessages.push(<OtherMessage msgText='patient says hi' key={chatId}/>)
+        chatId+=1;
 
         return(<Box w='100%' flex={1} overflowY='auto'>
             {chatMessages}
