@@ -186,13 +186,14 @@ public class ApplicationController {
     @PreAuthorize("hasAuthority('USER')")
     @CrossOrigin
     public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient p){
+        System.out.println("inside add patient, " + p);
         return ResponseEntity.ok(patientService.addPatient(p).orElseThrow(()-> new IllegalStateException("Could not add patient")));
     }
     @PostMapping("/addPatientWithPhone")
     @PreAuthorize("hasAuthority('USER')")
     @CrossOrigin
-    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Map<String, String> json){
-        return ResponseEntity.ok(patientService.addPatient(json.get("phoneNumber"),Integer.parseInt( json.get("gender"))).orElseThrow(()-> new IllegalStateException("Could not add patient")));
+    public ResponseEntity<Patient> addPatientByPhoneNumberAndGender(@Valid @RequestBody Patient p){
+        return ResponseEntity.ok(patientService.addPatient(p.getPatientId(), p.getPhoneNumber(), p.getGender()).orElseThrow(()-> new IllegalStateException("Could not add patient")));
     }
 
     @GetMapping("/getAllUsers")

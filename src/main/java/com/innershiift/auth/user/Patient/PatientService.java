@@ -26,9 +26,10 @@ public class PatientService {
     public Optional<Patient> addPatient(Patient p){
         return  Optional.of(patientRepository.save(p));
     }
-    public Optional<Patient> addPatient(String phoneNumber,Integer gender){
+    public Optional<Patient> addPatient( Integer pid, String phoneNumber,Integer gender){
         Patient p = new Patient();
         p.setDob(new Date());
+        p.setPatientId(pid);
         p.setEmergencyContact("none");
         p.setPhoneNumber(phoneNumber);
         p.setGender(gender);

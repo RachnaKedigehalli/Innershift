@@ -81,12 +81,18 @@ public class AuthenticationController {
     @PostMapping("/confirmEmailOTP")
     @CrossOrigin
     public ResponseEntity<?> confirmOTP(@Valid @RequestBody OTPConfirmationRequest request) {
-        String stat = service.confirmToken(request.getToken());
-        return ResponseEntity.ok(EmailResponse.builder()
-                .email(request.getEmail())
-                .status("verified")
-                .build()
-        );
+        try{
+            String stat = service.confirmToken(request.getToken());
+            return ResponseEntity.ok(EmailResponse.builder()
+                    .email(request.getEmail())
+                    .status("verified")
+                    .build()
+            );
+        }
+        catch(Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }
