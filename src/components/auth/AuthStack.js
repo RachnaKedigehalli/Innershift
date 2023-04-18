@@ -11,6 +11,8 @@ import SetPassword from "./SetPassword";
 import RegisterName from "./RegisterName";
 import VerifyEmail from "./VerifyEmail";
 import AdditionalInfo from "./AdditionalInfo";
+import Referral from "./Referral";
+import BaseLineCheckpoint from "./BaseLineCheckpoint";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +57,16 @@ const AuthStack = () => {
       <Stack.Screen
         name="SetPassword"
         component={SetPassword}
+        options={noHeader}
+      />
+       <Stack.Screen
+        name="Referral"
+        component={Referral}
+        options={noHeader}
+      />
+       <Stack.Screen
+        name="BaselineCheckpoint"
+        component={BaseLineCheckpoint}
         options={noHeader}
       />
     </Stack.Navigator>

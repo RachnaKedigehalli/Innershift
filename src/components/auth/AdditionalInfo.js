@@ -20,7 +20,7 @@ import { FlatList } from "react-native-gesture-handler";
 const AdditionalInfo = ({ route, navigation }) => {
   const [enterAddInfo, setEnterAddInfo] = useState("Some additional info");
 
-  const [loginText, setLoginText] = useState("Register");
+  const [loginText, setLoginText] = useState("Continue");
   const { email, password, firstName, lastName } = route.params;
   const { register } = useContext(AuthContext);
   const [gender, setGender] = useState({ name: "" });
@@ -237,15 +237,24 @@ const AdditionalInfo = ({ route, navigation }) => {
                 title={loginText}
                 accessibilityLabel={loginText}
                 onPress={async () => {
-                  await register(
-                    email,
-                    firstName,
-                    lastName,
-                    password,
-                    dob,
-                    gender.id,
-                    phoneNumber
-                  );
+                  navigation.navigate("Referral", {
+                    email: email,
+                    password: password,
+                    firstName: firstName,
+                    lastName: lastName,
+                    dob:dob,
+                    gender:gender.id,
+                    phoneNumber:phoneNumber
+                  });
+                  // await register(
+                  //   email,
+                  //   firstName,
+                  //   lastName,
+                  //   password,
+                  //   dob,
+                  //   gender.id,
+                  //   phoneNumber
+                  // );
                 }}
               />
             </View>

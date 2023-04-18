@@ -73,7 +73,7 @@ export const AuthProvider = (props) => {
 
     setIsLoading(false);
   };
-  const register = async (email, first, last, password, dob, gender, phone) => {
+  const register = async (email, first, last, password, dob, gender, phone,referral,baselineScore) => {
     setIsLoading(true);
     // setUserToken("token");
     await axios
@@ -91,10 +91,11 @@ export const AuthProvider = (props) => {
               patientId: res.data.id,
               dob: dob,
               gender: gender,
-              registeredThrough: 1,
+              registeredThrough: referral,
               condition: 1,
               emergencyContact: phone,
               phoneNumber: phone,
+              baselineScore:baselineScore
             },
             {
               headers: { Authorization: `Bearer ${res.data.token}` },
