@@ -10,6 +10,7 @@ import TandC from "./TandC";
 import SetPassword from "./SetPassword";
 import RegisterName from "./RegisterName";
 import VerifyEmail from "./VerifyEmail";
+import AdditionalInfo from "./AdditionalInfo";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,11 @@ const AuthStack = () => {
       <Stack.Screen name="StartPage" component={StartPage} options={noHeader} />
       <Stack.Screen name="Register" component={Register} options={noHeader} />
       <Stack.Screen name="TandC" component={TandC} options={noHeader} />
+      <Stack.Screen
+        name="AdditionalInfo"
+        component={AdditionalInfo}
+        options={noHeader}
+      />
       <Stack.Screen
         name="VerifyEmail"
         component={VerifyEmail}

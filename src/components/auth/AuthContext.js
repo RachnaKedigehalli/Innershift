@@ -1,7 +1,7 @@
 import { React, createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { BASE_AUTH_URL } from "../../../config";
+import { BASE_APP_URL, BASE_AUTH_URL } from "../../../config";
 import jwtDecode from "jwt-decode";
 
 export const AuthContext = createContext();
@@ -28,7 +28,7 @@ export const AuthProvider = (props) => {
   };
 
   const verifyOTP = async (email, otp) => {
-    await axios
+    return await axios
       .post(`${BASE_AUTH_URL}/confirmEmailOTP`, {
         email: email,
         token: otp,
@@ -38,11 +38,9 @@ export const AuthProvider = (props) => {
         return true;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("invalid otp ", err);
         return false;
       });
-
-    return true;
   };
 
   const login = async (email, password) => {
@@ -75,7 +73,7 @@ export const AuthProvider = (props) => {
 
     setIsLoading(false);
   };
-  const register = async (email, first, last, password) => {
+  const register = async (email, first, last, password, dob, gender, phone) => {
     setIsLoading(true);
     // setUserToken("token");
     await axios
@@ -85,7 +83,30 @@ export const AuthProvider = (props) => {
         lastName: last,
         password: password,
       })
-      .then((res) => {
+      .then(async (res) => {
+        await axios
+          .post(
+            `${BASE_APP_URL}/addPatient`,
+            {
+              patientId: res.data.id,
+              dob: dob,
+              gender: gender,
+              registeredThrough: 1,
+              condition: 1,
+              emergencyContact: phone,
+              phoneNumber: phone,
+            },
+            {
+              headers: { Authorization: `Bearer ${res.data.token}` },
+            }
+          )
+          .then((res2) => {
+            console.log("res2 ", res2.data);
+          })
+          .catch((e) => {
+            console.log("error adding patient ", e);
+          });
+
         console.log(res.data.refreshToken.user);
         AsyncStorage.setItem("userToken", res.data.token);
         AsyncStorage.setItem(

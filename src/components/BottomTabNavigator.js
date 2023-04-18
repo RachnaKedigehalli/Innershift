@@ -16,6 +16,7 @@ import AppStyles from "../AppStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
+import CalendarStack from "../stacks/CalendarStack";
 const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
 
@@ -61,12 +62,12 @@ const BottomTabNavigator = (props) => {
                   JSON.stringify(consultation_var)
                 );
               })
-              .catch(console.log);
+              .catch((e) => console.log("consulting doctor not found ", e));
             console.log(consultation_var);
             setIsDoctorAssigned(true);
           }
         })
-        .catch(console.log);
+        .catch((e) => console.log("Not consulting a doctor ", e));
     };
     apiCall();
   }, []);
@@ -105,12 +106,13 @@ const BottomTabNavigator = (props) => {
       />
       <Tab.Screen
         name="calender"
-        component={CalenderScreen}
+        component={CalendarStack}
         options={{
           header: ({ navigation, route, options, back }) => {
             return <TopBar showBack={false} />;
           },
           tabBarShowLabel: false,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
               <>

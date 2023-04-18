@@ -7,11 +7,14 @@ const ModuleCard = (props) => {
   return (
     <View style={styles.mainContainer}>
       {/* <Image source={require('./../data/banner.jpeg') }/> */}
-      <Image source={{ uri: props.imageUri }} style={styles.moduleImg} />
+      <Image
+        source={{ uri: props.module.thumbnail }}
+        style={styles.moduleImg}
+      />
       <View style={styles.title}>
-        <Text style={styles.titleText}>{props.heading}</Text>
+        <Text style={styles.titleText}>{props.module.title}</Text>
         <View style={styles.description}>
-          <Text style={styles.descriptionText}>{props.description}</Text>
+          <Text style={styles.descriptionText}>{props.module.description}</Text>
         </View>
       </View>
     </View>

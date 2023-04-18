@@ -68,7 +68,7 @@ const Mood = (props) => {
         .catch((e) => console.log("mood ", e));
     };
     isMoodSet();
-  });
+  }, []);
 
   const handleSubmitMood = () => {
     // api call to set mood for day

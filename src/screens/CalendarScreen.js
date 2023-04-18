@@ -13,7 +13,7 @@ import modules from "../data/modules";
 import ModuleCard from "../components/ModuleCard";
 import AppStyles from "../AppStyles";
 
-const CalenderScreen = (props) => {
+const CalenderScreen = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() => {
     return getFormatedDate(new Date(), "YYYY/MM/DD");
@@ -36,10 +36,11 @@ const CalenderScreen = (props) => {
   }, [selectedDate]);
   return (
     <View
-      styles={{
+      style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        // justifyContent: "center",
+        // alignItems: "center",
+        backgroundColor: AppStyles.colour.white,
       }}
     >
       <Modal
@@ -98,12 +99,14 @@ const CalenderScreen = (props) => {
       >
         {modules.map((module, index) => {
           return (
-            <ModuleCard
-              heading={module.heading}
-              description={module.description}
-              imageUri={module.imageUri}
+            <Pressable
+              onPress={() => {
+                navigation.navigate("ModuleProgress", { module: module });
+              }}
               key={index}
-            />
+            >
+              <ModuleCard module={module} />
+            </Pressable>
           );
         })}
       </ScrollView>
@@ -180,11 +183,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 50,
     height: 50,
+    marginLeft: 7,
     backgroundColor: "#8AC8C2",
   },
   tasksList: {
     container: {
-      marginTop: 50,
+      marginTop: 25,
       marginHorizontal: 20,
       height: "100%",
     },

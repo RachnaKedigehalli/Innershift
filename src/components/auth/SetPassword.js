@@ -110,7 +110,13 @@ const SetPassword = ({ route, navigation }) => {
                 title={loginText}
                 accessibilityLabel={loginText}
                 onPress={() => {
-                  register(email, first, last, password);
+                  // register(email, first, last, password);
+                  navigation.navigate("AdditionalInfo", {
+                    email: email,
+                    password: password,
+                    firstName: first,
+                    lastName: last,
+                  });
                 }}
               />
             </View>

@@ -66,7 +66,7 @@ const SearchDoctor = (props) => {
           console.log(res.data);
           setDoctors(res.data);
         })
-        .catch(console.log);
+        .catch((e) => console.log("couldn't get doctors ", e));
     };
     apiCall();
   }, []);

@@ -18,11 +18,13 @@ const CustomTextInput = (props) => {
       value={props.value}
       placeholder={props.placeholder}
       keyboardType={props.keyboardType}
-      onBlur={() => Keyboard.dismiss()}
+      onBlur={props.onBlur}
+      onFocus={props.onFocus}
       selectionColor={AppStyles.colour.textGreen}
       placeholderTextColor={AppStyles.colour.darkGrey}
       cursorColor={AppStyles.colour.textGreen}
       secureTextEntry={props.secureTextEntry}
+      onPressOut={props.onPressOut}
     />
   );
 };

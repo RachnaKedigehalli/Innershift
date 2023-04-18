@@ -1,17 +1,26 @@
-import { View, Text, StatusBar, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StatusBar,
+  StyleSheet,
+  Image,
+  Pressable,
+} from "react-native";
 import React from "react";
 import { Icon } from "@rneui/themed";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AppStyles from "../AppStyles";
 const TopBar = ({ showBack, navigation }) => {
   const insets = useSafeAreaInsets();
   return (
     <View style={{ ...styles.topBar, paddingTop: insets.top }}>
       {showBack ? (
-        <Image
-          style={styles.back}
-          source={require("../../assets/icons/chevron-left.png")}
-          onPress={navigation.goBack}
-        />
+        <Pressable onPress={navigation.goBack}>
+          <Image
+            style={styles.back}
+            source={require("../../assets/icons/chevron-left.png")}
+          />
+        </Pressable>
       ) : (
         // <Icon name="arrow-left" onPress={navigation.goBack} />
         <Image
@@ -43,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 25,
     paddingRight: 25,
+    backgroundColor: AppStyles.colour.white,
   },
   back: {
     width: 30,

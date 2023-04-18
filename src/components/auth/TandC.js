@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "@rneui/themed";
 import CustomButton from "../CustomButton";
+import AppStyles from "../../AppStyles";
 const TandC = ({ navigation }) => {
   const [TandCHeading, setTandCHeading] = useState(
     "Please read the terms of use carefully"
@@ -40,7 +41,10 @@ const TandC = ({ navigation }) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: AppStyles.colour.white,
+      }}
       keyboardShouldPersistTaps="handled"
     >
       <View
@@ -78,20 +82,45 @@ const TandC = ({ navigation }) => {
             {TandCHeading}
           </Text>
 
-          <View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
                 fontFamily: AppStyles.font.poppinsRegular,
                 color: AppStyles.colour.textGreen,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               {TandCText}
             </Text>
-            <View>
+            <View
+              style={{
+                width: "100%",
+                alignSelf: "flex-start",
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+            >
               <CheckBox
                 title={acceptText}
                 checked={isSelected}
+                iconType="material-community"
+                containerStyle={{
+                  backgroundColor: AppStyles.colour.white,
+                  width: "100%",
+                }}
                 onPress={() => setIsSelected(!isSelected)}
+                checkedIcon={"checkbox-marked"}
+                uncheckedIcon={"checkbox-blank-outline"}
+                checkedColor={AppStyles.colour.darkGreen}
+                uncheckedColor={AppStyles.colour.darkGreen}
                 textStyle={{
                   color: AppStyles.colour.textGreen,
                   fontFamily: AppStyles.font.Poppins_500Medium,

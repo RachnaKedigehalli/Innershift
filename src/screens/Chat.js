@@ -19,16 +19,17 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { TextEncoder } from "text-encoding";
 import { set } from "react-native-reanimated";
+import { useFirstRender } from "../util/useFirstRender";
 
 const Chat = ({ navigation }) => {
   const [messagePlaceHolder, setMessagePlaceHolder] = useState("Type here...");
   const [currentMessage, setCurrentMessage] = useState("");
-  const [cons, setCons] = useState();
+  const [cons, setCons] = useState(undefined);
   const [isConnected, setIsConnected] = useState(false);
   const [userDetails, setUserDetails] = useState();
   const [messageList, setMessageList] = useState([]);
   const [stompClient, setStompClient] = useState();
-
+  const firstRender = useFirstRender();
   const sendMessage = async () => {
     let token = await AsyncStorage.getItem("userToken");
     console.log(token);
@@ -66,6 +67,7 @@ const Chat = ({ navigation }) => {
 
   const onConnected = async (sc) => {
     let token = await AsyncStorage.getItem("userToken");
+    console.log("consultation in onConnected: ", cons);
     console.log("messageList in onConnected: ", messageList);
     console.log("connected");
     var header = {
@@ -139,7 +141,9 @@ const Chat = ({ navigation }) => {
   }, []);
   useEffect(() => {
     const makeCall = async () => {
-      await connect();
+      if (!firstRender) {
+        await connect();
+      }
     };
     makeCall();
   }, [cons]);
@@ -195,7 +199,9 @@ const Chat = ({ navigation }) => {
             ></Avatar>
             <Text style={styles.doctorName}>
               {" "}
-              {cons ? `Dr. ${cons.doctor[4]} ${cons.doctor[5]}` : ""}
+              {cons != undefined && cons != null
+                ? `Dr. ${cons.doctor[4]} ${cons.doctor[5]}`
+                : ""}
             </Text>
           </View>
         </View>

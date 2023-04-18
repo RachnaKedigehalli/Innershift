@@ -56,14 +56,7 @@ const Home = ({ navigation }) => {
 
         <View style={styles.tasksList}>
           {modules.map((module, index) => {
-            return (
-              <ModuleCard
-                heading={module.heading}
-                description={module.description}
-                imageUri={module.imageUri}
-                key={index}
-              />
-            );
+            return <ModuleCard module={module} key={index} />;
           })}
         </View>
         <View

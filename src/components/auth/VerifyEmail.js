@@ -72,7 +72,7 @@ const Register = ({ route, navigation }) => {
                   paddingTop: 10,
                 }}
               >
-                <Text style={{ color: "red" }}>Invalid e-mail address </Text>
+                <Text style={{ color: "red" }}>Invalid otp </Text>
               </View>
             ) : (
               <></>
@@ -88,7 +88,7 @@ const Register = ({ route, navigation }) => {
                 disabled={!otp}
                 onPress={async () => {
                   const verified = await verifyOTP(email, otp);
-                  // setIsVerified(verified);
+                  setIsVerified(verified);
                   console.log(verified);
                   if (verified)
                     navigation.navigate("RegisterName", { email: email });
