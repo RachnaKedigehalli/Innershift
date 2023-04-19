@@ -11,6 +11,10 @@ import java.util.Date;
 public class PatientResponseInterface {
     private Integer patientId;
 
+    private Integer consultationId;
+
+    private boolean status;
+
     private Integer registeredThrough;
 
     private Date dob;
@@ -20,4 +24,16 @@ public class PatientResponseInterface {
     private Integer condition;
     private String firstName;
     private String lastName;
+
+    public PatientResponseInterface(Integer patientId, Integer registeredThrough, Date dob, String emergencyContact, Integer gender, String phoneNumber, Integer condition, String firstName, String lastName) {
+        this.patientId = patientId;
+        this.registeredThrough = registeredThrough;
+        this.dob = dob;
+        this.emergencyContact = emergencyContact;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.condition = condition;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

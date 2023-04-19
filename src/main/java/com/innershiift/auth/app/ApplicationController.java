@@ -175,7 +175,11 @@ public class ApplicationController {
         consultationService.getAllConsultationPerUser(d.getDoctorId()).ifPresent((cons)->{
 
             for(Consultation c: cons) {
-                patientService.getPatientByID(c.getPatientId()).ifPresent(ret::add);
+                patientService.getPatientByID(c.getPatientId()).ifPresent((pr)->{
+                    pr.setConsultationId(c.getConsultationId());
+                    pr.setStatus(c.getStatus());
+                    ret.add(pr);
+                });
             }
 
         });
