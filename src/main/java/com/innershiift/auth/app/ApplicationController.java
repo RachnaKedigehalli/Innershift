@@ -214,7 +214,7 @@ public class ApplicationController {
         return ResponseEntity.ok(consultationService.getAllMessagesByPid(p.getPatientId()));
     }
 
-    @GetMapping("/acceptConsultation")
+    @PostMapping("/acceptConsultation")
     @PreAuthorize("hasAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<Consultation> acceptConsultation(@Valid @RequestBody Consultation c){
