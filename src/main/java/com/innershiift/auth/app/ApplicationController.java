@@ -217,8 +217,8 @@ public class ApplicationController {
     @GetMapping("/acceptConsultation")
     @PreAuthorize("hasAuthority('DOCTOR')")
     @CrossOrigin
-    public ResponseEntity<Consultation> acceptConsultation(@Valid @RequestBody Map<String, String> json){
-        return  ResponseEntity.ok(consultationService.setConsultationStatus(Integer.parseInt(json.get("consultationId")),Boolean.parseBoolean(json.get("status"))).orElseThrow(()->new IllegalStateException("Unable to set Consultation status")));
+    public ResponseEntity<Consultation> acceptConsultation(@Valid @RequestBody Consultation c){
+        return  ResponseEntity.ok(consultationService.setConsultationStatus(c.getConsultationId(),c.getStatus()).orElseThrow(()->new IllegalStateException("Unable to set Consultation status")));
     }
 
     @MessageMapping("/chat")
