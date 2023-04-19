@@ -25,7 +25,7 @@ function DoctorProfile(){
 			doctorId:state.id
 		}
         
-        console.log(details)
+        
         axios.post('http://localhost:8080/api/v1/app/getDoctorById',details,auth)
         .then(response=>{
             setDoctorDetails(response.data)

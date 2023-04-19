@@ -10,7 +10,7 @@ import Dashboard from './Pages/Dashboard';
 import Auth from './Pages/Authentication';
 import Doctor from './Pages/Admin/Doctor';
 import AddDoctor_user from './Pages/Admin/AddDoctor_user';
-import Profile from './Pages/Profile';
+import DoctorProfile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/Admin/UpdateDoctor_user';
 
 
@@ -24,7 +24,6 @@ import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
 import ViewPatient from './Pages/Doctor/ViewPatient';
-import DoctorProfile from './Pages/Doctor/Profile';
 import DoctorChat from './Pages/Doctor/Chat';
 
 function App() {

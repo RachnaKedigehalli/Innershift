@@ -16,13 +16,9 @@ import {
 import react, {useEffect, useState} from 'react';
 
 import { useNavigate, useLocation, Form, } from 'react-router-dom'
+import { useStateValue } from '../../StateProvider'
+import axios from 'axios';
 
-// const formInputTheme = extendTheme(
-// 	withDefaultVariant({
-// 	  variant: 'filled',
-// 	  components: ['Input'],
-// 	}),
-// )
 
 
 function AddQuestions() {
@@ -30,19 +26,37 @@ function AddQuestions() {
 	const location = useLocation();
 	const [numberOfQuestions,setNumberOfQuestions] = useState(1)
 	const [tasks,setQuestions] = useState([])
+	const [state,dispatch] = useStateValue();
 
 	const onSubmit = () =>{
 		var dict = {...location.state,tasks:tasks}
 
-		// axios.post('http://localhost:8080/api/v1/auth/register',credentials)
-        //     .then(response=>{
-        //         console.log(response.data)
-        //         const newDict = {...response.data,adminToken:data.data.token}
-        //         navigate("/updatedoctor",{
-        //             state:newDict
-        //         })
-        // })
+		const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+		const details = {
+			content: JSON.stringify(dict)
+		}
+
+        axios.post('http://localhost:8080/api/v1/app/addModule',details, auth)
+            .then(response=>{
+                console.log(response.data)
+				navigate("/admin/modules")
+            })
 	}
+
+	useEffect(()=>{
+		setQuestions([{
+			type:0,
+			title:"",
+			description:"",
+			content:""
+		}])
+		setNumberOfQuestions(1)
+	},[])
 
 	const onTitleChange = (event,qno)=>{
 		var temp = tasks
@@ -136,8 +150,6 @@ function AddQuestions() {
 			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Questions </Text> </Heading>
-
-					
 					<Box w='100%' color='teal.700' padding={3} align='center'>
 						<QuestionsForm number={numberOfQuestions}/>
 					</Box>

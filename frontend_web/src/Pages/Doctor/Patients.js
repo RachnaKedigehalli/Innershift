@@ -18,6 +18,8 @@ function DoctorPatients(){
 	const navigate = useNavigate();
 	const [state, dispatch] = useStateValue();
     const [allPatients, setAllPatients] = useState([]);
+	const [render,setRender] = useState(0) 
+	 
 
 	useEffect(()=>{
 	
@@ -27,16 +29,26 @@ function DoctorPatients(){
             }
         }
 		
-        axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
+		const details = {
+			doctorId: state.id
+		}
+
+        axios.post('http://localhost:8080/api/v1/app/getPatientsByDoctor',details,auth)
         .then(response=>{
             setAllPatients(response.data)
 			console.log(response.data)
         })
 		
-    },[])
+    },[render])
 
-	const clickChat = () => {
-		navigate('/dummyloc')
+	const clickChat = (id,consultationId,name) => {
+		navigate('/doctor/chat',{
+			state:{
+				id:id,
+				consultationId:consultationId,
+				name:name
+			}
+		})
 	}
 
 	const clickModule = (id) => {
@@ -45,14 +57,30 @@ function DoctorPatients(){
 		})
 	}
 
-	const clickAccept = () => {
-		navigate('/doctor/viewpatient')
+	const clickAccept = (consultationId,status) => {
+		const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+		
+		const details = {
+			consultationId: consultationId,
+			status:status
+		}
+
+        axios.post('http://localhost:8080/api/v1/app/acceptConsultation',details,auth)
+        .then(response=>{
+			console.log(response.data)
+			setRender(render+1)
+        })
+		
 	}
 
 	const clickSearch = () => {
 		navigate('/dummyloc')
 	}
-	const PatientCard = ({ name, photo, desc, patientId}) => {
+	const PatientCard = ({ name, photo, desc, patientId,consultationId}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
 				<CardHeader>
@@ -70,7 +98,7 @@ function DoctorPatients(){
 					<VStack w='flex'>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-							<Button bg='teal.700' color='white' onClick={clickChat} size='md'>Chat</Button>
+							<Button bg='teal.700' color='white' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
 							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId)} size='md'>Module Progress</Button>
 						</ButtonGroup>
 					</VStack>
@@ -80,7 +108,7 @@ function DoctorPatients(){
 		</div>);
 	}
 
-	const RequestPatientCard = ({ name, photo, desc }) => {
+	const RequestPatientCard = ({ name, photo, desc,consultationId,status}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
 				<CardHeader>
@@ -97,22 +125,13 @@ function DoctorPatients(){
 				<CardBody>
 					<VStack w='flex'>
 						<Text h={50} color='teal.700' noOfLines={2}> {desc} </Text>
-						<Button bg='teal.700' color='white' onClick={clickAccept} size='md'>Accept</Button>
-
+						<Button bg='teal.700' color='white' onClick={() => clickAccept(consultationId,true)} size='md'>Accept</Button>
 					</VStack>
 				</CardBody>
-
 			</Card>
 		</div>);
 	}
 
-	const EmptyPatient = () => {
-		return <PatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-	}
-
-	const EmptyRequestPatient = () => {
-		return <RequestPatientCard name="Patient Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" />;
-	}
 
 	return(<div> 
 		<Flex>
@@ -155,9 +174,11 @@ function DoctorPatients(){
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
 						{allPatients.map((item,index)=>{
 							return(
+								item.status == true?
 								<GridItem>
-										<PatientCard name={item[4] + " " + item[5]} desc={item.des} key={index} patientId={item.patientId}/>
-								</GridItem>
+										<PatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId}/>
+								</GridItem>:
+								<></>
 							)
                         })}
 					</Grid>
@@ -168,18 +189,15 @@ function DoctorPatients(){
 
 					{/* Request Cards */}
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
-						<GridItem>
-							<RequestPatientCard name="Neelabh" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
-						</GridItem>
-						<GridItem>
-							<EmptyRequestPatient />
-						</GridItem>
-						<GridItem>
-							<EmptyRequestPatient />
-						</GridItem>
-						<GridItem>
-							<RequestPatientCard name="Nandu Menon" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' />
-						</GridItem>
+					{allPatients.map((item,index)=>{
+							return(
+								item.status == false?
+								<GridItem>
+										<RequestPatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId} status={item.status}/>
+								</GridItem>:
+								<></>
+							)
+                        })}
 					</Grid>
 				</VStack>
 			</Box>

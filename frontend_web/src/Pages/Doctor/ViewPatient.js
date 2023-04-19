@@ -28,7 +28,7 @@ function ViewPatient(){
 	const location = useLocation(); 
 
 	const [state,dispatch] = useStateValue();
-    const [patientMoods, setPatienMoods]  = useState([]); 
+    const [patientMoods, setPatientMoods]  = useState([]); 
 
 	const clickSearch = () => {
 		navigate('/dummyloc')
@@ -194,7 +194,7 @@ function ViewPatient(){
 		
         axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
         .then(response=>{
-            setPatienMoods(response.data)
+            setPatientMoods(response.data)
         })
 	},[])
 

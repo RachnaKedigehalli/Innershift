@@ -11,15 +11,18 @@ import {
 	faQuestion
 } from "@fortawesome/free-solid-svg-icons";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useNavigate, useLocation, } from 'react-router-dom'
+import { useStateValue } from '../../StateProvider'
+import axios from 'axios';
 
 
 
 function AdminModules() {
 	const navigate = useNavigate();
-	const location = useLocation();
+	const [state,dispatch] = useStateValue();
+	const [allModules, setAllModules] = useState([]); 
 
 	const clickAddModule = () => {
 		console.log("dashboard clicked");
@@ -29,6 +32,25 @@ function AdminModules() {
 	const clickEditModule = () => {
 		console.log("edit clicked");
 	}
+
+	useEffect(()=>{
+		const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+        axios.get('http://localhost:8080/api/v1/app/getAllModules', auth)
+            .then(response=>{
+                const val = response.data; 
+				let array = []
+				for(let i = 0; i<val.length;i++){
+					array.push(JSON.parse(val[i].content))
+				}
+				setAllModules(array)
+				console.log(array)
+            })
+	},[])
 
 	function DeleteAlertDialog() {
 		const { isOpen, onOpen, onClose } = useDisclosure()
@@ -93,7 +115,7 @@ function AdminModules() {
 					<VStack spacing={3} align='left'>
 						<HStack>
 							<ModuleIcon type={type} />
-							<Heading flex={1}> <Text noOdLines={1} color='#285e61'> {name}</Text> </Heading>
+							<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
 						</HStack>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
@@ -148,7 +170,16 @@ function AdminModules() {
 					{/* Existing patients cards */}
 					<Box height="flex" overflowY='auto'>
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
-						<GridItem>
+						{allModules.map((item,index)=>{
+							return(
+								<GridItem mt='7em' mr='5em' key={index}>
+									<ModuleCard name={item.title} desc={item.description} type="form"/>
+										{/* <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/> */}
+								</GridItem>
+							)
+                        })}
+
+						{/* <GridItem>
 							<ModuleCard name="Module 1" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' type="form"/>
 						</GridItem>
 						<GridItem>
@@ -156,7 +187,7 @@ function AdminModules() {
 						</GridItem>
 						<GridItem>
 							<BasicModuleCard />
-						</GridItem>
+						</GridItem> */}
 
 					</Grid>
 					</Box>
