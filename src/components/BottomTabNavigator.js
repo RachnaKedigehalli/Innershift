@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
 import CalendarStack from "../stacks/CalendarStack";
+import HomeModuleStack from "../stacks/HomeModuleStack";
 const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
 
@@ -85,7 +86,7 @@ const BottomTabNavigator = (props) => {
     >
       <Tab.Screen
         name="home"
-        component={Home}
+        component={HomeModuleStack}
         options={{
           header: ({ navigation, route, options, back }) => {
             return <TopBar showBack={showBack} />;

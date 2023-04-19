@@ -7,6 +7,7 @@ import { useState } from "react";
 import BottomTabNavigator from "./components/BottomTabNavigator";
 import Chat from "./screens/Chat";
 import DoctorDetails from "./screens/DoctorDetails";
+import HomeModuleStack from "./stacks/HomeModuleStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,11 @@ const AppStack = () => {
         // initialRouteName={isMoodSet ? "BottomTabNavigator" : "Mood"}
         initialRouteName={"BottomTabNavigator"}
       >
-        <Stack.Screen name="Home" component={Home} options={noHeader} />
+        <Stack.Screen
+          name="Home"
+          component={HomeModuleStack}
+          options={noHeader}
+        />
         {/* <Stack.Screen name="Mood" component={Mood} options={noHeader} /> */}
         <Stack.Screen name="Chat" component={Chat} options={noHeader} />
         <Stack.Screen

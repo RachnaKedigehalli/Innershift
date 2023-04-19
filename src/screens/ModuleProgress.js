@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import React, { useState } from "react";
 import QuestionModule from "../components/QuestionModule";
 import ReadingModule from "../components/ReadingModule";
@@ -44,7 +44,10 @@ const ModuleProgress = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView
+      style={styles.mainContainer}
+      contentContainerStyle={{ alignItems: "center" }}
+    >
       <View style={styles.progressBar.bar}>
         <View
           style={[
@@ -57,7 +60,7 @@ const ModuleProgress = ({ route, navigation }) => {
         />
       </View>
       {moduleReturn(module.tasks)}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -65,9 +68,9 @@ export default ModuleProgress;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: "column",
-    alignItems: "center",
+    // alignItems: "center",
     backgroundColor: AppStyles.colour.white,
     width: "100%",
   },

@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   ScrollView,
+  Pressable,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../components/auth/AuthContext";
@@ -28,7 +29,11 @@ const Home = ({ navigation }) => {
   const { logout, user } = useContext(AuthContext);
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={{
+        backgroundColor: AppStyles.colour.white,
+      }}
+    >
       <View style={styles.page}>
         <ImageBackground
           source={require("../../assets/images/banner.png")}
@@ -56,7 +61,16 @@ const Home = ({ navigation }) => {
 
         <View style={styles.tasksList}>
           {modules.map((module, index) => {
-            return <ModuleCard module={module} key={index} />;
+            return (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("ModuleProgress", { module: module });
+                }}
+                key={index}
+              >
+                <ModuleCard module={module} />
+              </Pressable>
+            );
           })}
         </View>
         <View

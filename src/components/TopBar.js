@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 25,
     backgroundColor: AppStyles.colour.white,
+    paddingBottom: 10,
   },
   back: {
     width: 30,
