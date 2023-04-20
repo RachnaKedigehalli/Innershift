@@ -9,7 +9,7 @@ import { useStateValue } from '../../StateProvider'
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 
-
+import {useFirstRender} from "../../Utils/useFirstRender"
 
 
 function DoctorChat(){
@@ -17,14 +17,13 @@ function DoctorChat(){
 	const location = useLocation();
   
     const [state,dispatch] = useStateValue(); 
-    const [messagePlaceHolder, setMessagePlaceHolder] = useState("Type here...");
-    const [currentMessage, setCurrentMessage] = useState("");
-    const [cons, setCons] = useState();
+
     const [isConnected, setIsConnected] = useState(false);
     const [messageList, setMessageList] = useState([]);
     const [stompClient, setStompClient] = useState();
 
     const [latestMessage,setLatestMessage] = useState("");
+    const firstRender = useFirstRender();
 
   
   const sendMessage = async (currentMessage) => {  
@@ -32,7 +31,7 @@ function DoctorChat(){
         "jwt-token": state.adminToken,
       };
 
-     if (currentMessage?.trim() !== "") {
+     if (currentMessage.trim() !== "") {
       const message = {
         consultationId: location.state.consultationId,
         content: currentMessage,
@@ -40,7 +39,7 @@ function DoctorChat(){
         recipientId: location.state.id,
       };
 
-      await stompClient?.send(
+      await stompClient.send(
         "/api/v1/app/app/chat",
         header,
         JSON.stringify(message)
@@ -49,18 +48,16 @@ function DoctorChat(){
     }
   };
 
-  const onMessageReceived = (msg) => {
+  const onMessageReceived = async (msg) => {
     console.log("in Received");
     console.log(msg.body);
-    console.log("before messageList: ", messageList);
+    console.log("before messageList: ", messageList);  
 
-    setMessageList((messages) => {
-      return [...messages, JSON.parse(msg.body)];
-    });
+    await callApi();
+    // setMessageList([...messageList,JSON.parse(msg.body)]);
   };
 
   const onConnected = async (sc) => {
-    // let token = await AsyncStorage.getItem("userToken");
     console.log("messageList in onConnected: ", messageList);
     console.log("connected");
 
@@ -68,7 +65,7 @@ function DoctorChat(){
       "jwt-token": state.adminToken,
     };
 
-    await sc?.subscribe(
+    await sc.subscribe(
       `/api/v1/app/user/${location.state.consultationId}/queue/messages`,
       onMessageReceived,
       header
@@ -93,16 +90,12 @@ function DoctorChat(){
           });
     
           setStompClient(sc);
-    
           sc.connect(header, () => onConnected(sc), onError);
         }
       };
     
-      const callApi = async () => {
-        let consultation = location.state.consultationId;    
-        consultation = await JSON.parse(consultation);
-        setCons(consultation);
-
+      const callApi = async () => {    
+        console.log("I'm in callApi")    
         const config = {
           headers: { Authorization: `Bearer ${state.adminToken}` },
         };
@@ -115,37 +108,34 @@ function DoctorChat(){
         await axios
           .post("http://localhost:8080/api/v1/app/getAllMessagesByPId", bodyParameters, config)
           .then(async (res) => {
-            console.log(res.data);
-            setMessageList((messages) => {
-              return res.data;
-            });
-            console.log("in callapi messageList:", messageList);
+            setMessageList(res.data);
           })
           .catch((e) => console.log(e));
       };
 
 
     useEffect(() => {
+      const makeCall = async () => {
+      if(firstRender)
+        await connect();
+      }
+      makeCall();
+    }, []);
+
+    useEffect(() => {
         const makeCalls = async () => {
-          await callApi();
+            await callApi();
         };
-        makeCalls();
+        makeCalls();       
       }, []);
     
-    useEffect(() => {
-        const makeCall = async () => {
-          await connect();
-        };
-        makeCall();
-    }, [cons]);
-
 
     const Header = ({patientName}) =>{
         return(<Heading color='teal.700' m={4} mt={12}> {patientName} </Heading>)
     }
 
     const MyMessage = ({msgText}) =>{
-        return (<Flex color='white'>
+        return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
         <Center minWidth={30} padding={2}>
           {/* <Text>Box 1</Text> */}
         </Center>
@@ -162,7 +152,7 @@ function DoctorChat(){
     }
 
     const OtherMessage = ({msgText}) =>{
-        return (<Flex color='white'>
+        return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
             <Box bg={DESKTOP_BG_LIGHT} minWidth={5}></Box>
             <Box bg='gray.300' borderRadius={30} padding={2}>
                 <Text color='teal.700'>{msgText}</Text>
@@ -178,54 +168,36 @@ function DoctorChat(){
     }
 
 
-    var chatId = 0;
+    
 
     const onSend = async () => {
-      await sendMessage(latestMessage)
+      await sendMessage(latestMessage);
+      setLatestMessage("");
     }
 
     const updateMessage = async (event) =>{
-      console.log(event.target.value)
       setLatestMessage(event.target.value)
     }
 
-    const Chat = ({messages, myId}) =>{
-        var chatMessages = []
-
-        for(var msg in messages){
-            // displayQuestions.push(<FormQuestions key={i} qno={i}/>)
-            if(msg.senderId === myId){
-                chatMessages.push(<MyMessage msgText={msg.content} key={chatId}/>)
-            }
-            else{
-                chatMessages.push(<OtherMessage msgText={msg.content} key={chatId}/>)
-            }
-            chatId++;
-        }
-
-        return(<Box w='100%' flex={1} overflowY='auto'>
-            {chatMessages}
-        </Box>);
-    }
-
-
 	return(<div> 
 		<Flex>
-			{/* This be side nav bar */}
 			<SideDoctor/>
-
-			{/* This be main screen */}
 			<Flex direction='column' bg={DESKTOP_BG_LIGHT} maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
-				{/* <VStack h='100%' flexDirection='column' align='left' m={3} divider={<StackDivider borderColor='gray.200' />}> */}
 					<Header patientName={location.state.name}/>
-                    <Chat/>
-
-                   
+          <Box w='100%' flex={1} overflowY='auto'>
+                {messageList.map((msg,itemIndex) => {
+                  return(
+                  (msg.senderId === state.id)? 
+                      <MyMessage  msgText={msg.content} key={msg.messageId} />
+                  :
+                      <OtherMessage msgText={msg.content} key={msg.messageId}/>
+                      
+                )})}    
+          </Box>         
                 <Box w='100%' >            
-                      <Input onChange={updateMessage} minHeight='100%' w='100%' borderColor='gray.300' placeholder='Type Here' />
+                      <Input value={latestMessage} onChange={updateMessage} minHeight='100%' w='100%' borderColor='gray.300' placeholder='Type Here' />
                       <Button onClick={onSend}>Send</Button>
                 </Box>
-				{/* </VStack> */}
 			</Flex>
 			
 		</Flex>

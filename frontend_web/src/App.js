@@ -73,7 +73,7 @@ function App() {
     <StateProvider initialState={initialState} reducer={reducer}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} /> 
+          <Route path="/" element={<Auth />} /> 
           <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
           <Route path="/doctor" element={<Doctor />} /> 
