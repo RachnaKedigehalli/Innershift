@@ -84,7 +84,7 @@ public class ApplicationController {
 
     @PostMapping("/getDoctorById")
     @CrossOrigin
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'DOCTOR', 'ADMIN')")
     public ResponseEntity<Object> getDoctorById(@Valid @RequestBody Doctor d) {
         System.out.println("doctor: " + d);
         return ResponseEntity.ok(
