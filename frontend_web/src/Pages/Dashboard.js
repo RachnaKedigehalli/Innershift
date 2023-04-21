@@ -1,5 +1,4 @@
-import { Grid, GridItem ,Heading,Image, Button,Center} from '@chakra-ui/react'
-// import Navbar from '../Components/Navbar';
+import { Grid, GridItem ,Heading,Image, Button,Center,Box} from '@chakra-ui/react'
 import {DESKTOP_BG_MEDIUM, DARK_GREEN} from "../Constants" 
 import logo from "../Assets/Logo/Logo_name.png"
 
@@ -9,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
+import PieChart from '../Components/DoughnutAdmin'
+
 
 function Dashboard(){
     const location = useLocation();
@@ -82,6 +83,14 @@ function Dashboard(){
                 
                 <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
                    <Heading  size='lg'> Welcome, <div style={{color:DARK_GREEN}}>{location.state.response.firstName} {location.state.response.lastName}</div> </Heading>
+                   
+                   {(state.role === 'ADMIN')?
+                        <Box maxW="20rem" maxH="20rem" mt = '5rem'>
+                            <PieChart/>
+                        </Box>
+                    :
+                        <></>
+                    }
                 </GridItem>
             </Grid>
         </div>

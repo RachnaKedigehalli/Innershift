@@ -166,10 +166,7 @@ function DoctorChat(){
             </Center>
       </Flex>);
     }
-
-
     
-
     const onSend = async () => {
       await sendMessage(latestMessage);
       setLatestMessage("");
