@@ -139,7 +139,6 @@ function ViewPatient(){
 
 	function pad(val){
 		if (val.toString().length === 1){
-			// console.log("hi")
 			return "0" + val.toString();
 		}
 		return val;
@@ -149,7 +148,6 @@ function ViewPatient(){
 		date.setHours(0, 0, 0, 0, 0);
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + numDays);
-		// console.log(newDate);
 		return newDate.getFullYear() +  "-" + pad(newDate.getMonth()+1) + "-" + pad(newDate.getDate());
         // return newDate.toISOString();
     }
@@ -209,9 +207,7 @@ function ViewPatient(){
 	//   export default events;
 	function formatMoodData(data){
 		var output = []
-		console.log(data)
 		for(var d in data){
-			// console.log(data[d]);
 			var tmp = {
 				title: getMoodString(data[d].value),
 				start: data[d].date,
@@ -268,10 +264,10 @@ function ViewPatient(){
 		}
 
 		
-        // axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
-        // .then(response=>{
-        //     setPatientMoods(response.data)
-        // })
+        axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
+        .then(response=>{
+            setPatientMoods(response.data)
+        })
 	},[])
 
 	return(<div> 
