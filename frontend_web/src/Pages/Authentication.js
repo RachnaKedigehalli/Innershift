@@ -1,6 +1,6 @@
-import { Grid, GridItem, Image,Center,Heading,Input,Button} from '@chakra-ui/react'
+import { Grid, GridItem, Image,Center,Heading,Input,Button, VStack, HStack, Box, Flex} from '@chakra-ui/react'
 // import Navbar from '../Components/Navbar';
-import {DARK_OLIVE, LIGHT_GREEN} from "../Constants" 
+import {DARK_OLIVE, DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM, LIGHT_GREEN} from "../Constants" 
 
 
 import logo from "../Assets/Logo/Logo_white.png"
@@ -66,8 +66,26 @@ function Auth(){
 
     return(
         <div>
+
+            <Flex>
+                <Box bg={DARK_OLIVE} w='20%' minHeight='100vh'/>
+                <VStack minHeight='100vh' align='center' w='100%'>
+                    <Image src={logo} h='15em' mt={90} />
+                    <Heading color='teal.700' > Welcome Back</Heading>
+                    <Heading color='teal.700' size='sm'>Please Enter Your Details</Heading>
+                    <Heading color='teal.700' size='sm' >Username/Email</Heading>
+                        <Input w='30%' value={email}  onChange={handleChangeEmail} size='lg' bgColor={LIGHT_GREEN} />
+                    <Heading color='teal.700' size='sm' >Password</Heading>
+                        <Input w='30%' value={password} type='password' onChange={handleChangePassword} size='lg' bgColor={LIGHT_GREEN} />
+                    <Button onClick={onSubmit} bg='teal.600' color='white' size='lg'>
+                                    Login
+                        </Button>
+                    <Heading color='teal.700' size="xs"> Forgot Password?</Heading>
+                </VStack>
+            </Flex>
             
-            <Grid
+            
+            {/* <Grid
                 h='61em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
@@ -120,7 +138,7 @@ function Auth(){
 
                 </GridItem>
 
-            </Grid>
+            </Grid> */}
         </div>
     ); 
 }

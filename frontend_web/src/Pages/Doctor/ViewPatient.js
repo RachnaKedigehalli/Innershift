@@ -2,11 +2,15 @@ import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, S
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import axios from 'axios'
-import CalendarHeatmap from 'react-calendar-heatmap';
-import './HeatMap.css';
+
+import styled from "@emotion/styled";
 
 
-import { Tooltip as ReactTooltip } from 'react-tooltip'
+import FullCalendar, { formatDate } from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+
+import 'react-calendar/dist/Calendar.css';
+
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,7 +27,25 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 
+
 function ViewPatient(){
+	// add styles as css
+	const StyleWrapper = styled.div`
+	.fc-button.fc-prev-button, .fc-button.fc-next-button, .fc-button.fc-button-primary{
+		background: #285E61;
+		background-image: none;
+		border: #285E61;
+	}
+	.portlet.calendar .fc-event .fc-time {
+		color: #285E61;
+	}
+	.fc .fc-toolbar-title {
+		color: #285E61;
+	}
+	.fc-day{
+		color: #285E61;
+	}
+	`
 	const navigate = useNavigate();
 	const location = useLocation(); 
 
@@ -115,10 +137,21 @@ function ViewPatient(){
 		return <ModuleCard name="Module Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" type="unknown" />;
 	}
 
+	function pad(val){
+		if (val.toString().length === 1){
+			// console.log("hi")
+			return "0" + val.toString();
+		}
+		return val;
+	}
+
     function shiftDate(date, numDays) {
+		date.setHours(0, 0, 0, 0, 0);
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + numDays);
-        return newDate;
+		// console.log(newDate);
+		return newDate.getFullYear() +  "-" + pad(newDate.getMonth()+1) + "-" + pad(newDate.getDate());
+        // return newDate.toISOString();
     }
 
     function getRange(count) {
@@ -129,7 +162,7 @@ function ViewPatient(){
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function intToMood(val){
+    function getMoodString(val){
         if(val === 1){ return "Energetic" };
         if(val === 2){ return "Happy" };
         if(val === 3){ return "Calm" };
@@ -139,42 +172,85 @@ function ViewPatient(){
         return "Unknown"
     }
 
+	function getMoodColor(val){
+		
+		if(val == 0){
+			return "#FFCE85"
+		}
+		
+		if(val == 1){
+			return "#FFCE85"
+		}
+		
+		if(val == 2){
+			return "#FEF285"
+		}
+		
+		if(val == 3){
+			return "#8AC8C2"
+		}
+		
+		if(val == 4){
+			return "#D0E06B"
+		}
+		
+		if(val == 5){
+			return "#E2B68D"
+		}
+		
+		if(val == 6){
+			return "#C5784C"
+		}
+		return "#FFFFFF"
+	}
+
 	const today = new Date();
+	
+	//   export default events;
+	function formatMoodData(data){
+		var output = []
+		console.log(data)
+		for(var d in data){
+			// console.log(data[d]);
+			var tmp = {
+				title: getMoodString(data[d].value),
+				start: data[d].date,
+				// end: data[d].date,
+				color: getMoodColor(data[d].value),
+			}
+			output.push(tmp)
+		}
+		return output
+	}
+	  
     const CalHeatMap = ({data}) => {
-        return(<div w='100%'>
-            <Heading color='teal.700'> Moods Recorded </Heading>
-            <CalendarHeatmap
-              startDate={shiftDate(today, -100)}
-              endDate={today}
-              values={data}
-              width='100%'
-              classForValue={(value) => {
-                if (!value) {
-                  return "color-empty";
-                }
-                return `color-mood-${value.count}`;
-              }}
-              tooltipDataAttrs={(value) => {
-                return {
-                  "tooltip": `${value.date.toISOString().slice(0, 10)} has count: ${
-                    value.count
-                  }`
-                };
-              }}
-              horizontal={false}
-              onClick={(value) =>
-                alert(`Mood on ${value.date.toISOString().slice(0, 10)}: ${intToMood(value.count)}`)
-              }
-            />
-            <ReactTooltip />
-          </div>
-        );
+
+		return (
+			<div w='100%'><StyleWrapper>
+				<FullCalendar
+					// defaultView="dayGridMonth"
+					// themeSystem="Simplex"
+					headerToolbar={{
+					  left: "prev",
+					  center: "title",
+					  right: "next",
+					}}
+					plugins={[dayGridPlugin]}
+					events={formatMoodData(data)}
+					// events={events}
+					displayEventEnd="true"
+					eventTextColor= '#285E61'
+					// dayMaxEvents={true}
+				/>
+
+			</StyleWrapper></div>
+		);
     }
 
     var values = getRange(200).map(index => {
 		return {
 		  date: shiftDate(today, -index),
-		  count: getRandomInt(1, 6),
+		  value: getRandomInt(1, 6),
 		};
 	});
 
@@ -192,10 +268,10 @@ function ViewPatient(){
 		}
 
 		
-        axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
-        .then(response=>{
-            setPatientMoods(response.data)
-        })
+        // axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
+        // .then(response=>{
+        //     setPatientMoods(response.data)
+        // })
 	},[])
 
 	return(<div> 
@@ -237,10 +313,10 @@ function ViewPatient(){
 
 					<HStack w='100%'>
                         {/* module cards */}
-                        <Box minWidth='25%'>
+                        <Box w='100%' h='90%'>
                             <CalHeatMap data={values}/>
                         </Box>
-                        <Box w='flex' maxHeight='80vh' overflowY='scroll' display='block'>
+                        <Box maxHeight='80vh' overflowY='scroll' display='block'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
                                 {/* <GridItem> 
                                     <CalHeatMap data={values}/>
