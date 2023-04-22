@@ -1,14 +1,21 @@
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Image,
+    StatusBar,
+} from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "@rneui/themed";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 const TandC = ({ navigation }) => {
-  const [TandCHeading, setTandCHeading] = useState(
-    "Please read the terms of use carefully"
-  );
-  const [TandCText, setTandCText] =
-    useState(`The delimited scope and purpose of the Push-D program 
+    const [TandCHeading, setTandCHeading] = useState(
+        "Please read the terms of use carefully"
+    );
+    const [TandCText, setTandCText] =
+        useState(`The delimited scope and purpose of the Push-D program 
     The Information contained in, or accessed through, this website is for your general information and Self-development use only and
     is not intended to be used as medical advice and should not be used to diagnose, treat, cure or prevent any medical condition.
     The diagnosis and treatment of clinical depression and anxiety requires a medical practitioner or qualified mental health
@@ -35,111 +42,112 @@ const TandC = ({ navigation }) => {
     products, procedures, or other information that may be mentioned on the website. Any opinions expressed on the website are the
     opinions of the individual authors, not of NIMHANS.`);
 
-  const [isSelected, setIsSelected] = useState(false);
-  const [acceptText, setAcceptText] = useState("I agree to the terms");
-  const [continueText, setContinueText] = useState("Continue");
+    const [isSelected, setIsSelected] = useState(false);
+    const [acceptText, setAcceptText] = useState("I agree to the terms");
+    const [continueText, setContinueText] = useState("Continue");
 
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: AppStyles.colour.white,
-      }}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 81,
-          justifyContent: "center",
-          // gap: 57,
-          paddingHorizontal: 35,
-          paddingBottom: 55,
-        }}
-      >
-        <Image source={require("../../../assets/images/logo.png")} />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: 61,
-            // gap: 9
-          }}
+    return (
+        <ScrollView
+            contentContainerStyle={{
+                flexGrow: 1,
+                backgroundColor: AppStyles.colour.white,
+            }}
+            keyboardShouldPersistTaps="handled"
         >
-          <Text
-            style={{
-              fontSize: Platform.OS == "android" ? 24 : 27,
-              fontWeight: "600",
-              color: AppStyles.colour.textGreen,
-              width: 300,
-              // textAlign: "center",
-              fontFamily: AppStyles.font.subHeadings,
-              marginBottom: 25,
-              textAlign: "center",
-            }}
-          >
-            {TandCHeading}
-          </Text>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: AppStyles.font.poppinsRegular,
-                color: AppStyles.colour.textGreen,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              {TandCText}
-            </Text>
             <View
-              style={{
-                width: "100%",
-                alignSelf: "flex-start",
-                marginTop: 20,
-                marginBottom: 10,
-              }}
+                style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    paddingTop: 81,
+                    justifyContent: "center",
+                    // gap: 57,
+                    paddingHorizontal: 35,
+                    paddingBottom: 55,
+                }}
             >
-              <CheckBox
-                title={acceptText}
-                checked={isSelected}
-                iconType="material-community"
-                containerStyle={{
-                  backgroundColor: AppStyles.colour.white,
-                  width: "100%",
-                }}
-                onPress={() => setIsSelected(!isSelected)}
-                checkedIcon={"checkbox-marked"}
-                uncheckedIcon={"checkbox-blank-outline"}
-                checkedColor={AppStyles.colour.darkGreen}
-                uncheckedColor={AppStyles.colour.darkGreen}
-                textStyle={{
-                  color: AppStyles.colour.textGreen,
-                  fontFamily: AppStyles.font.Poppins_500Medium,
-                }}
-              />
+                <Image source={require("../../../assets/images/logo.png")} />
+                <View
+                    style={{
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: 61,
+                        // gap: 9
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontSize: Platform.OS == "android" ? 24 : 27,
+                            fontWeight: "600",
+                            color: AppStyles.colour.textGreen,
+                            width: 300,
+                            // textAlign: "center",
+                            fontFamily: AppStyles.font.subHeadings,
+                            marginBottom: 25,
+                            textAlign: "center",
+                        }}
+                    >
+                        {TandCHeading}
+                    </Text>
+
+                    <View
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontFamily: AppStyles.font.poppinsRegular,
+                                color: AppStyles.colour.textGreen,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
+                        >
+                            {TandCText}
+                        </Text>
+                        <View
+                            style={{
+                                width: "100%",
+                                alignSelf: "flex-start",
+                                marginTop: 20,
+                                marginBottom: 10,
+                            }}
+                        >
+                            <CheckBox
+                                title={acceptText}
+                                checked={isSelected}
+                                iconType="material-community"
+                                containerStyle={{
+                                    backgroundColor: AppStyles.colour.white,
+                                    width: "100%",
+                                }}
+                                onPress={() => setIsSelected(!isSelected)}
+                                checkedIcon={"checkbox-marked"}
+                                uncheckedIcon={"checkbox-blank-outline"}
+                                checkedColor={AppStyles.colour.darkGreen}
+                                uncheckedColor={AppStyles.colour.darkGreen}
+                                textStyle={{
+                                    color: AppStyles.colour.textGreen,
+                                    fontFamily:
+                                        AppStyles.font.Poppins_500Medium,
+                                }}
+                            />
+                        </View>
+                        <CustomButton
+                            title={continueText}
+                            accessibilityLabel={continueText}
+                            disabled={!isSelected}
+                            onPress={async () => {
+                                navigation.navigate("Register");
+                            }}
+                        />
+                    </View>
+                </View>
             </View>
-            <CustomButton
-              title={continueText}
-              accessibilityLabel={continueText}
-              disabled={!isSelected}
-              onPress={async () => {
-                navigation.navigate("Register");
-              }}
-            />
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
+        </ScrollView>
+    );
 };
 
 export default TandC;
