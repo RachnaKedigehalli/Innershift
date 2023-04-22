@@ -32,12 +32,12 @@ public class ModuleService {
         moduleRepository.deleteById(moduleId);
     }
 
-    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Integer order, Date start, String duration, Integer status){
+    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Date sd, Date start, String duration, Integer status){
         String response = "";
         ModuleAssignment moduleAssignment = new ModuleAssignment();
         moduleAssignment.setModuleId(mId);
         moduleAssignment.setPatientId(pId);
-        moduleAssignment.setModuleOrder(order);
+        moduleAssignment.setScheduled_timestamp(sd);
         moduleAssignment.setDuration(duration);
         moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(status);
@@ -67,7 +67,7 @@ public class ModuleService {
 
     }
     public Optional<List<Module>> getModulesByPid(Integer pid) {
-        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientIdOrderByModuleOrder(pid);
+        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientIdOrderByScheduled_timestamp(pid);
         List<Module> ret = new ArrayList<>();
         moduleAssignments.ifPresent((mAs)->{
             for(ModuleAssignment mA: mAs) {
@@ -82,8 +82,8 @@ public class ModuleService {
         return Optional.of(moduleRepository.findAll());
     }
     @Transactional
-    public void updateOrderByModuleAssignedId(Integer mid, Integer order) {
-        moduleAssignmentRepository.updateOrderByModuleAssignedId(mid, order);
+    public void updateOrderByModuleAssignedId(Integer mid, Date sd) {
+        moduleAssignmentRepository.updateOrderByModuleAssignedId(mid, sd);
     }
 
 }

@@ -31,6 +31,7 @@ public class ModuleAssignment {
     private String response;
     private Integer status;
     private Date start_timestamp;
+    private Date scheduled_timestamp;
     // Modify duration datastructure from string to something that stores duration
     private String duration;
 
