@@ -13,9 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function PieChart() {
     const [allPatients,setAllPatients] = useState([])
     const [allDoctors,setAllDoctors] = useState([])
-    const [state, dispatch] = useStateValue();
-
-    const [data,setData] = useState({}); 
+    const [state, dispatch] = useStateValue();  
 
     useEffect(()=>{
         const auth = {
@@ -38,7 +36,7 @@ export default function PieChart() {
 
   return (
     <div>
-        {console.log(data)}
+        
         <Doughnut data={{
             labels:['Doctors','Patients'],
             datasets:[

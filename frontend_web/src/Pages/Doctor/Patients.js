@@ -51,9 +51,13 @@ function DoctorPatients(){
 		})
 	}
 
-	const clickModule = (id) => {
+	const clickModule = (id,consultationId,name) => {
 		navigate('/doctor/viewpatient',{
-			state:id
+			state:{
+				id:id,
+				consultationId:consultationId,
+				name:name
+			}
 		})
 	}
 
@@ -99,7 +103,7 @@ function DoctorPatients(){
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
-							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId)} size='md'>Module Progress</Button>
+							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId,consultationId,name)} size='md'>Module Progress</Button>
 						</ButtonGroup>
 					</VStack>
 				</CardBody>

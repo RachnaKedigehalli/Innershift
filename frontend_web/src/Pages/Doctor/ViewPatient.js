@@ -52,8 +52,14 @@ function ViewPatient(){
 	const [state,dispatch] = useStateValue();
     const [patientMoods, setPatientMoods]  = useState([]); 
 
-	const clickSearch = () => {
-		navigate('/dummyloc')
+	const clickChat = (id,consultationId,name) => {
+		navigate('/doctor/chat',{
+			state:{
+				id:id,
+				consultationId:consultationId,
+				name:name
+			}
+		})
 	}
 
     function UnAssignDialog() {
@@ -220,7 +226,7 @@ function ViewPatient(){
 	}
 	  
     const CalHeatMap = ({data}) => {
-
+		console.log(data)
 		return (
 			<div w='100%'><StyleWrapper>
 				<FullCalendar
@@ -260,13 +266,26 @@ function ViewPatient(){
         }
 
 		const details = {
-			patientId:location.state
+			patientId:location.state.id
 		}
 
 		
         axios.post('http://localhost:8080/api/v1/app/getMoodsByPid',details,auth)
         .then(response=>{
-            setPatientMoods(response.data)
+            var temp = response.data 
+			var temp1 = [] 
+
+			for(let i = 0;i<temp.length;i++){
+				temp1.push(
+					{
+						date:temp[i].date.slice(0,10),
+						value:temp[i].mood
+					}
+				)
+			}
+
+			setPatientMoods(temp1)
+			
         })
 	},[])
 
@@ -283,7 +302,7 @@ function ViewPatient(){
 					{/* existing patients heading */}
 					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3} minHeight='5vh' maxHeight='5vh'>
 						<GridItem colSpan={2}>
-							<Heading color='teal.700'> Patient name </Heading>
+							<Heading color='teal.700'>{location.state.name}</Heading>
 						</GridItem>
 
 						<GridItem colSpan={4}>
@@ -292,7 +311,7 @@ function ViewPatient(){
 
 						<GridItem align='right'>
 							<Button
-								onClick={clickSearch}
+								onClick={()=>clickChat(location.state.id,location.state.consultationId,location.state.name)}
 								bg="teal.700"
                                 color='white'
 								size="md"
@@ -310,7 +329,7 @@ function ViewPatient(){
 					<HStack w='100%'>
                         {/* module cards */}
                         <Box w='100%' h='90%'>
-                            <CalHeatMap data={values}/>
+                            <CalHeatMap data={patientMoods}/>
                         </Box>
                         <Box maxHeight='80vh' overflowY='scroll' display='block'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
