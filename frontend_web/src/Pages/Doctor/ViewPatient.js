@@ -51,6 +51,7 @@ function ViewPatient(){
 
 	const [state,dispatch] = useStateValue();
     const [patientMoods, setPatientMoods]  = useState([]); 
+	const [allModules, setAllModules] = useState([]);
 
 	const clickChat = (id,consultationId,name) => {
 		navigate('/doctor/chat',{
@@ -139,9 +140,6 @@ function ViewPatient(){
 		</div>);
 	}
 
-	const BasicModuleCard = () => {
-		return <ModuleCard name="Module Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" type="unknown" />;
-	}
 
 	function pad(val){
 		if (val.toString().length === 1){
@@ -283,10 +281,20 @@ function ViewPatient(){
 					}
 				)
 			}
-
 			setPatientMoods(temp1)
-			
         })
+
+		axios.post('http://localhost:8080/api/v1/app/getModulesByPid',details,auth)
+        .then(response=>{
+			const val = response.data; 
+			let array = []
+			for(let i = 0; i<val.length;i++){
+				array.push(JSON.parse(val[i].content))
+			}
+			setAllModules(array)
+        })
+
+
 	},[])
 
 	return(<div> 
@@ -333,39 +341,13 @@ function ViewPatient(){
                         </Box>
                         <Box maxHeight='80vh' overflowY='scroll' display='block'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
-                                {/* <GridItem> 
-                                    <CalHeatMap data={values}/>
-                                </GridItem> */}
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
-                                <GridItem> 
-                                    <BasicModuleCard/>
-                                </GridItem>
+							{allModules.map((item,index)=>{
+								return(
+									<GridItem mt='7em' mr='5em' key={index}>
+										<ModuleCard name={item.title} desc={item.description} type="form"/>
+									</GridItem>
+								)
+							})}
 
                             </Grid>
                         </Box>

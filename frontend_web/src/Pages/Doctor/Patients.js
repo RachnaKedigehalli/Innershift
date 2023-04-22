@@ -61,6 +61,16 @@ function DoctorPatients(){
 		})
 	}
 
+	const assignModule = (id,consultationId,name) => {
+		navigate('/doctor/assignmodules',{
+			state:{
+				id:id,
+				consultationId:consultationId,
+				name:name
+			}
+		})
+	}
+
 	const clickAccept = (consultationId,status) => {
 		const auth = {
             headers: {
@@ -103,7 +113,8 @@ function DoctorPatients(){
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
-							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId,consultationId,name)} size='md'>Module Progress</Button>
+							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Patient</Button>
+							<Button bg='teal.700' color='white' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Assign Modules</Button>
 						</ButtonGroup>
 					</VStack>
 				</CardBody>

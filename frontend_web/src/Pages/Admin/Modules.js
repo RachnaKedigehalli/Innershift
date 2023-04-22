@@ -48,7 +48,6 @@ function AdminModules() {
 					array.push(JSON.parse(val[i].content))
 				}
 				setAllModules(array)
-				console.log(array)
             })
 	},[])
 
