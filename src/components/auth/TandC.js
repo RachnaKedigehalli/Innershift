@@ -6,14 +6,26 @@ import {
     Image,
     StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckBox } from "@rneui/themed";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
+
+const translate = require("google-translate-api-x");
+
 const TandC = ({ navigation }) => {
     const [TandCHeading, setTandCHeading] = useState(
         "Please read the terms of use carefully"
     );
+    useEffect(() => {
+        const translate_func = async () => {
+            await translate(TandCHeading, {
+                to: "hi",
+            }).then((res) => setTandCHeading(res.text));
+        };
+        translate_func();
+    }, []);
+
     const [TandCText, setTandCText] =
         useState(`The delimited scope and purpose of the Push-D program 
     The Information contained in, or accessed through, this website is for your general information and Self-development use only and
@@ -42,10 +54,16 @@ const TandC = ({ navigation }) => {
     products, procedures, or other information that may be mentioned on the website. Any opinions expressed on the website are the
     opinions of the individual authors, not of NIMHANS.`);
 
-    const [isSelected, setIsSelected] = useState(false);
+    useEffect(() => {
+        translate(TandCText, {
+            to: "kn",
+        }).then((res) => setTandCText(res.text));
+    }, []);
+
     const [acceptText, setAcceptText] = useState("I agree to the terms");
     const [continueText, setContinueText] = useState("Continue");
 
+    const [isSelected, setIsSelected] = useState(false);
     return (
         <ScrollView
             contentContainerStyle={{
@@ -79,7 +97,7 @@ const TandC = ({ navigation }) => {
                             fontSize: Platform.OS == "android" ? 24 : 27,
                             fontWeight: "600",
                             color: AppStyles.colour.textGreen,
-                            width: 300,
+                            //   width: 300,
                             // textAlign: "center",
                             fontFamily: AppStyles.font.subHeadings,
                             marginBottom: 25,
