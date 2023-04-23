@@ -71,10 +71,14 @@ function AssignModules() {
             .then(response=>{
                 const val = response.data; 
 				let array = []
+                 
 				for(let i = 0; i<val.length;i++){
-					array.push(JSON.parse(val[i].content))
+                    let temp = JSON.parse(val[i].content)
+                    temp["moduleId"] = val[i].moduleId
+					array.push(temp)
 				}
 				setAllModules(array)
+                console.log(array)
         })
 	},[])
 
@@ -87,16 +91,19 @@ function AssignModules() {
 		setQuestions(temp)
 	}
 
-   
+   const onChangeDropdown = (index,event) => {
+		console.log(index)
+   }
+
     function FormQuestions(qno){
         return(<Box w = 'flex' m={3} padding={2}>
 			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardBody color='teal.700'>
 					<Heading color='teal.700' align='left' size='lg'>Module {qno.qno} </Heading>
-					<Select placeholder='Select A Module'>
+					<Select placeholder='Select A Module' onChange={(event)=> onChangeDropdown(qno.qno-1,event)}>
                         {
                             allModules.map((item,index)=>{
-                                return <option value = {index}>{item.title}</option>
+                                return (<option value = {item.moduleId} key={index} >{item.title}</option>)
                             })
                         }
                     </Select>
@@ -125,11 +132,7 @@ function AssignModules() {
 
 	return (<div>
 		<Flex>
-
-			{/* This be side nav bar */}
 			<SideDoctor />
-
-			{/* This be main screen */}
 			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Assign Modules</Text> </Heading>

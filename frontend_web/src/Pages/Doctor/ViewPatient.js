@@ -247,12 +247,6 @@ function ViewPatient(){
 		);
     }
 
-    var values = getRange(200).map(index => {
-		return {
-		  date: shiftDate(today, -index),
-		  value: getRandomInt(1, 6),
-		};
-	});
 
 	
 	useEffect(()=>{

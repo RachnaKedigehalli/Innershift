@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
 import PieChart from '../Components/DoughnutAdmin'
+import PieChartDoctor from '../Components/DoughnutDoctor'
 
 
 function Dashboard(){
@@ -88,8 +89,10 @@ function Dashboard(){
                         <Box maxW="20rem" maxH="20rem" mt = '5rem'>
                             <PieChart/>
                         </Box>
-                    :
-                        <></>
+                    :       
+                        <Box maxW="20rem" maxH="20rem" mt = '5rem'>
+                            <PieChartDoctor/>
+                        </Box>
                     }
                 </GridItem>
             </Grid>
