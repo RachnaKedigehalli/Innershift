@@ -37,7 +37,7 @@ public class ModuleService {
         ModuleAssignment moduleAssignment = new ModuleAssignment();
         moduleAssignment.setModuleId(mId);
         moduleAssignment.setPatientId(pId);
-        moduleAssignment.setScheduled_timestamp(sd);
+        moduleAssignment.setScheduled(sd);
         moduleAssignment.setDuration(duration);
         moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(status);
@@ -67,7 +67,7 @@ public class ModuleService {
 
     }
     public Optional<List<Module>> getModulesByPid(Integer pid) {
-        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientIdOrderByScheduled_timestamp(pid);
+        Optional<List<ModuleAssignment>> moduleAssignments = moduleAssignmentRepository.getModuleAssignmentByPatientIdOrderByScheduled(pid);
         List<Module> ret = new ArrayList<>();
         moduleAssignments.ifPresent((mAs)->{
             for(ModuleAssignment mA: mAs) {

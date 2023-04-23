@@ -257,7 +257,7 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<ModuleAssignment> assignModule(@Valid @RequestBody ModuleAssignment ma) {
         return ResponseEntity.ok(
-                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getScheduled_timestamp(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
+                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getScheduled(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
         );
     }
 
@@ -283,7 +283,7 @@ public class ApplicationController {
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<?> updateOrderByModuleAssignedId(@Valid @RequestBody ModuleAssignment ma) {
-        moduleService.updateOrderByModuleAssignedId(ma.getModuleAssignedId(), ma.getScheduled_timestamp());
+        moduleService.updateOrderByModuleAssignedId(ma.getModuleAssignedId(), ma.getScheduled());
         return ResponseEntity.ok().build();
     }
 
