@@ -12,7 +12,7 @@ import VerifyEmail from "./VerifyEmail";
 import AdditionalInfo from "./AdditionalInfo";
 import Referral from "./Referral";
 import BaseLineCheckpoint from "./BaseLineCheckpoint";
-import SelectLanguage from "./SelectLanguage";
+import SelectLanguage from "./../../screens/SelectLanguage";
 
 const Stack = createNativeStackNavigator();
 

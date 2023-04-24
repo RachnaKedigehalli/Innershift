@@ -6,28 +6,29 @@ import {
     Image,
     StatusBar,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { CheckBox } from "@rneui/themed";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
+import { AuthContext } from "./AuthContext";
 
 const translate = require("google-translate-api-x");
 
 const TandC = ({ navigation }) => {
-    const [TandCHeading, setTandCHeading] = useState(
-        "Please read the terms of use carefully"
-    );
-    useEffect(() => {
-        const translate_func = async () => {
-            await translate(TandCHeading, {
-                to: "hi",
-            }).then((res) => setTandCHeading(res.text));
-        };
-        translate_func();
-    }, []);
+    const { appLanguage } = useContext(AuthContext);
 
-    const [TandCText, setTandCText] =
-        useState(`The delimited scope and purpose of the Push-D program 
+    const translateText = (originalText, setText) => {
+        useEffect(() => {
+            translate(originalText, {
+                from: "en",
+                to: appLanguage,
+            }).then((res) => setText(res.text));
+        }, []);
+    };
+
+    const originalTexts = {
+        TandCHeading: "Please read the terms of use carefully",
+        TandCText: `The delimited scope and purpose of the Push-D program 
     The Information contained in, or accessed through, this website is for your general information and Self-development use only and
     is not intended to be used as medical advice and should not be used to diagnose, treat, cure or prevent any medical condition.
     The diagnosis and treatment of clinical depression and anxiety requires a medical practitioner or qualified mental health
@@ -52,18 +53,27 @@ const TandC = ({ navigation }) => {
     If you think you may have a medical emergency, call a local help-line/reach out to an emergency service.
     NIMHANS does not recommend or endorse any specific tests, providers (including, but not limited to, hospitals and physicians),
     products, procedures, or other information that may be mentioned on the website. Any opinions expressed on the website are the
-    opinions of the individual authors, not of NIMHANS.`);
+    opinions of the individual authors, not of NIMHANS.`,
+        acceptText: "I agree to the terms",
+        continueText: "Continue",
+    };
 
-    useEffect(() => {
-        translate(TandCText, {
-            to: "kn",
-        }).then((res) => setTandCText(res.text));
-    }, []);
+    const [TandCHeading, setTandCHeading] = useState(
+        originalTexts.TandCHeading
+    );
+    const [TandCText, setTandCText] = useState(originalTexts.TandCText);
+    const [acceptText, setAcceptText] = useState(originalTexts.acceptText);
+    const [continueText, setContinueText] = useState(
+        originalTexts.continueText
+    );
 
-    const [acceptText, setAcceptText] = useState("I agree to the terms");
-    const [continueText, setContinueText] = useState("Continue");
+    translateText(originalTexts.TandCHeading, setTandCHeading);
+    translateText(originalTexts.TandCText, setTandCText);
+    translateText(originalTexts.acceptText, setAcceptText);
+    translateText(originalTexts.continueText, setContinueText);
 
     const [isSelected, setIsSelected] = useState(false);
+
     return (
         <ScrollView
             contentContainerStyle={{
