@@ -11,13 +11,11 @@ function SideAdmin() {
 	const location = useLocation();
 
 	const clickDashBoard = () => {
-		
+		navigate('/home')	
 	}
 
 	const onClickDoctors = ()=>{
-        navigate('/doctor',{
-            state:location.state.response,
-        })
+        navigate('/doctor')
     }
 	const onClickModules = () => {
         navigate('/admin/modules')

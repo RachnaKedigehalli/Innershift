@@ -12,10 +12,8 @@ import { useStateValue } from '../../StateProvider'
 import SideAdmin from '../../Components/SideAdmin'
 
 
-const onAddDoctor = (data,navigate) =>{
-    navigate("/adddoctor/page1",{
-        state:data
-    })
+const onAddDoctor = (navigate) =>{
+    navigate("/adddoctor/page1")
 }
 
 function PatientCard({name, desc}){
@@ -86,7 +84,7 @@ function Doctor(){
                                 </GridItem>
 
                                 <GridItem rowSpan={2} colSpan={1}  >
-                                    <Button onClick={()=>onAddDoctor(location.state,navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
+                                    <Button onClick={()=>onAddDoctor(navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
                                         <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
                                     </Button>
                                 </GridItem>        

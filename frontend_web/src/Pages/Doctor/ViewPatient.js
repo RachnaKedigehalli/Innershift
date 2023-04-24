@@ -128,7 +128,7 @@ function ViewPatient(){
 		return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
 	}
 	
-	const ModuleCard = ({ name, type, desc,index}) => {
+	const ModuleCard = ({ name, type, desc, date,index}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
 				<CardBody>
@@ -138,6 +138,7 @@ function ViewPatient(){
 							<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
 						</HStack>
 						<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
+						<Text h={10} color='teal.700' noOfLines={3}> {date} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
 							{/* <UnAssignDialog/> */}
@@ -272,6 +273,7 @@ function ViewPatient(){
 				array.push({...temp,moduleAssignedId:val[i].moduleAssignment.moduleAssignedId,scheduled:val[i].moduleAssignment.scheduled})
 			}
 			setAllModules(array)
+			console.log(array)
         })
 
 
@@ -325,7 +327,7 @@ function ViewPatient(){
 							{allModules.map((item,index)=>{
 								return(
 									<GridItem mt='7em' mr='5em' key={index}>
-										<ModuleCard name={item.title} desc={item.description} index={index} type="form"/>
+										<ModuleCard name={item.title} desc={item.description} date={item.scheduled.slice(0,10)} index={index} type="form"/>
 									</GridItem>
 								)
 							})}

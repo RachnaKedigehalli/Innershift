@@ -66,7 +66,6 @@ function Auth(){
 
     return(
         <div>
-
             <Flex>
                 <Box bg={DARK_OLIVE} w='20%' minHeight='100vh'/>
                 <VStack minHeight='100vh' align='center' w='100%'>

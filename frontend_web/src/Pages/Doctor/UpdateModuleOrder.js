@@ -25,11 +25,10 @@ function UpdateOrder(){
 	const location = useLocation(); 
 
 	const [state,dispatch] = useStateValue();
-    const [date,updateDate] = useState(new Date()); 
+    const [date,updateDate] = useState(location.state.module.scheduled); 
 
     useEffect(()=>{
-        console.log(location.state)
-        updateDate(location.state.module.scheduled)
+        console.log(date)
     },[])
 
     const onSubmit = () =>{
@@ -48,7 +47,6 @@ function UpdateOrder(){
         axios.post('http://localhost:8080/api/v1/app/updateOrder',dict, auth)
             .then(response=>{
                 console.log(response.data)
-                // navigate("/doctor/patients")
         })
     }
 

@@ -1,11 +1,10 @@
 //Internal 
-import { BrowserRouter,Route,Routes} from 'react-router-dom';
+import { BrowserRouter,Navigate,Route,Routes} from 'react-router-dom';
 
 //Styles
 import './App.css';
 
 //Pages
-import Home from './Pages/Home';
 import Dashboard from './Pages/Dashboard';
 import Auth from './Pages/Authentication';
 import Doctor from './Pages/Admin/Doctor';
@@ -14,7 +13,7 @@ import DoctorProfile from './Pages/Profile';
 import UpdateDoctor_user from './Pages/Admin/UpdateDoctor_user';
 
 
-import { StateProvider } from "./StateProvider";
+import { StateProvider, useStateValue } from "./StateProvider";
 
 import AdminModules from './Pages/Admin/Modules';
 import AddModule from './Pages/Admin/AddModule';
@@ -28,7 +27,18 @@ import DoctorChat from './Pages/Doctor/Chat';
 import AssignModules from './Pages/Doctor/AssignModules';
 import UpdateOrder from './Pages/Doctor/UpdateModuleOrder';
 
+function PrivateRoute({ children }) {
+  const [state,dispatch] = useStateValue(); 
+  return state.adminToken ? <>{children}</> : <Navigate to="/auth" />;
+}
+
+const Private = ({Component}) => {
+  const [state, dispatch] = useStateValue(); 
+  return state.adminToken? <>{Component}</> : <Navigate to="/auth"/>
+} 
+
 function App() {
+
   let initialState = {
     adminToken: null,
     role: null,
@@ -76,7 +86,29 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Auth />} /> 
-          <Route path="/home" element={<Dashboard/>} />
+          <Route path="/auth" element={<Auth />} /> 
+
+          
+          <Route path="/home" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+          <Route path="/doctor" element={<PrivateRoute><Doctor/></PrivateRoute>} /> 
+          <Route path="/adddoctor/page1" element={<PrivateRoute><AddDoctor_user /></PrivateRoute>} /> 
+          <Route path="/updatedoctor" element={<PrivateRoute><UpdateDoctor_user /></PrivateRoute>} /> 
+          <Route path="/profile" element={<PrivateRoute><DoctorProfile /></PrivateRoute>} />
+
+          <Route path="/admin/modules" element={<PrivateRoute><AdminModules /></PrivateRoute>} />
+          <Route path="/admin/addmodule" element={<PrivateRoute><AddModule /></PrivateRoute>} />
+          <Route path="/admin/addquestions" element={<PrivateRoute><AddQuestions /></PrivateRoute>} />
+          
+
+          <Route path="/doctor/patients" element={<PrivateRoute><DoctorPatients /></PrivateRoute>} />
+          <Route path="/doctor/viewpatient" element={<PrivateRoute><ViewPatient /></PrivateRoute>} />
+          <Route path="/doctor/chat" element={<PrivateRoute><DoctorChat /></PrivateRoute>} />
+          <Route path="/doctor/assignmodules" element={<PrivateRoute><AssignModules /></PrivateRoute>} />
+          <Route path="/doctor/reorder" element={<PrivateRoute><UpdateOrder /></PrivateRoute>} />
+          <Route path="/dummyloc" element={<PrivateRoute><Dummypage /></PrivateRoute>} />
+
+
+          {/* <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
           <Route path="/doctor" element={<Doctor />} /> 
           <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
@@ -89,15 +121,13 @@ function App() {
           <Route path="/admin/addquestions" element={<AddQuestions />} />
           
 
-          {/* Doctor */}
           <Route path="/doctor/patients" element={<DoctorPatients />} />
           <Route path="/doctor/viewpatient" element={<ViewPatient />} />
           <Route path="/doctor/chat" element={<DoctorChat />} />
           <Route path="/doctor/assignmodules" element={<AssignModules />} />
           <Route path="/doctor/reorder" element={<UpdateOrder />} />
-          
+          <Route path="/dummyloc" element={<Dummypage />} /> */}
 
-          <Route path="/dummyloc" element={<Dummypage />} />
         </Routes>
       </BrowserRouter>
     </StateProvider>
