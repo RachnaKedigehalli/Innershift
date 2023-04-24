@@ -10,6 +10,8 @@ import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
 import PieChart from '../Components/DoughnutAdmin'
 import PieChartDoctor from '../Components/DoughnutDoctor'
+import SideAdmin from '../Components/SideAdmin'
+import SideDoctor from '../Components/SideDoctor'
 
 
 function Dashboard(){
@@ -48,37 +50,14 @@ function Dashboard(){
                 >
 
                 <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <Center mt = '3em' mb = '12em'>  
+                    {/* <Center mt = '3em' mb = '12em'>  
                         <Image src={logo} h='9em' />
-                    </Center>
+                    </Center> */}
 
-                    <Button ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
-                    </Button>
-
-                    
                     {(state.role === 'ADMIN')?
-                        <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
-                        </Button>:
-                        <></>
+                        <SideAdmin/>:
+                        <SideDoctor/>
                     }
-                    <Button onClick={onClickPatients} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
-                    </Button>
-                    
-
-                    <Button onClick={onClickModules} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
-                    </Button>
-                    
-                    {(state.role === 'DOCTOR')?     
-                        <Button onClick={onClickProfile} ml = '5em' mt ='2em' w = '12em' colorScheme='teal' variant='solid'>
-                            <FontAwesomeIcon icon={faUser} style={{marginRight:"0.5em"}}/>  Profile
-                        </Button>
-                    :<></>}
-                    
-
                 </GridItem>
                 
                 

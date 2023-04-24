@@ -1,9 +1,8 @@
-import { faChartPie, faDatabase, faStethoscope } from "@fortawesome/free-solid-svg-icons";
+import { faChartPie, faDatabase, faStethoscope, faUser} from "@fortawesome/free-solid-svg-icons";
 import logo from "../Assets/Logo/Logo_name.png";
 import { DESKTOP_BG_MEDIUM, } from "../Constants";
 import { Button, Image, Box, VStack, Center} from '@chakra-ui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
 
@@ -13,24 +12,21 @@ function SideDoctor() {
 	const [state,dispatch] = useStateValue();
 
 	const clickDashBoard = () => {
-		console.log(state);
-		navigate('/dummyloc', {
-			// state: location.state
-		})
+		navigate('/home')
 	}
 
-	const clickPatients = () => {
-		// console.log("i cri");
-		navigate('/doctor/patients', {
-			state: location.state
-		})
-	}
+    const onClickModules = () => {
+        navigate('/admin/modules')
+    }
 
-	const clickModules = () => {
-		navigate('/dummyloc', {
-			// state: location.state
-		})
-	}
+    const onClickPatients = () => {
+        navigate("/doctor/patients")
+    }
+
+    const onClickProfile = ()=>{
+        navigate("/profile")
+    }
+
 	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' position='fixed'>
 		<VStack spacing={3} align='center'>
 			<Image src={logo} h='9em' />
@@ -43,13 +39,17 @@ function SideDoctor() {
 						<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 					</Button>
 
-					<Button onClick={clickPatients} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
+					<Button onClick={onClickPatients} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 					</Button>
 
-					<Button onClick={clickModules} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
+					<Button onClick={onClickModules} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
 					</Button>
+
+					<Button onClick={onClickProfile} ml = '5em' mt ='2em' w = '12em' bg='teal.700' color='white'>
+                            <FontAwesomeIcon icon={faUser} style={{marginRight:"0.5em"}}/>  Profile
+                    </Button>
 				</VStack>
 			</Center>
 			
