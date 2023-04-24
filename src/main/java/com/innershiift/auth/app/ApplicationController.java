@@ -2,6 +2,7 @@ package com.innershiift.auth.app;
 
 import com.innershiift.auth.Module.Module;
 import com.innershiift.auth.Module.ModuleAssignment;
+import com.innershiift.auth.Module.ModuleResponse;
 import com.innershiift.auth.Module.ModuleService;
 import com.innershiift.auth.Mood.Mood;
 import com.innershiift.auth.Mood.MoodService;
@@ -273,7 +274,7 @@ public class ApplicationController {
     @PostMapping("/getModulesByPid")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin
-    public ResponseEntity<List<Module>> getModulesByPid(@Valid @RequestBody Patient p) {
+    public ResponseEntity<List<ModuleResponse>> getModulesByPid(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(
                 moduleService.getModulesByPid(p.getPatientId()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
         );
