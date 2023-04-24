@@ -75,6 +75,7 @@ public class ModuleService {
                 Optional<Module> m = moduleRepository.getModuleByModuleId(mA.getModuleId());
                 m.ifPresent(mr::setModule);
                 mr.setModuleAssignment(mA);
+                ret.add(mr);
             }
         });
         return Optional.of(ret);
