@@ -6,6 +6,8 @@ import com.innershiift.auth.Module.ModuleResponse;
 import com.innershiift.auth.Module.ModuleService;
 import com.innershiift.auth.Mood.Mood;
 import com.innershiift.auth.Mood.MoodService;
+import com.innershiift.auth.Referral.Referral;
+import com.innershiift.auth.Referral.ReferralService;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
@@ -44,6 +46,7 @@ import java.util.Optional;
 public class ApplicationController {
 
     private final DoctorService doctorService;
+    private final ReferralService referralService;
     private final ConsultationService consultationService;
     private final MoodService moodService;
     private final PatientService patientService;
@@ -288,6 +291,34 @@ public class ApplicationController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/getReferralByDoctorId")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<Referral> getReferralByDoctorId(@Valid @RequestBody Integer doctorId){
+        Optional<Referral> ret = referralService.getReferralByDoctorId(doctorId);
+        return  ResponseEntity.ok((ret.isPresent()?ret.get():null));
+    }
 
+    @GetMapping("/getReferralByDoctor")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<Referral> getReferralByDoctor(@Valid @RequestBody Doctor d){
+        Optional<Referral> ret = referralService.getReferralByDoctor(d);
+        return  ResponseEntity.ok((ret.isPresent()?ret.get():null));
+    }
 
+    @GetMapping("/getDoctorByReferral")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<Doctor> getReferralByDoctorId(@Valid @RequestBody String referral){
+        Optional<Integer> dret = referralService.getDoctorByReferral(referral);
+        if(dret.isPresent()){
+            Optional<Doctor> doc = doctorService.getDoctorByID(dret.get());
+            if(doc.isPresent()){
+                return new ResponseEntity.of(doc.get());
+            }
+           else return ResponseEntity<Doctor>(null);
+        }
+        else return ResponseEntity.of(null);
+    }
 }
