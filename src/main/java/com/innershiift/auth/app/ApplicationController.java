@@ -257,7 +257,7 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<ModuleAssignment> assignModule(@Valid @RequestBody ModuleAssignment ma) {
         return ResponseEntity.ok(
-                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getScheduled(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
+                moduleService.assignModule(ma.getPatientId(), ma.getModuleId(), ma.getScheduled(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't assign module"))
         );
     }
 

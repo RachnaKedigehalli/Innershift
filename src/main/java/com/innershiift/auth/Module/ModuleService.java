@@ -32,14 +32,14 @@ public class ModuleService {
         moduleRepository.deleteById(moduleId);
     }
 
-    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Date sd, Date start, String duration, Integer status){
+    public Optional<ModuleAssignment> assignModule(Integer pId, Integer mId, Date sd, Integer status){
         String response = "";
         ModuleAssignment moduleAssignment = new ModuleAssignment();
         moduleAssignment.setModuleId(mId);
         moduleAssignment.setPatientId(pId);
         moduleAssignment.setScheduled(sd);
-        moduleAssignment.setDuration(duration);
-        moduleAssignment.setStart_timestamp(start);
+//        moduleAssignment.setDuration(duration);
+//        moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(status);
         return Optional.of(moduleAssignmentRepository.save(moduleAssignment));
     }
