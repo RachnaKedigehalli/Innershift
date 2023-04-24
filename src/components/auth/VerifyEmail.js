@@ -1,19 +1,41 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 import CustomTextInput from "../CustomTextInput";
 import { AuthContext } from "./AuthContext";
 
+const translate = require("google-translate-api-x");
+
 const Register = ({ route, navigation }) => {
-    const [enterEmailText, setenterEmailText] = useState(
-        "Verify email ID with OTP"
+    const { verifyOTP, appLanguage } = useContext(AuthContext);
+    const { email } = route.params;
+
+    const translateText = (originalText, setText) => {
+        useEffect(() => {
+            translate(originalText, {
+                from: "en",
+                to: appLanguage,
+            }).then((res) => setText(res.text));
+        }, []);
+    };
+
+    const originalTexts = {
+        enterEmailText: "Verify email ID with OTP",
+        continueText: "Verify",
+    };
+
+    const [enterEmailText, setEnterEmailText] = useState(
+        originalTexts.enterEmailText
     );
+    const [continueText, setContinueText] = useState(
+        originalTexts.continueText
+    );
+    translateText(originalTexts.enterEmailText, setEnterEmailText);
+    translateText(originalTexts.continueText, setContinueText);
+
     const [otp, setOtp] = useState("");
     const [isVerified, setIsVerified] = useState();
-    const [continueText, setContinueText] = useState("Verify");
-    const { verifyOTP } = useContext(AuthContext);
-    const { email } = route.params;
 
     return (
         <ScrollView

@@ -1,18 +1,15 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 import CustomTextInput from "../CustomTextInput";
 import { AuthContext } from "./AuthContext";
 
+const translate = require("google-translate-api-x");
+
 const Register = ({ navigation }) => {
-    const [enterEmailText, setenterEmailText] = useState(
-        "Enter your email ID to get OTP"
-    );
-    const [emailID, setEmailID] = useState("");
-    const [continueText, setContinueText] = useState("Get OTP");
-    const [isLoading, setIsLoading] = useState(false);
-    const { getOTP } = useContext(AuthContext);
+    const { getOTP, appLanguage } = useContext(AuthContext);
+
     const validate = (text) => {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
         if (reg.test(text) === false) {
@@ -22,6 +19,31 @@ const Register = ({ navigation }) => {
         }
     };
 
+    const translateText = (originalText, setText) => {
+        useEffect(() => {
+            translate(originalText, {
+                from: "en",
+                to: appLanguage,
+            }).then((res) => setText(res.text));
+        }, []);
+    };
+
+    const originalTexts = {
+        enterEmailText: "Enter your email ID to get OTP",
+        continueText: "Get OTP",
+    };
+    const [enterEmailText, setEnterEmailText] = useState(
+        originalTexts.enterEmailText
+    );
+    const [continueText, setContinueText] = useState(
+        originalTexts.continueText
+    );
+
+    translateText(originalTexts.enterEmailText, setEnterEmailText);
+    translateText(originalTexts.continueText, setContinueText);
+
+    const [emailID, setEmailID] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     return (
         <ScrollView
             contentContainerStyle={{

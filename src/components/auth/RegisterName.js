@@ -6,18 +6,42 @@ import {
     ScrollView,
     Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 import CustomTextInput from "../CustomTextInput";
+import { AuthContext } from "./AuthContext";
+
+const translate = require("google-translate-api-x");
 
 const RegisterName = ({ route, navigation }) => {
-    const [enterNameText, setEnterNameText] = useState("Enter your full name");
+    const { appLanguage } = useContext(AuthContext);
+    const { email } = route.params;
+
+    const translateText = (originalText, setText) => {
+        useEffect(() => {
+            translate(originalText, {
+                from: "en",
+                to: appLanguage,
+            }).then((res) => setText(res.text));
+        }, []);
+    };
+
+    const originalTexts = {
+        enterNameText: "Enter your full name",
+        continueText: "Continue",
+    };
+    const [enterNameText, setEnterNameText] = useState(
+        originalTexts.enterNameText
+    );
+    const [continueText, setContinueText] = useState(
+        originalTexts.continueText
+    );
+    translateText(originalTexts.enterNameText, setEnterNameText);
+    translateText(originalTexts.continueText, setContinueText);
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-
-    const [continueText, setContinueText] = useState("Continue");
-    const { email } = route.params;
 
     return (
         <ScrollView
