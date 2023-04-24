@@ -7,6 +7,7 @@ import com.innershiift.auth.Module.ModuleService;
 import com.innershiift.auth.Mood.Mood;
 import com.innershiift.auth.Mood.MoodService;
 import com.innershiift.auth.Referral.Referral;
+import com.innershiift.auth.Referral.ReferralRequest;
 import com.innershiift.auth.Referral.ReferralService;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
@@ -112,7 +113,7 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<Consultation> addConsultation(@Valid @RequestBody Consultation cons) {
         return ResponseEntity.ok(
-                consultationService.addConsultationBetweenUserId(cons.getDoctorId(), cons.getPatientId())
+                consultationService.addConsultationBetweenUserId(cons.getDoctorId(), cons.getPatientId(), false)
                         .orElseThrow(()-> new IllegalStateException("Could not add consultations"))
         );
     }
@@ -291,34 +292,42 @@ public class ApplicationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/getReferralByDoctorId")
-    @PreAuthorize("hasAnyAuthority('DOCTOR')")
-    @CrossOrigin
-    public ResponseEntity<Referral> getReferralByDoctorId(@Valid @RequestBody Integer doctorId){
-        Optional<Referral> ret = referralService.getReferralByDoctorId(doctorId);
-        return  ResponseEntity.ok((ret.isPresent()?ret.get():null));
-    }
+//    @GetMapping("/getReferralByDoctorId")
+//    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+//    @CrossOrigin
+//    public ResponseEntity<Referral> getReferralByDoctorId(@Valid @RequestBody Integer doctorId){
+//        Optional<Referral> ret = referralService.getReferralByDoctorId(doctorId);
+//        return  ResponseEntity.ok((ret.orElse(null)));
+//    }
 
-    @GetMapping("/getReferralByDoctor")
+    @PostMapping("/getReferralByDoctor")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<Referral> getReferralByDoctor(@Valid @RequestBody Doctor d){
         Optional<Referral> ret = referralService.getReferralByDoctor(d);
-        return  ResponseEntity.ok((ret.isPresent()?ret.get():null));
+        if(ret.isPresent()) {
+            return  ResponseEntity.ok(ret.get());
+        }
+        else {
+            Optional<Referral> r = referralService.generateReferralForDoctor(d);
+            return  ResponseEntity.ok(r.orElseThrow(()-> new RuntimeException("couldn't generate referral")));
+        }
+
     }
 
-    @GetMapping("/getDoctorByReferral")
-    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @PostMapping("/getDoctorByReferral")
+    @PreAuthorize("hasAnyAuthority('USER')")
     @CrossOrigin
-    public ResponseEntity<Doctor> getReferralByDoctorId(@Valid @RequestBody String referral){
-        Optional<Integer> dret = referralService.getDoctorByReferral(referral);
+    public ResponseEntity<Object> getDoctorByReferral(@Valid @RequestBody ReferralRequest referral){
+        Optional<Integer> dret = referralService.getDoctorByReferral(referral.getReferral());
         if(dret.isPresent()){
-            Optional<Doctor> doc = doctorService.getDoctorByID(dret.get());
+            Optional<Object> doc = doctorService.getDoctorByID(dret.get());
+            consultationService.addConsultationBetweenUserId(dret.get(), referral.getPatientId(), true);
             if(doc.isPresent()){
-                return new ResponseEntity.of(doc.get());
+                return ResponseEntity.ok(doc.orElse(null));
             }
-           else return ResponseEntity<Doctor>(null);
+           else return ResponseEntity.notFound().build();
         }
-        else return ResponseEntity.of(null);
+        else return ResponseEntity.notFound().build();
     }
 }

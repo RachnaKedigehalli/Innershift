@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,18 @@ public class ReferralService {
 
     }
 
+    private String generateRandomString() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 6;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
     public Optional<Referral> generateReferralForDoctor(Doctor d){
         List<Referral> rl = referralRepository.findAll();
         for(Referral r :rl){
@@ -53,10 +66,10 @@ public class ReferralService {
                 return Optional.of(r);
             }
         }
-        String s = "Ref:"+d.toString();
-        if(s.length()>10){
-            s=s.substring(0,9);
-        }
+        String s = generateRandomString();
+//        if(s.length()>10){
+//            s=s.substring(0,9);
+//        }
         Referral r = new Referral();
         r.setReferral(s);
         r.setDoctorId(d.getDoctorId());

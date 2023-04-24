@@ -37,11 +37,11 @@ public class ConsultationService {
         return  Optional.of(ret);
 
     }
-    public Optional<Consultation> addConsultationBetweenUserId(Integer id1,Integer id2){
+    public Optional<Consultation> addConsultationBetweenUserId(Integer id1,Integer id2, boolean status){
         Consultation c = new Consultation();
         c.setPatientId(id2);
         c.setDoctorId(id1);
-        c.setStatus(false);
+        c.setStatus(status);
         return Optional.of(consultationRepository.save(c));
     }
     public Optional<Consultation> setConsultationStatus(Integer cid,Boolean status){

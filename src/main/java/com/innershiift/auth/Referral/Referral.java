@@ -1,6 +1,7 @@
 package com.innershiift.auth.Referral;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Table(name = "_referral")
 public class Referral {
     @Id
+    @GeneratedValue
     private  Integer referralId;
 
     private Integer doctorId;
