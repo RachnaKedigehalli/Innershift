@@ -9,38 +9,40 @@ import AppStyles from "./AppStyles";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const AppNav = () => {
-    const { isLoading, userToken } = useContext(AuthContext);
-    const [isMoodSet, setIsMoodSet] = useState(false);
-    if (isLoading) {
-        <View
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <ActivityIndicator size={"large"} />
-        </View>;
-    }
+  const { isLoading, userToken } = useContext(AuthContext);
+  const [isMoodSet, setIsMoodSet] = useState(false);
+  if (isLoading) {
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ActivityIndicator size={"large"} />
+    </View>;
+  }
 
-    return (
-        <NavigationContainer>
-            {/* <GestureHandlerRootView> */}
-            <StatusBar
-                backgroundColor={AppStyles.colour.white}
-                barStyle="light-content"
-            />
-            {userToken == null ? (
-                <AuthStack />
-            ) : isMoodSet == false ? (
-                <Mood setIsMoodSet={setIsMoodSet} />
-            ) : (
-                <BottomTabNavigator />
-            )}
-            {/* <AppStack /> */}
-            {/* </GestureHandlerRootView> */}
-        </NavigationContainer>
-    );
+  console.log("isMoodset in AppNav ", isMoodSet);
+
+  return (
+    <NavigationContainer>
+      {/* <GestureHandlerRootView> */}
+      <StatusBar
+        backgroundColor={AppStyles.colour.white}
+        barStyle="light-content"
+      />
+      {userToken == null ? (
+        <AuthStack />
+      ) : isMoodSet == false ? (
+        <Mood setIsMoodSet={setIsMoodSet} />
+      ) : (
+        <BottomTabNavigator />
+      )}
+      {/* <AppStack /> */}
+      {/* </GestureHandlerRootView> */}
+    </NavigationContainer>
+  );
 };
 
 export default AppNav;

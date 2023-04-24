@@ -435,17 +435,17 @@ const BaseLineCheckpoint = ({ route, navigation }) => {
             // navigation.navigate("Register");
             await updateBaselineScore();
             // register()
-            // await register(
-            //     email,
-            //     firstName,
-            //     lastName,
-            //     password,
-            //     dob,
-            //     gender,
-            //     phoneNumber,
-            //     referral,
-            //     baselineScore
-            // )
+            await register(
+              email,
+              firstName,
+              lastName,
+              password,
+              dob,
+              gender,
+              phoneNumber,
+              referral,
+              baselineScore
+            );
           }}
         />
       </View>

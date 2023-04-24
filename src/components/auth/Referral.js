@@ -59,6 +59,7 @@ const Referral = ({ route, navigation }) => {
   };
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -167,7 +168,7 @@ const Referral = ({ route, navigation }) => {
                     dob: dob,
                     gender: gender.id,
                     phoneNumber: phoneNumber,
-                    referral: referral,
+                    referral: "",
                   });
                   // await register(
                   //   email,
