@@ -30,6 +30,7 @@
     "expo-av": "~13.0.3",
     "expo-cli": "^6.3.2",
     "expo-font": "~11.0.1",
+    "expo-localization": "~14.0.0",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "expo-video-player": "^2.2.0",
@@ -44,8 +45,7 @@
     "react-native-screens": "~3.18.0",
     "react-native-webview": "11.23.1",
     "sockjs-client": "^1.6.1",
-    "text-encoding": "^0.7.0",
-    "expo-localization": "~14.0.0"
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

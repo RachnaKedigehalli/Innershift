@@ -25,6 +25,8 @@ const CustomTextInput = (props) => {
       cursorColor={AppStyles.colour.textGreen}
       secureTextEntry={props.secureTextEntry}
       onPressOut={props.onPressOut}
+      autoFocus={props.autoFocus}
+      showSoftInputOnFocus={props.showSoftInputOnFocus}
     />
   );
 };
