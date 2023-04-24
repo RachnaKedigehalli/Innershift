@@ -113,7 +113,7 @@ function AssignModules() {
 
 					<Heading color='teal.700' align='left' size='md'>Choose the Date: </Heading>
 
-					<DatePicker onChange={(event)=>onChangeDate(qno.qno-1,event)} value={tasks[qno.qno-1].date} />
+					<DatePicker onChange={(event)=>onChangeDate(qno.qno-1,event)} minDate={new Date()} value={tasks[qno.qno-1].date} />
 
 					<Heading mt='1vw' mb = '1vw' color='teal.700' align='left' size='md'>Choose the Module:</Heading>
 					<Select  placeholder='Select A Module' onChange={(event)=> onChangeDropdown(qno.qno-1,event)}>

@@ -26,6 +26,7 @@ import Dummypage from './Pages/dummypage';
 import ViewPatient from './Pages/Doctor/ViewPatient';
 import DoctorChat from './Pages/Doctor/Chat';
 import AssignModules from './Pages/Doctor/AssignModules';
+import UpdateOrder from './Pages/Doctor/UpdateModuleOrder';
 
 function App() {
   let initialState = {
@@ -93,6 +94,7 @@ function App() {
           <Route path="/doctor/viewpatient" element={<ViewPatient />} />
           <Route path="/doctor/chat" element={<DoctorChat />} />
           <Route path="/doctor/assignmodules" element={<AssignModules />} />
+          <Route path="/doctor/reorder" element={<UpdateOrder />} />
           
 
           <Route path="/dummyloc" element={<Dummypage />} />

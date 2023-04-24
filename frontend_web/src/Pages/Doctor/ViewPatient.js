@@ -63,6 +63,15 @@ function ViewPatient(){
 		})
 	}
 
+	const onClickReschedule = (id,index)=>{
+		navigate('/doctor/reorder',{
+			state:{
+				id:id,
+				module:allModules[index]
+			}
+		})
+	}
+
     function UnAssignDialog() {
 		const { isOpen, onOpen, onClose } = useDisclosure()
 		const cancelRef = React.useRef()
@@ -119,7 +128,7 @@ function ViewPatient(){
 		return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
 	}
 	
-	const ModuleCard = ({ name, type, desc, status }) => {
+	const ModuleCard = ({ name, type, desc,index}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
 				<CardBody>
@@ -130,8 +139,8 @@ function ViewPatient(){
 						</HStack>
 						<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-							<Button bg='teal.700' color='white' width='50%'>Review</Button>
-							<UnAssignDialog/>
+							<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
+							{/* <UnAssignDialog/> */}
 						</ButtonGroup>
 					</VStack>
 					
@@ -140,29 +149,6 @@ function ViewPatient(){
 		</div>);
 	}
 
-
-	function pad(val){
-		if (val.toString().length === 1){
-			return "0" + val.toString();
-		}
-		return val;
-	}
-
-    function shiftDate(date, numDays) {
-		date.setHours(0, 0, 0, 0, 0);
-        const newDate = new Date(date);
-        newDate.setDate(newDate.getDate() + numDays);
-		return newDate.getFullYear() +  "-" + pad(newDate.getMonth()+1) + "-" + pad(newDate.getDate());
-        // return newDate.toISOString();
-    }
-
-    function getRange(count) {
-        return Array.from({ length: count }, (_, i) => i);
-    }
-      
-      function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 
     function getMoodString(val){
         if(val === 1){ return "Energetic" };
@@ -224,7 +210,6 @@ function ViewPatient(){
 	}
 	  
     const CalHeatMap = ({data}) => {
-		console.log(data)
 		return (
 			<div w='100%'><StyleWrapper>
 				<FullCalendar
@@ -283,7 +268,8 @@ function ViewPatient(){
 			const val = response.data; 
 			let array = []
 			for(let i = 0; i<val.length;i++){
-				array.push(JSON.parse(val[i].content))
+				var temp = JSON.parse(val[i].module.content)
+				array.push({...temp,moduleAssignedId:val[i].moduleAssignment.moduleAssignedId,scheduled:val[i].moduleAssignment.scheduled})
 			}
 			setAllModules(array)
         })
@@ -330,15 +316,16 @@ function ViewPatient(){
 
 					<HStack w='100%'>
                         {/* module cards */}
-                        <Box w='100%' h='90%'>
+                        <Box w='30vw' >
                             <CalHeatMap data={patientMoods}/>
                         </Box>
+
                         <Box maxHeight='80vh' overflowY='scroll' display='block'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
 							{allModules.map((item,index)=>{
 								return(
 									<GridItem mt='7em' mr='5em' key={index}>
-										<ModuleCard name={item.title} desc={item.description} type="form"/>
+										<ModuleCard name={item.title} desc={item.description} index={index} type="form"/>
 									</GridItem>
 								)
 							})}
