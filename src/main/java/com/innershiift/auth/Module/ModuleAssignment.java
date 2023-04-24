@@ -23,9 +23,6 @@ public class ModuleAssignment {
     @Id
     @GeneratedValue
     private Integer moduleAssignedId;
-
-    private Integer moduleOrder;
-
     private Integer patientId;
     private Integer moduleId;
     private String response;
