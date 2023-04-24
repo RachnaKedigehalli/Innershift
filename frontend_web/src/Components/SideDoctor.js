@@ -43,10 +43,6 @@ function SideDoctor() {
 						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 					</Button>
 
-					<Button onClick={onClickModules} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
-						<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
-					</Button>
-
 					<Button onClick={onClickProfile} ml = '5em' mt ='2em' w = '12em' bg='teal.700' color='white'>
                             <FontAwesomeIcon icon={faUser} style={{marginRight:"0.5em"}}/>  Profile
                     </Button>
