@@ -79,12 +79,13 @@ function Doctor(){
                      
                         <GridItem rowSpan={2} colSpan={4}>
                             <Grid templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
+                                <GridItem> <Heading color='teal.700'> Doctors </Heading> </GridItem>
                                 <GridItem colSpan={2} rowSpan={2} mr='5em'>
                                     <Input placeholder='Search Doctor'/> 
                                 </GridItem>
 
                                 <GridItem rowSpan={2} colSpan={1}  >
-                                    <Button onClick={()=>onAddDoctor(navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
+                                    <Button onClick={()=>onAddDoctor(navigate)} bg='teal.700' size='md' style={{color:"white"}}>
                                         <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
                                     </Button>
                                 </GridItem>        

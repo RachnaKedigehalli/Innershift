@@ -134,7 +134,7 @@ function DoctorPatients(){
 
 	const RequestPatientCard = ({ name, photo, desc,consultationId,status}) => {
 		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+			<Card h='20%'>
 				<CardHeader>
 					<HStack>
 						<Image

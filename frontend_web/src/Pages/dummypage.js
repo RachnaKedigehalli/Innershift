@@ -15,7 +15,7 @@ function Dummypage() {
 			<SideAdmin />
 
 			{/* This be main screen */}
-			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' color='teal' ml='20%'>
+			<Box bg='white' minHeight='100vh' w='80%' color='teal' ml='20%'>
 				<Heading> This is a dummy page</Heading>
 			</Box>
 
