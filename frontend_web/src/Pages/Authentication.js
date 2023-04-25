@@ -69,7 +69,7 @@ function Auth(){
             <Flex>
                 <Box bg={DARK_OLIVE} w='20%' minHeight='100vh'/>
                 <VStack minHeight='100vh' align='center' w='100%'>
-                    <Image src={logo} h='15em' mt={90} />
+                    <Image src={logo} h='15em' mt={61} />
                     <Heading color='teal.700' > Welcome Back</Heading>
                     <Heading color='teal.700' size='sm'>Please Enter Your Details</Heading>
                     <Heading color='teal.700' size='sm' >Username/Email</Heading>
@@ -82,62 +82,6 @@ function Auth(){
                     <Heading color='teal.700' size="xs"> Forgot Password?</Heading>
                 </VStack>
             </Flex>
-            
-            
-            {/* <Grid
-                h='61em'
-                templateRows='repeat(20, 1fr)'
-                templateColumns='repeat(5, 1fr)'
-                >
-                <GridItem rowSpan={20} colSpan={1} bg={DARK_OLIVE}>
-                    
-                </GridItem>
-                
-                <GridItem rowSpan={20} colSpan={4}>
-                    <Grid>
-                        <Center mt = '5em'>
-                            <GridItem rowSpan={4}>
-                                <Image src={logo} h='15em' />
-                            </GridItem>
-                        </Center>
-
-                        <Center>
-                            <GridItem rowSpan={4}>
-                                <Heading> Welcome Back</Heading>
-                            </GridItem>
-                        </Center>
-
-                        <Center>
-                            <GridItem rowSpan={4}>
-                                <Heading size='sm'>Please Enter Your Details</Heading>
-                            </GridItem>
-                        </Center>
-
-                        
-                        <GridItem mt='12em' ml = '25em' mr='25em'>
-                            <Heading size='sm' >Username/Email</Heading>
-                                <Input value={email}  onChange={handleChangeEmail} size='lg' bgColor={LIGHT_GREEN} />
-                        </GridItem>
-                        
-                        <GridItem mt='2em' ml = '25em' mr='25em'>
-                            <Heading size='sm' >Password</Heading>
-                                <Input value={password} type='password' onChange={handleChangePassword} size='lg' bgColor={LIGHT_GREEN} />
-                        </GridItem>
-
-                        <Center mt='2em'>
-                            <Button onClick={onSubmit} colorScheme='teal' size='lg' style={{color:"black"}}>
-                                        Login
-                            </Button>
-                        </Center>
-
-                        <Center mt='2em'>
-                            <Heading size="xs"> Forgot Password?</Heading>
-                        </Center>
-                    </Grid>
-
-                </GridItem>
-
-            </Grid> */}
         </div>
     ); 
 }
