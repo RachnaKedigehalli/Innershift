@@ -179,7 +179,7 @@ function Tmp(){
                     </Flex>
                     {/* <Text h={10} bg='yellow' color='teal.700' noOfLines={3}> To be unlocked on: {date} </Text> */}
                     {/* <ButtonGroup variant='solid' spacing={2} w='flex' align='center'> */}
-                        <Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' align='center' >Reschedule</Button>
+                        {/* <Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' align='center' >Reschedule</Button> */}
                         {/* <Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button> */}
                     {/* </ButtonGroup> */}
                 </VStack>

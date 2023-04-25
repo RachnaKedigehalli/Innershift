@@ -28,6 +28,14 @@ import { useNavigate, useLocation, } from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 
 
+// changes
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-calendar/dist/Calendar.css';
+
+import RescheduleModule from './RescheduleModule';
+
 function ViewPatient(){
 	// add styles as css
 	const StyleWrapper = styled.div`
@@ -71,83 +79,127 @@ function ViewPatient(){
 			}
 		})
 	}
+	// changes
+    const [date,updateDate] = useState(location.state.module.scheduled);
+    const RescheduleDialog = () => {
+        const { isOpen, onOpen, onClose } = useDisclosure()
+        const cancelRef = React.useRef();
+        // const [date,updateDate] = useState(location.state.module.scheduled);
 
-    function UnAssignDialog() {
-		const { isOpen, onOpen, onClose } = useDisclosure()
-		const cancelRef = React.useRef()
-
-		return (
-			<>
-				<Button bg='teal.700' color='white' w='50%' onClick={onOpen}>
-					Unassign
-				</Button>
-
-				<AlertDialog
-					isOpen={isOpen}
-					leastDestructiveRef={cancelRef}
-					onClose={onClose}
-				>
-					<AlertDialogOverlay>
-						<AlertDialogContent>
-							<AlertDialogHeader fontSize='lg' fontWeight='bold'>
-								<Text color='teal.700'> Confirm Action </Text>
-							</AlertDialogHeader>
-
-							<AlertDialogBody>
-								<Text color='teal.700'> Are you sure? You can't undo this action afterwards. </Text>
-							</AlertDialogBody>
-
-							<AlertDialogFooter>
-								<Button color='teal.700' ref={cancelRef} onClick={onClose}>
-									Cancel
-								</Button>
-								<Button bg='teal.700' color='white' onClick={onClose} ml={3}>
-									Unassign
-								</Button>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialogOverlay>
-				</AlertDialog>
-			</>
-		)
-	}
+        const completeReschedule = () =>{
+            console.log(date)
+            const auth = {
+                headers: {
+                    Authorization: `Bearer ${state.adminToken}`
+                }
+            }
     
-    const ModuleIcon = ({type}) => {
-		if(type === "audio"){
-			return <FontAwesomeIcon icon={faHeadphones} size="2xl" style={{ color: "#285e61", }} />
-		}
-		if(type === "reading"){
-			return <FontAwesomeIcon icon={faBookOpen} size="2xl" style={{ color: "#285e61", }} />
-		}
-		if (type === "video") {
-			return <FontAwesomeIcon icon={faCirclePlay} size="2xl" style={{ color: "#285e61", }} />
-		}
-		if (type === "form") {
-			return <FontAwesomeIcon icon={faListUl} size="2xl" style={{ color: "#285e61", }} />
-		}
-		return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
-	}
+            const dict = {
+                moduleAssignedId:location.state.module.moduleAssignedId, 
+                scheduled:date 
+            }
+    
+            axios.post('http://localhost:8080/api/v1/app/updateOrder',dict, auth)
+                .then(response=>{
+                    console.log(response.data)
+            })
+        }
+        
+         
+        return (
+            <>
+                <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
+                    Test
+                </Button>
+    
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                <Text color='teal.700'> Reschedule Date </Text>
+                            </AlertDialogHeader>
+    
+                            <AlertDialogBody>
+                                {/* <Text color='teal.700'>Some text here</Text> */}
+                                <RescheduleModule/>
+                                {/* <DatePicker onChange={(event)=>updateDate(event)} minDate={new Date()} value={date} /> */}
+                                {/* <Box minHeight={260} bg='blue.100'>aaa </Box> */}
+                            </AlertDialogBody>
+    
+                            <AlertDialogFooter>
+                                <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
+                                    Cancel
+                                </Button>
+                                <Button bg='teal.700' color='white' onClick={completeReschedule} ml={3}>
+                                    Confirm
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+            </>
+        )
+    }
+    
+    // const ModuleIcon = ({type}) => {
+	// 	if(type === "audio"){
+	// 		return <FontAwesomeIcon icon={faHeadphones} size="2xl" style={{ color: "#285e61", }} />
+	// 	}
+	// 	if(type === "reading"){
+	// 		return <FontAwesomeIcon icon={faBookOpen} size="2xl" style={{ color: "#285e61", }} />
+	// 	}
+	// 	if (type === "video") {
+	// 		return <FontAwesomeIcon icon={faCirclePlay} size="2xl" style={{ color: "#285e61", }} />
+	// 	}
+	// 	if (type === "form") {
+	// 		return <FontAwesomeIcon icon={faListUl} size="2xl" style={{ color: "#285e61", }} />
+	// 	}
+	// 	return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
+	// }
 	
-	const ModuleCard = ({ name, type, desc, date,index}) => {
-		return (<div>
-			<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
-				<CardBody>
-					<VStack spacing={3} align='left'>
-						<HStack>
-							<ModuleIcon type={type} />
-							<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
-						</HStack>
-						<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
-						<Text h={10} color='teal.700' noOfLines={3}> {date} </Text>
-						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-							<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
-							{/* <UnAssignDialog/> */}
-						</ButtonGroup>
-					</VStack>
+	// const ModuleCard = ({ name, type, desc, date,index}) => {
+	// 	return (<div>
+	// 		<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
+	// 			<CardBody>
+	// 				<VStack spacing={3} align='left'>
+	// 					<HStack>
+	// 						<ModuleIcon type={type} />
+	// 						<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
+	// 					</HStack>
+	// 					<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
+	// 					<Text h={10} color='teal.700' noOfLines={3}> {date} </Text>
+	// 					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
+	// 						<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
+	// 						{/* <UnAssignDialog/> */}
+	// 					</ButtonGroup>
+	// 				</VStack>
 					
-				</CardBody>
-			</Card>
-		</div>);
+	// 			</CardBody>
+	// 		</Card>
+	// 	</div>);
+	// }
+
+	const ModuleCard = ({ name, type, desc, date,index}) => {
+		return (<Card bg={DESKTOP_BG_MEDIUM} >
+            <CardBody bg={DESKTOP_BG_MEDIUM}>
+                <VStack spacing={3} align='left'>
+                    {/* <HStack> */}
+                        {/* <ModuleIcon type={type} /> */}
+                        <Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
+                    {/* </HStack> */}
+                    <Text h={75} bg='blue.100' color='teal.700' noOfLines={3}> {desc} </Text>
+                    <Flex>
+                        <Text> To be unlocked on: </Text>
+                        <Text ml={1} color='teal.700'>  {date} </Text>
+                        <RescheduleDialog/>
+                    </Flex>
+                </VStack>
+            </CardBody>
+        </Card>);
 	}
 
 
