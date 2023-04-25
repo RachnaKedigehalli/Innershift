@@ -105,7 +105,7 @@ function DoctorPatients(){
 	}
 	const PatientCard = ({ name, photo, desc, patientId,consultationId}) => {
 		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT} h='20%'>
+			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardHeader>
 					<HStack>
 						<Image
@@ -114,7 +114,7 @@ function DoctorPatients(){
 							borderRadius='full'
 							w='20%'
 						/>
-						<Heading> <Text color='teal.700'> {name}</Text> </Heading>
+						<Heading> <Text color='teal.700' noOfLines={1}> {name}</Text> </Heading>
 					</HStack>
 				</CardHeader>
 				<CardBody>
@@ -134,7 +134,7 @@ function DoctorPatients(){
 
 	const RequestPatientCard = ({ name, photo, desc,consultationId,status}) => {
 		return (<div>
-			<Card h='20%'>
+			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardHeader>
 					<HStack>
 						<Image
@@ -143,7 +143,7 @@ function DoctorPatients(){
 							borderRadius='full'
 							w='20%'
 						/>
-						<Heading> <Text color='teal.700'> {name}</Text> </Heading>
+						<Heading> <Text color='teal.700' noOfLines={1}> {name}</Text> </Heading>
 					</HStack>
 				</CardHeader>
 				<CardBody>

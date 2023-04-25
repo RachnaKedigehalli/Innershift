@@ -19,6 +19,8 @@ import AdminModules from './Pages/Admin/Modules';
 import AddModule from './Pages/Admin/AddModule';
 import AddQuestions from './Pages/Admin/AddQuestions';
 
+import AdminPatients from './Pages/Admin/Patients';
+
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
@@ -113,6 +115,8 @@ function App() {
 
           <Route path="/tmp" element={<Tmp />} />
           <Route path="/dummyloc" element={<Dummypage />}/>
+
+          <Route path="/admin/patients" element={<AdminPatients />}/>
 
           {/* <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
