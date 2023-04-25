@@ -34,7 +34,6 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-calendar/dist/Calendar.css';
 
-import RescheduleModule from './RescheduleModule';
 
 function ViewPatient(){
 	// add styles as css
@@ -60,6 +59,8 @@ function ViewPatient(){
 	const [state,dispatch] = useStateValue();
     const [patientMoods, setPatientMoods]  = useState([]); 
 	const [allModules, setAllModules] = useState([]);
+	const [date,updateDate] = useState(new Date());
+
 
 	const clickChat = (id,consultationId,name) => {
 		navigate('/doctor/chat',{
@@ -71,23 +72,16 @@ function ViewPatient(){
 		})
 	}
 
-	const onClickReschedule = (id,index)=>{
-		navigate('/doctor/reorder',{
-			state:{
-				id:id,
-				module:allModules[index]
-			}
-		})
-	}
-	// changes
-    const [date,updateDate] = useState(location.state.module.scheduled);
-    const RescheduleDialog = () => {
-        const { isOpen, onOpen, onClose } = useDisclosure()
+	
+    
+
+    const RescheduleDialog = (moduleAssignedId) => {
+		const { isOpen, onOpen, onClose } = useDisclosure()
         const cancelRef = React.useRef();
-        // const [date,updateDate] = useState(location.state.module.scheduled);
+        
 
         const completeReschedule = () =>{
-            console.log(date)
+
             const auth = {
                 headers: {
                     Authorization: `Bearer ${state.adminToken}`
@@ -95,21 +89,27 @@ function ViewPatient(){
             }
     
             const dict = {
-                moduleAssignedId:location.state.module.moduleAssignedId, 
+                moduleAssignedId:moduleAssignedId.moduleAssignedId, 
                 scheduled:date 
             }
-    
+
+			console.log(dict)
             axios.post('http://localhost:8080/api/v1/app/updateOrder',dict, auth)
                 .then(response=>{
-                    console.log(response.data)
+                    onClose();
             })
         }
         
+		const onChangeDate = (event) =>{
+			event.setHours(5)
+			updateDate(event)
+			console.log(event) 
+		}
          
         return (
             <>
                 <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
-                    Test
+                    Edit
                 </Button>
     
                 <AlertDialog
@@ -124,10 +124,9 @@ function ViewPatient(){
                             </AlertDialogHeader>
     
                             <AlertDialogBody>
-                                {/* <Text color='teal.700'>Some text here</Text> */}
-                                <RescheduleModule/>
-                                {/* <DatePicker onChange={(event)=>updateDate(event)} minDate={new Date()} value={date} /> */}
-                                {/* <Box minHeight={260} bg='blue.100'>aaa </Box> */}
+								<VStack flexDirection='column' align='left' m={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>			
+       								 <DatePicker onChange={onChangeDate} minDate={new Date()} value={date} />
+    							</VStack>
                             </AlertDialogBody>
     
                             <AlertDialogFooter>
@@ -144,58 +143,17 @@ function ViewPatient(){
             </>
         )
     }
-    
-    // const ModuleIcon = ({type}) => {
-	// 	if(type === "audio"){
-	// 		return <FontAwesomeIcon icon={faHeadphones} size="2xl" style={{ color: "#285e61", }} />
-	// 	}
-	// 	if(type === "reading"){
-	// 		return <FontAwesomeIcon icon={faBookOpen} size="2xl" style={{ color: "#285e61", }} />
-	// 	}
-	// 	if (type === "video") {
-	// 		return <FontAwesomeIcon icon={faCirclePlay} size="2xl" style={{ color: "#285e61", }} />
-	// 	}
-	// 	if (type === "form") {
-	// 		return <FontAwesomeIcon icon={faListUl} size="2xl" style={{ color: "#285e61", }} />
-	// 	}
-	// 	return <FontAwesomeIcon icon={faQuestion} size="2xl" style={{ color: "#285e61", }} />
-	// }
-	
-	// const ModuleCard = ({ name, type, desc, date,index}) => {
-	// 	return (<div>
-	// 		<Card bg={DESKTOP_BG_MEDIUM} h='20%'>
-	// 			<CardBody>
-	// 				<VStack spacing={3} align='left'>
-	// 					<HStack>
-	// 						<ModuleIcon type={type} />
-	// 						<Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
-	// 					</HStack>
-	// 					<Text h={100} color='teal.700' noOfLines={3}> {desc} </Text>
-	// 					<Text h={10} color='teal.700' noOfLines={3}> {date} </Text>
-	// 					<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-	// 						<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
-	// 						{/* <UnAssignDialog/> */}
-	// 					</ButtonGroup>
-	// 				</VStack>
-					
-	// 			</CardBody>
-	// 		</Card>
-	// 	</div>);
-	// }
 
-	const ModuleCard = ({ name, type, desc, date,index}) => {
+	const ModuleCard = ({ name, type, desc, date,index,moduleAssignedId}) => {
 		return (<Card bg={DESKTOP_BG_MEDIUM} >
             <CardBody bg={DESKTOP_BG_MEDIUM}>
                 <VStack spacing={3} align='left'>
-                    {/* <HStack> */}
-                        {/* <ModuleIcon type={type} /> */}
                         <Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
-                    {/* </HStack> */}
                     <Text h={75} bg='blue.100' color='teal.700' noOfLines={3}> {desc} </Text>
                     <Flex>
                         <Text> To be unlocked on: </Text>
                         <Text ml={1} color='teal.700'>  {date} </Text>
-                        <RescheduleDialog/>
+                        <RescheduleDialog moduleAssignedId={moduleAssignedId}/>
                     </Flex>
                 </VStack>
             </CardBody>
@@ -379,7 +337,7 @@ function ViewPatient(){
 							{allModules.map((item,index)=>{
 								return(
 									<GridItem mt='7em' mr='5em' key={index}>
-										<ModuleCard name={item.title} desc={item.description} date={item.scheduled.slice(0,10)} index={index} type="form"/>
+										<ModuleCard name={item.title} desc={item.description} date={item.scheduled.slice(0,10)} index={index} moduleAssignedId={item.moduleAssignedId} type="form"/>
 									</GridItem>
 								)
 							})}
