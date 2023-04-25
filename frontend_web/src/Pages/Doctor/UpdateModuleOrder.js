@@ -57,7 +57,7 @@ function UpdateOrder(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' m={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
                     <Heading color='teal.700' m={3}> Reschedule Module</Heading>

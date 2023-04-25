@@ -144,7 +144,7 @@ function DoctorChat(){
 			<Box bg='teal.700' borderRadius={30} padding={2}>
 				<Text color='gray.200'>{msgText}</Text>
 			</Box>
-			<Box bg={DESKTOP_BG_LIGHT} minWidth={5}>
+			<Box bg='white' minWidth={5}>
 				{/* <Text color='gray.300'>{msgText}</Text> */}
 			</Box>
 		</Flex>);
@@ -152,7 +152,7 @@ function DoctorChat(){
 
 	const OtherMessage = ({msgText}) =>{
 		return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
-			<Box bg={DESKTOP_BG_LIGHT} minWidth={5}></Box>
+			<Box bg='white' minWidth={5}></Box>
 			<Box bg='gray.200' borderRadius={30} padding={2}>
 					<Text color='teal.700'>{msgText}</Text>
 			</Box>
@@ -178,7 +178,7 @@ function DoctorChat(){
 	return(<div> 
 		<Flex>
 			<SideDoctor/>
-			<Flex direction='column' bg={DESKTOP_BG_LIGHT} maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
+			<Flex direction='column' bg='white' maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
 				<Header patientName={location.state.name}/>
         <Divider borderColor='gray.400' mb='1vw'/>
 				<Box w='100%' flex={1} overflowY='auto'>
