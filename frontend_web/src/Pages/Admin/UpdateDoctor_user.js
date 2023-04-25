@@ -16,10 +16,8 @@ import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 import SideAdmin from '../../Components/SideAdmin'
 
+import DialogBox from '../../Components/DialogBox'
 
-// const custom = defineStyle({
-//     color: "DARK_OLIVE"
-// })
 
 function UserForm(response){
     const navigate = useNavigate(); 
@@ -31,6 +29,7 @@ function UserForm(response){
     const [currentPos,setCurrentPos] = useState("")
     const [phone,setPhone] = useState("")
      
+    
     const handleChangeLicense = (event) => setLicense(event.target.value)
     const handleChangeBio = (event) => setBio(event.target.value)
     const handleChangeDegree= (event) => setDegree(event.target.value)
@@ -57,8 +56,6 @@ function UserForm(response){
             .then(response=>{
                 console.log(response.data)
             })
-
-        navigate("/doctor")
     }
 
     return(
@@ -99,15 +96,6 @@ function UpdateDoctor_user(){
     const location = useLocation();
     const navigate = useNavigate(); 
 
-
-    const onClickDoctors = ()=>{
-        navigate('/doctor')
-    }
-
-    const onClickDashboard = ()=>{
-        navigate('/home')
-    }
-
     return(
         <div>
             <Grid
@@ -134,9 +122,9 @@ function UpdateDoctor_user(){
                                 </GridItem>                               
                             </Grid>           
                         </GridItem>
-
                    </Grid>
                 </GridItem>
+                <DialogBox/>
             </Grid>
         </div>
     ); 

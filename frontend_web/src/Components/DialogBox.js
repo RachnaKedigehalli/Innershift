@@ -1,5 +1,8 @@
+import { useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
+import 'react-calendar/dist/Calendar.css';
+import React, { useEffect, useState } from 'react';
 
-function UnAssignDialog(buttonInfo,alertInfo) {
+function DialogBox(buttonInfo,alertInfo) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
 
@@ -35,3 +38,5 @@ function UnAssignDialog(buttonInfo,alertInfo) {
         </>
     )
 }
+
+export default DialogBox;
