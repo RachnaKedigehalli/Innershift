@@ -149,7 +149,7 @@ function AssignModules() {
 	return (<div>
 		<Flex>
 			<SideDoctor />
-			<Box bg={DESKTOP_BG_LIGHT} minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Assign Modules</Text> </Heading>
 					<Box w='100%' color='teal.700' padding={3} align='center'>
