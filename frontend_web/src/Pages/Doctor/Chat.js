@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading, FormControl, Input, Center, Square } from '@chakra-ui/react'
+import { Flex, Button, Text, Box, VStack, HStack, StackDivider, Heading, FormControl, Input, Center, Square, Divider } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import React from 'react';
@@ -142,7 +142,7 @@ function DoctorChat(){
 				{/* <Text>Box 2</Text> */}
 			</Box>
 			<Box bg='teal.700' borderRadius={30} padding={2}>
-				<Text color='gray.300'>{msgText}</Text>
+				<Text color='gray.200'>{msgText}</Text>
 			</Box>
 			<Box bg={DESKTOP_BG_LIGHT} minWidth={5}>
 				{/* <Text color='gray.300'>{msgText}</Text> */}
@@ -153,7 +153,7 @@ function DoctorChat(){
 	const OtherMessage = ({msgText}) =>{
 		return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
 			<Box bg={DESKTOP_BG_LIGHT} minWidth={5}></Box>
-			<Box bg='gray.300' borderRadius={30} padding={2}>
+			<Box bg='gray.200' borderRadius={30} padding={2}>
 					<Text color='teal.700'>{msgText}</Text>
 			</Box>
 
@@ -180,6 +180,7 @@ function DoctorChat(){
 			<SideDoctor/>
 			<Flex direction='column' bg={DESKTOP_BG_LIGHT} maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
 				<Header patientName={location.state.name}/>
+        <Divider borderColor='gray.400' mb='1vw'/>
 				<Box w='100%' flex={1} overflowY='auto'>
 							{messageList.map((msg,itemIndex) => {
 								return(
@@ -188,12 +189,13 @@ function DoctorChat(){
 								:
 										<OtherMessage msgText={msg.content} key={msg.messageId}/>
 										
-							)})}    
+
+							)})}  
 				</Box>         
-				<Box w='100%' >            
-							<Input value={latestMessage} onChange={updateMessage} minHeight='100%' w='100%' borderColor='gray.300' placeholder='Type Here' />
-							<Button onClick={onSend}>Send</Button>
-				</Box>
+				<Flex w='100%' mb={1} >            
+							<Input value={latestMessage} onChange={updateMessage} minHeight='100%' flex={1} borderColor='gray.300' placeholder='Type Here' mr={2} />
+							<Button bg='teal.700' color='white' onClick={onSend}>Send</Button>
+				</Flex>
 			</Flex>
 			
 		</Flex>

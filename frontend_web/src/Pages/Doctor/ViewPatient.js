@@ -72,45 +72,7 @@ function ViewPatient(){
 		})
 	}
 
-    function UnAssignDialog() {
-		const { isOpen, onOpen, onClose } = useDisclosure()
-		const cancelRef = React.useRef()
-
-		return (
-			<>
-				<Button bg='teal.700' color='white' w='50%' onClick={onOpen}>
-					Unassign
-				</Button>
-
-				<AlertDialog
-					isOpen={isOpen}
-					leastDestructiveRef={cancelRef}
-					onClose={onClose}
-				>
-					<AlertDialogOverlay>
-						<AlertDialogContent>
-							<AlertDialogHeader fontSize='lg' fontWeight='bold'>
-								<Text color='teal.700'> Confirm Action </Text>
-							</AlertDialogHeader>
-
-							<AlertDialogBody>
-								<Text color='teal.700'> Are you sure? You can't undo this action afterwards. </Text>
-							</AlertDialogBody>
-
-							<AlertDialogFooter>
-								<Button color='teal.700' ref={cancelRef} onClick={onClose}>
-									Cancel
-								</Button>
-								<Button bg='teal.700' color='white' onClick={onClose} ml={3}>
-									Unassign
-								</Button>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialogOverlay>
-				</AlertDialog>
-			</>
-		)
-	}
+    
     
     const ModuleIcon = ({type}) => {
 		if(type === "audio"){
@@ -141,7 +103,6 @@ function ViewPatient(){
 						<Text h={10} color='teal.700' noOfLines={3}> {date} </Text>
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button onClick={()=>onClickReschedule(location.state.id,index)} bg='teal.700' color='white' width='50%'>Reschedule</Button>
-							{/* <UnAssignDialog/> */}
 						</ButtonGroup>
 					</VStack>
 					
