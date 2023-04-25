@@ -124,7 +124,7 @@ function UpdateDoctor_user(){
                         </GridItem>
                    </Grid>
                 </GridItem>
-                <DialogBox/>
+                {/* <DialogBox/> */}
             </Grid>
         </div>
     ); 
