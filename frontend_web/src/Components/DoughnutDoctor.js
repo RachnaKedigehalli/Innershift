@@ -6,6 +6,7 @@ import { useStateValue } from '../StateProvider';
 import { useEffect} from 'react';
 
 import {DARK_OLIVE,LIGHT_GREEN} from "../Constants"
+import { Heading } from '@chakra-ui/react';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -44,7 +45,6 @@ export default function PieChartDoctor() {
 
   return (
     <div>
-        
         <Doughnut data={{
             labels:['Requests Pending','Active Patients'],
             datasets:[

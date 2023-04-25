@@ -16,12 +16,13 @@ import {
 } from '@chakra-ui/react'
 
 import react, {useEffect, useState} from 'react';
-
 import { useNavigate, useLocation, Form, } from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 import axios from 'axios';
 import SideDoctor from '../../Components/SideDoctor';
-
+import DatePicker from 'react-date-picker';
+import 'react-date-picker/dist/DatePicker.css';
+import 'react-calendar/dist/Calendar.css';
 
 
 function AssignModules() {
@@ -31,36 +32,35 @@ function AssignModules() {
 	const [tasks,setQuestions] = useState([])
     const [allModules,setAllModules] = useState([]);
 	const [state,dispatch] = useStateValue();
+	const [date, updateDate] = useState(new Date());
+
 
 	const onSubmit = () =>{
-		// var dict = {...location.state,tasks:tasks}
+		console.log(tasks)
 
-		// const auth = {
-        //     headers: {
-        //         Authorization: `Bearer ${state.adminToken}`
-        //     }
-        // }
+		const auth = {
+			headers: {
+			    Authorization: `Bearer ${state.adminToken}`
+			}
+		}
 
-		// const details = {
-		// 	content: JSON.stringify(dict)
-		// }
+		for(let i = 0;i<tasks.length;i++){
+			var dict = {
+				patientId:location.state.id,
+				moduleId:parseInt(tasks[i].moduleId), 
+				scheduled:tasks[i].date,
+			}
 
-        // axios.post('http://localhost:8080/api/v1/app/addModule',details, auth)
-        //     .then(response=>{
-        //         console.log(response.data)
-		// 		navigate("/admin/modules")
-        //     })
+			console.log(dict)
+
+			axios.post('http://localhost:8080/api/v1/app/assignModule',dict, auth)
+			    .then(response=>{
+			        console.log(response.data)
+			})
+		}
 	}
 
 	useEffect(()=>{
-		// setQuestions([{
-		// 	type:0,
-		// 	title:"",
-		// 	description:"",
-		// 	content:""
-		// }])
-		// setNumberOfQuestions(1)
-
         const auth = {
             headers: {
                 Authorization: `Bearer ${state.adminToken}`
@@ -86,21 +86,37 @@ function AssignModules() {
 		setNumberOfQuestions(numberOfQuestions+1)
 		var temp = tasks
 		temp.push({
-			moduleId:0 
+			moduleId:-1,
+			date:new Date()
 		})
 		setQuestions(temp)
 	}
 
    const onChangeDropdown = (index,event) => {
-		console.log(index)
+		var temp = tasks
+		temp[index].moduleId = event.target.value
+		setQuestions(temp) 	
+   }
+
+   const onChangeDate = (index,event)=>{
+		var temp = tasks
+		temp[index].date = event
+		setQuestions(temp) 
+		console.log(temp)
    }
 
     function FormQuestions(qno){
         return(<Box w = 'flex' m={3} padding={2}>
 			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardBody color='teal.700'>
-					<Heading color='teal.700' align='left' size='lg'>Module {qno.qno} </Heading>
-					<Select placeholder='Select A Module' onChange={(event)=> onChangeDropdown(qno.qno-1,event)}>
+					<Heading mb = "1vw" color='teal.700' align='left' size='lg'>Module {qno.qno} </Heading>
+
+					<Heading color='teal.700' align='left' size='md'>Choose the Date: </Heading>
+
+					<DatePicker onChange={(event)=>onChangeDate(qno.qno-1,event)} minDate={new Date()} value={tasks[qno.qno-1].date} />
+
+					<Heading mt='1vw' mb = '1vw' color='teal.700' align='left' size='md'>Choose the Module:</Heading>
+					<Select  placeholder='Select A Module' onChange={(event)=> onChangeDropdown(qno.qno-1,event)}>
                         {
                             allModules.map((item,index)=>{
                                 return (<option value = {item.moduleId} key={index} >{item.title}</option>)

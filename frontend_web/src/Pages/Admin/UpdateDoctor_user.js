@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
+import SideAdmin from '../../Components/SideAdmin'
 
 
 // const custom = defineStyle({
@@ -56,6 +57,8 @@ function UserForm(response){
             .then(response=>{
                 console.log(response.data)
             })
+
+        navigate("/doctor")
     }
 
     return(
@@ -115,22 +118,7 @@ function UpdateDoctor_user(){
 
                 {/* Side bar */}
                 <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <Center mt = '5em' mb = '12em'>  
-                        <Image src={logo} h='9em' />
-                    </Center>
-
-                    <Button onClick={onClickDashboard} ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
-                    </Button>
-                    
-                    <Button onClick={onClickDoctors} ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
-                    </Button>
-
-                    <Button ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
-                    </Button>
-
+                    <SideAdmin/>
                 </GridItem>
                 
                 

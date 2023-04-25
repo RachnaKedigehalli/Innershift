@@ -11,24 +11,22 @@ function SideAdmin() {
 	const location = useLocation();
 
 	const clickDashBoard = () => {
-		console.log("dashboard clicked");
-		navigate('/dummyloc', {
-			// state: location.state
-		})
+		navigate('/home')	
 	}
 
-	const clickDoctors = () => {
-		// console.log("i cri");
-		navigate('/doctor', {
-			state: location.state
-		})
-	}
+	const onClickDoctors = ()=>{
+        navigate('/doctor')
+    }
+	const onClickModules = () => {
+        navigate('/admin/modules')
+    }
 
-	const clickModules = () => {
-		navigate('/admin/modules', {
-			// state: location.state
-		})
-	}
+    const onClickPatients = () => {
+        navigate("/doctor/patients")
+    }
+
+	
+
 	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' position='fixed'>
 		<VStack spacing={3} align='center'>
 			<Image src={logo} h='9em' />
@@ -41,11 +39,15 @@ function SideAdmin() {
 						<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 					</Button>
 
-					<Button onClick={clickDoctors} width='100%' bg='teal.700' color='white'>
+					<Button onClick={onClickDoctors} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Doctors
 					</Button>
 
-					<Button onClick={clickModules} width='100%' bg='teal.700' color='white'>
+					<Button onClick={onClickPatients} width='100%' bg='teal.700' color='white'>
+                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
+                    </Button>
+					
+					<Button onClick={onClickModules} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
 					</Button>
 				</VStack>

@@ -33,11 +33,20 @@ function DoctorPatients(){
 			doctorId: state.id
 		}
 
-        axios.post('http://localhost:8080/api/v1/app/getPatientsByDoctor',details,auth)
-        .then(response=>{
-            setAllPatients(response.data)
-			console.log(response.data)
-        })
+		if(state.role === 'DOCTOR'){
+			axios.post('http://localhost:8080/api/v1/app/getPatientsByDoctor',details,auth)
+			.then(response=>{
+				setAllPatients(response.data)
+				console.log(response.data)
+			})
+		}else{
+			axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
+			.then(response=>{
+				setAllPatients(response.data)
+				console.log(response.data)
+			})
+		}
+        
 		
     },[render])
 
@@ -200,7 +209,12 @@ function DoctorPatients(){
 
 					{/* <Spacer /> */}
 					{/* Request header */}
-					<Heading ml={10}> <Text color='teal.700' align='left'> Pending Requests </Text></Heading>
+					{
+						state.role === 'DOCTOR'?
+							<Heading ml={10}> <Text color='teal.700' align='left'> Pending Requests </Text></Heading>:
+							<></>
+
+					}
 
 					{/* Request Cards */}
 					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>

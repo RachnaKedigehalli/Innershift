@@ -9,12 +9,11 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import { useEffect,useState} from 'react';
 import axios from 'axios'
 import { useStateValue } from '../../StateProvider'
+import SideAdmin from '../../Components/SideAdmin'
 
 
-const onAddDoctor = (data,navigate) =>{
-    navigate("/adddoctor/page1",{
-        state:data
-    })
+const onAddDoctor = (navigate) =>{
+    navigate("/adddoctor/page1")
 }
 
 function PatientCard({name, desc}){
@@ -71,22 +70,7 @@ function Doctor(){
                 >
 
                 <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <Center mt = '5em' mb = '12em'>  
-                        <Image src={logo} h='9em' />
-                    </Center>
-
-                    <Button ml = '5em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faChartPie} style={{marginRight:"0.5em"}}/>  Dashboard
-                    </Button>
-                    
-                    <Button ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Doctors
-                    </Button>
-
-                    <Button ml = '5em' mt = '2em' w = '12em' colorScheme='teal' variant='solid'>
-                        <FontAwesomeIcon icon={faDatabase} style={{marginRight:"0.5em"}}/>  Modules
-                    </Button>
-
+                    <SideAdmin/>
                 </GridItem>
                 
                 
@@ -100,7 +84,7 @@ function Doctor(){
                                 </GridItem>
 
                                 <GridItem rowSpan={2} colSpan={1}  >
-                                    <Button onClick={()=>onAddDoctor(location.state,navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
+                                    <Button onClick={()=>onAddDoctor(navigate)} colorScheme='teal' size='md' style={{color:"black"}}>
                                         <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
                                     </Button>
                                 </GridItem>        
