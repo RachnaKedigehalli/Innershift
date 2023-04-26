@@ -45,7 +45,7 @@ function RescheduleModule(){
         // })
     }
 
-    return(<VStack flexDirection='column' align='left' m={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>			
+    return(<VStack flexDirection='column' align='left' divider={<StackDivider borderColor='gray.200' />}>			
         {/* <Heading color='teal.700' m={3}> Reschedule Module</Heading> */}
 
         {/* <Heading mt = '3vw' color='teal.700' m={3} size='md'>Update Schedule</Heading> */}

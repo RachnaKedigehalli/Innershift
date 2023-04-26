@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, FormControl, Input } from '@chakra-ui/react'
 import SideDoctor from "./Components/SideDoctor";
 
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "./Constants";
@@ -160,6 +160,93 @@ function Tmp(){
             </>
         )
     }
+
+	
+
+	const GenerateToken = () => {
+		const { isOpen, onOpen, onClose } = useDisclosure()
+        const cancelRef = React.useRef();
+
+		function closeAll(){
+			onClose();
+			onClose();
+		}
+
+		const DisplayCode = () => {
+			const { isOpen, onOpen, onClose } = useDisclosure()
+			const cancelRef = React.useRef();
+			return (
+				<>
+					<Button bg='teal.700' color='white' onClick={onOpen} ml={3}>
+						Confirm
+					</Button>
+		
+					<AlertDialog
+						isOpen={isOpen}
+						leastDestructiveRef={cancelRef}
+						onClose={onClose}
+					>
+						<AlertDialogOverlay>
+							<AlertDialogContent>
+								<AlertDialogHeader fontSize='lg' fontWeight='bold'>
+									<Text color='teal.700'> Token Generated </Text>
+								</AlertDialogHeader>
+		
+								<AlertDialogBody>
+									<Text color='teal.700'> Note: This code can be used only once and only against the email provided. </Text>
+								</AlertDialogBody>
+		
+								<AlertDialogFooter>
+									{/* <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
+										Cancel
+									</Button> */}
+									<Button bg='teal.700' color='white' onClick={closeAll} ml={3}>
+										Done
+									</Button>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialogOverlay>
+					</AlertDialog>
+				</>
+			)
+		}
+
+        return (
+            <>
+                <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
+                    Generate Token
+                </Button>
+    
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                <Text color='teal.700'> Generate Token </Text>
+                            </AlertDialogHeader>
+    
+                            <AlertDialogBody>
+                                <FormControl>
+									<Text color='teal.700'> Enter Patient's Email:</Text>
+									<Input color='teal.700' borderColor='teal.700' focusBorderColor='teal.700'/>
+								</FormControl>
+                            </AlertDialogBody>
+    
+                            <AlertDialogFooter>
+                                <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
+                                    Cancel
+                                </Button>
+                                <DisplayCode/>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+            </>
+        )
+	}
     
 	
 	const ModuleCard = ({ name, type, desc, date,index}) => {
@@ -200,32 +287,32 @@ function Tmp(){
     }
 
 	function getMoodColor(val){
-		
-		if(val == 0){
+		val--;
+		if(val === 0){
 			return "#FFCE85"
 		}
 		
-		if(val == 1){
+		if(val === 1){
 			return "#FFCE85"
 		}
 		
-		if(val == 2){
+		if(val === 2){
 			return "#FEF285"
 		}
 		
-		if(val == 3){
+		if(val === 3){
 			return "#8AC8C2"
 		}
 		
-		if(val == 4){
+		if(val === 4){
 			return "#D0E06B"
 		}
 		
-		if(val == 5){
+		if(val === 5){
 			return "#E2B68D"
 		}
 		
-		if(val == 6){
+		if(val === 6){
 			return "#C5784C"
 		}
 		return "#FFFFFF"
@@ -313,7 +400,7 @@ function Tmp(){
 					<HStack w='100%'>
                         {/* module cards */}
                         <Box w='45%' bg='teal.100'  >
-                            hi
+                            <GenerateToken/>
                             {/* <CalHeatMap data={patientMoods}/> */}
                         </Box>
 

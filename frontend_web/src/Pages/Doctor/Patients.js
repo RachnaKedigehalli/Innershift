@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, FormControl  } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT} from "../../Constants";
 
@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate, useLocation, } from 'react-router-dom'
-import { useEffect,useState} from 'react';
+import React, { useEffect,useState} from 'react';
 import axios from 'axios'
 import { useStateValue } from '../../StateProvider'
 
@@ -155,6 +155,93 @@ function DoctorPatients(){
 			</Card>
 		</div>);
 	}
+
+	// Generate Token Component
+	const GenerateToken = () => {
+		const { isOpen, onOpen, onClose } = useDisclosure()
+        const cancelRef = React.useRef();
+
+		function closeAll(){
+			onClose();
+			onClose();
+		}
+
+		const DisplayCode = () => {
+			const { isOpen, onOpen, onClose } = useDisclosure()
+			const cancelRef = React.useRef();
+			return (
+				<>
+					<Button bg='teal.700' color='white' onClick={onOpen} ml={3}>
+						Confirm
+					</Button>
+		
+					<AlertDialog
+						isOpen={isOpen}
+						leastDestructiveRef={cancelRef}
+						onClose={onClose}
+					>
+						<AlertDialogOverlay>
+							<AlertDialogContent>
+								<AlertDialogHeader fontSize='lg' fontWeight='bold'>
+									<Text color='teal.700'> Token Generated </Text>
+								</AlertDialogHeader>
+		
+								<AlertDialogBody>
+									<Text color='teal.700'> Note: This code can be used only once and only against the email provided. </Text>
+								</AlertDialogBody>
+		
+								<AlertDialogFooter>
+									{/* <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
+										Cancel
+									</Button> */}
+									<Button bg='teal.700' color='white' onClick={closeAll} ml={3}>
+										Done
+									</Button>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialogOverlay>
+					</AlertDialog>
+				</>
+			)
+		}
+
+        return (
+            <>
+                <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
+                    Generate Token
+                </Button>
+    
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                <Text color='teal.700'> Generate Token </Text>
+                            </AlertDialogHeader>
+    
+                            <AlertDialogBody>
+                                <FormControl>
+									<Text color='teal.700'> Enter Patient's Email:</Text>
+									<Input color='teal.700' borderColor='teal.700' focusBorderColor='teal.700'/>
+								</FormControl>
+                            </AlertDialogBody>
+    
+                            <AlertDialogFooter>
+                                <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
+                                    Cancel
+                                </Button>
+                                <DisplayCode/>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+            </>
+        )
+	}
+    
 
 
 	return(<div> 

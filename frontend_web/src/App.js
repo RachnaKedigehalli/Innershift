@@ -95,7 +95,7 @@ function App() {
           <Route path="/auth" element={<Auth />} /> 
 
           
-          <Route path="/home" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+          {/* <Route path="/home" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
           <Route path="/doctor" element={<PrivateRoute><Doctor/></PrivateRoute>} /> 
           <Route path="/adddoctor/page1" element={<PrivateRoute><AddDoctor_user /></PrivateRoute>} /> 
           <Route path="/updatedoctor" element={<PrivateRoute><UpdateDoctor_user /></PrivateRoute>} /> 
@@ -110,7 +110,7 @@ function App() {
           <Route path="/doctor/viewpatient" element={<PrivateRoute><ViewPatient /></PrivateRoute>} />
           <Route path="/doctor/chat" element={<PrivateRoute><DoctorChat /></PrivateRoute>} />
           <Route path="/doctor/assignmodules" element={<PrivateRoute><AssignModules /></PrivateRoute>} />
-          <Route path="/doctor/reorder" element={<PrivateRoute><UpdateOrder /></PrivateRoute>} />
+          <Route path="/doctor/reorder" element={<PrivateRoute><UpdateOrder /></PrivateRoute>} /> */}
           {/* <Route path="/dummyloc" element={<PrivateRoute><Dummypage /></PrivateRoute>} /> */}
 
           <Route path="/tmp" element={<Tmp />} />
@@ -136,7 +136,7 @@ function App() {
           <Route path="/doctor/chat" element={<DoctorChat />} />
           <Route path="/doctor/assignmodules" element={<AssignModules />} />
           <Route path="/doctor/reorder" element={<UpdateOrder />} />
-          <Route path="/dummyloc" element={<Dummypage />} /> */}
+        <Route path="/dummyloc" element={<Dummypage />} /> */}
 
         </Routes>
       </BrowserRouter>
