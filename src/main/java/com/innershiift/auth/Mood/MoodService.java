@@ -1,6 +1,7 @@
 package com.innershiift.auth.Mood;
 
 
+import com.innershiift.auth.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class MoodService {
 
     private final MoodRepository moodRepository;
+    private final NotificationService notificationService;
 
     public List<Mood> getMoodByPatientId(Integer pid){
 //        return  moodRepository.getMoodByPId(pid);
@@ -61,14 +63,26 @@ public class MoodService {
 
     }
 
-    public Mood addMood(Integer pid, Date date, Integer mood) {
-        Mood m = new Mood();
-        m.setMood(mood);
-        m.setDate(date);
-        m.setPatientId(pid);
-        return moodRepository.save(m);
-    }
+//    public Mood addMood(Integer pid, Date date, Integer mood) {
+//        Mood m = new Mood();
+//        m.setMood(mood);
+//        m.setDate(date);
+//        m.setPatientId(pid);
+//        try{
+//            notificationService.sendPushNotification("ExponentPushToken[y0B36JFDW_Lk5UtrQMGqpT]", "Cute noti", "Hiiiiii");
+//        }
+//        catch (Exception e) {}
+//        return moodRepository.save(m);
+//    }
     public Mood addMood(Mood mood) {
+        try{
+            System.out.println("sendingggg");
+            notificationService.sendNotificationToPatient(mood.getPatientId(), "Mood set", mood.getMood().toString());
+//            notificationService.sendPushNotification("ExponentPushToken[y0B36JFDW_Lk5UtrQMGqpT]", "Cute noti", "Hiiiiii");
+        }
+        catch (Exception e) {
+            System.out.println("catchinggggg");
+        }
         return moodRepository.save(mood);
     }
 }

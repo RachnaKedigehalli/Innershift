@@ -7,6 +7,8 @@ import com.innershiift.auth.config.JwtService;
 import com.innershiift.auth.config.RefreshToken;
 import com.innershiift.auth.config.RefreshTokenException;
 import com.innershiift.auth.config.RefreshTokenService;
+import com.innershiift.auth.notification.NotificationService;
+import com.innershiift.auth.notification.NotificationToken;
 import com.innershiift.auth.user.Role;
 import com.innershiift.auth.user.User;
 import com.innershiift.auth.user.UserRepository;
@@ -37,7 +39,7 @@ public class AuthenticationService {
 
     private final EmailTokenService emailTokenService;
     private final UserDetailsService userDetailsService;
-
+    private final NotificationService notificationService;
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -48,6 +50,11 @@ public class AuthenticationService {
                 .build();
         repository.save(user);
 
+        var notificationToken = NotificationToken.builder()
+                        .token(request.getNotificationToken())
+                        .patientId(user.getId())
+                        .build();
+        notificationService.addToken(notificationToken);
         var jwtToken = jwtService.generateToken(user);
         RefreshToken refToken = refreshTokenService.createRefreshToken(user.getEmail());
         return AuthenticationResponse.builder()
@@ -75,6 +82,13 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
 //        System.out.println("user " + user);
+
+        var notificationToken = NotificationToken.builder()
+                .token(request.getNotificationToken())
+                .patientId(user.getId())
+                .build();
+        notificationService.addToken(notificationToken);
+
         var jwtToken = jwtService.generateToken(user);
         RefreshToken refToken = refreshTokenService.createRefreshToken(user.getEmail());
 //        System.out.println("jwt " + jwtToken);
@@ -88,6 +102,10 @@ public class AuthenticationService {
                 .id(user.getId())
                 .email(user.getEmail())
                 .build();
+    }
+
+    public String logout(LogoutRequest request) {
+        return notificationService.removeToken(request.getUserId(), request.getNotificationToken());
     }
 
 
@@ -135,4 +153,6 @@ public class AuthenticationService {
 //                confirmationToken.getAppUser().getEmail());
         return "confirmed";
     }
+
+
 }

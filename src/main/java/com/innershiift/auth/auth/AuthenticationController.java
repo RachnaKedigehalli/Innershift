@@ -44,6 +44,13 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+    @PostMapping("/logout")
+    @CrossOrigin
+    public ResponseEntity<String> logout(
+           @Valid @RequestBody LogoutRequest request
+    ) {
+        return ResponseEntity.ok(service.logout(request));
+    }
 
     @PostMapping("/refreshtoken")
     @CrossOrigin
