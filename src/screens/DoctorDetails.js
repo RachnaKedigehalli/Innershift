@@ -21,7 +21,7 @@ const DoctorDetails = (props) => {
     await axios
       .post(`${BASE_APP_URL}/addConsultation`, bodyParameters, config)
       .then(async (res) => {
-        console.log(res.data);
+        // console.log(res.data);
         await AsyncStorage.setItem(
           "consultation",
           JSON.stringify({

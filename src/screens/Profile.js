@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   dp: {
     height: 80,
     width: 80,
-    borderRadius: "80",
+    borderRadius: 40,
   },
   nameContainer: {
     marginVertical: 30,

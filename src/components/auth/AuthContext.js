@@ -64,6 +64,7 @@ export const AuthProvider = (props) => {
       .post(`${BASE_AUTH_URL}/authenticate`, {
         email: email,
         password: password,
+        notificationToken: await AsyncStorage.getItem("expoPushToken"),
       })
       .then((res) => {
         AsyncStorage.setItem("userToken", res.data.token);
@@ -111,6 +112,7 @@ export const AuthProvider = (props) => {
         firstName: first,
         lastName: last,
         password: password,
+        notificationToken: await AsyncStorage.getItem("expoPushToken"),
       })
       .then(async (res) => {
         await axios
@@ -213,14 +215,26 @@ export const AuthProvider = (props) => {
   };
 
   const logout = async () => {
-    console.log("logged out");
-    setIsLoading(true);
-    setUserToken(null);
-    await AsyncStorage.removeItem("userToken");
-    await AsyncStorage.removeItem("refreshToken");
-    await AsyncStorage.removeItem("userDetails");
-    await AsyncStorage.removeItem("consultation");
-    setIsLoading(false);
+    let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+    await axios
+      .post(`${BASE_AUTH_URL}/logout`, {
+        userId: userDetails.id,
+        notificationToken: await AsyncStorage.getItem("expoPushToken"),
+      })
+      .then(async (res) => {
+        console.log("logged out");
+        setIsLoading(true);
+        setUserToken(null);
+        await AsyncStorage.removeItem("userToken");
+        await AsyncStorage.removeItem("refreshToken");
+        await AsyncStorage.removeItem("userDetails");
+        await AsyncStorage.removeItem("consultation");
+        await AsyncStorage.removeItem("expoPushToken");
+        setIsLoading(false);
+      })
+      .catch(() => {
+        console.log("Logout failed");
+      });
   };
 
   const isLoggedIn = async () => {

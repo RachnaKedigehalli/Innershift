@@ -152,7 +152,7 @@ const langs_dict = {
   zu: "Zulu",
 };
 let langs = [];
-console.log(langs);
+
 for (const [key, value] of Object.entries(langs_dict))
   langs.push({ code: key, name: value });
 

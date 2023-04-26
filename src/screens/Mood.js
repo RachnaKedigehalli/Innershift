@@ -113,7 +113,7 @@ const Mood = (props) => {
 
       axios
         .post(`${BASE_APP_URL}/addMood`, bodyParameters, config)
-        .then(console.log)
+        .then()
         .catch(console.log);
     };
     apiCall();
