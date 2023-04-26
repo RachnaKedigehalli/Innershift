@@ -8,25 +8,47 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../components/auth/AuthContext";
-import { color, Image } from "@rneui/base";
 import modules from "../data/modules";
 import ModuleCard from "../components/ModuleCard";
-import TopBar from "../components/TopBar";
-// import BottomTabNavigator from "../components/BottomTabNavigator";
 import AppStyles from "../AppStyles";
 import CustomButton from "../components/CustomButton";
 
-const Home = ({ navigation }) => {
-  const [bannerHeaderText, setBannerHeaderText] = useState("Wind down");
-  const [bannerTagText, setBannerTagText] = useState(
-    "Sometimes, the most productive thing you can do is to relax!"
-  );
-  const [tasksListHead, setTasksListHead] = useState("Tasks for the day");
-  const [tasksListTag, setTasksListTag] = useState("Make progess bit by bit");
+const translate = require("google-translate-api-x");
 
-  const { logout, user } = useContext(AuthContext);
+const Home = ({ navigation }) => {
+  const { logout, user, appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    useEffect(() => {
+      translate(originalText, {
+        from: "en",
+        to: appLanguage,
+      }).then((res) => setText(res.text));
+    }, []);
+  };
+  const originalTexts = {
+    bannerHeaderText: "Wind down",
+    bannerTagText:
+      "Sometimes, the most productive thing you can do is to relax!",
+    tasksListHead: "Tasks for the day",
+    tasksListTag: "Make progess bit by bit",
+  };
+  const [bannerHeaderText, setBannerHeaderText] = useState(
+    originalTexts.bannerHeaderText
+  );
+  const [bannerTagText, setBannerTagText] = useState(
+    originalTexts.bannerTagText
+  );
+  const [tasksListHead, setTasksListHead] = useState(
+    originalTexts.tasksListHead
+  );
+  const [tasksListTag, setTasksListTag] = useState(originalTexts.tasksListTag);
+
+  translateText(originalTexts.bannerHeaderText, setBannerHeaderText);
+  translateText(originalTexts.bannerTagText, setBannerTagText);
+  translateText(originalTexts.tasksListHead, setTasksListHead);
+  translateText(originalTexts.tasksListTag, setTasksListTag);
 
   return (
     <ScrollView
@@ -78,12 +100,7 @@ const Home = ({ navigation }) => {
             marginTop: 50,
             marginHorizontal: 20,
           }}
-        >
-          <CustomButton
-            title="logout"
-            onPress={async () => await logout()}
-          ></CustomButton>
-        </View>
+        ></View>
       </View>
       {/* <BottomTabNavigator></BottomTabNavigator> */}
     </ScrollView>

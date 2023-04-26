@@ -75,6 +75,11 @@ export const AuthProvider = (props) => {
             id: res.data.id,
           })
         );
+        setUser({
+          firstName: res.data.firstName,
+          lastName: res.data.lastName,
+          id: res.data.id,
+        });
         AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
         setRefreshToken(res.data.refreshToken.token);
@@ -168,7 +173,7 @@ export const AuthProvider = (props) => {
                 firstName: res.data.firstName,
                 lastName: res.data.lastName,
                 id: res.data.id,
-              });
+              }).catch(console.log);
               //   const config = {
               //     headers: { Authorization: `Bearer ${res.data.token}` },
               //   };
@@ -228,7 +233,7 @@ export const AuthProvider = (props) => {
       console.log(userDetails.toString());
       // console.log(await reftoken);
       setUserToken(await token);
-      setUser(await userDetails);
+      setUser(JSON.parse(await userDetails));
       setRefreshToken(await reftoken);
       // console.log(refreshtoken);
       if (token != null) {

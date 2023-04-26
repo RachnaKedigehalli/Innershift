@@ -88,9 +88,10 @@ const BottomTabNavigator = (props) => {
         name="home"
         component={HomeModuleStack}
         options={{
-          header: ({ navigation, route, options, back }) => {
-            return <TopBar showBack={showBack} />;
-          },
+          // header: ({ navigation, route, options, back }) => {
+          //   return <TopBar showBack={showBack} navigation={navigation} />;
+          // },
+          headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
@@ -109,9 +110,9 @@ const BottomTabNavigator = (props) => {
         name="calender"
         component={CalendarStack}
         options={{
-          header: ({ navigation, route, options, back }) => {
-            return <TopBar showBack={false} />;
-          },
+          // header: ({ navigation, route, options, back }) => {
+          //   return <TopBar showBack={false} navigation={navigation} />;
+          // },
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -132,7 +133,11 @@ const BottomTabNavigator = (props) => {
         options={{
           header: ({ navigation, route, options, back }) => {
             // return <TopBar showBack={false} />;
-            return isDoctorAssigned ? <></> : <TopBar showBack={false} />;
+            return isDoctorAssigned ? (
+              <></>
+            ) : (
+              <TopBar showBack={false} navigation={navigation} />
+            );
           },
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {

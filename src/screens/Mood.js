@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import TopBar from "../components/TopBar";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import AppStyles from "../AppStyles";
@@ -7,8 +7,31 @@ import MoodCard from "../components/MoodCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
+import { AuthContext } from "../components/auth/AuthContext";
+
+const translate = require("google-translate-api-x");
 
 const Mood = (props) => {
+  const { appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    useEffect(() => {
+      translate(originalText, {
+        from: "en",
+        to: appLanguage,
+      }).then((res) => setText(res.text));
+    }, []);
+  };
+  const originalTexts = {
+    moodQues: "How are you feeling today?",
+    buttonText: "Get Started",
+  };
+
+  const [moodQues, setMoodQues] = useState(originalTexts.moodQues);
+  const [buttonText, setButtonText] = useState(originalTexts.buttonText);
+
+  translateText(originalTexts.moodQues, setMoodQues);
+  translateText(originalTexts.buttonText, setButtonText);
+
   const moods = [
     {
       name: "Energetic",
@@ -44,8 +67,6 @@ const Mood = (props) => {
 
   const [mood, setMood] = useState("");
   const [moodId, setMoodId] = useState();
-  const [moodQues, setmoodQues] = useState("How are you feeling today?");
-  const [buttonText, setButtonText] = useState("Get Started");
 
   useEffect(() => {
     const isMoodSet = async () => {
@@ -102,7 +123,7 @@ const Mood = (props) => {
 
   return (
     <>
-      <TopBar showBack={false}></TopBar>
+      {/* <TopBar showBack={false}></TopBar> */}
       <View style={styles.page}>
         <View style={{ alignItems: "center" }}>
           <Text style={styles.moodQues}>{moodQues}</Text>
@@ -150,6 +171,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 90,
     justifyContent: "center",
+    flex: 1,
   },
   moodCards: {
     flexDirection: "row",

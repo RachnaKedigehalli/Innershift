@@ -242,6 +242,7 @@ const SelectLanguage = ({ navigation }) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
+                      console.log("Lang selected: ", lang.code);
                       setLanguage(lang.code);
                     }}
                     style={{

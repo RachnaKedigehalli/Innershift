@@ -1,14 +1,29 @@
 import { StyleSheet, Text, View, Dimensions, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import CustomButton from "../components/CustomButton";
 import AppStyles from "../AppStyles";
+import { AuthContext } from "./auth/AuthContext";
+
+const translate = require("google-translate-api-x");
 
 const QuestionModule = ({ task, index, totalTasks, setIndex, navigation }) => {
+  const { appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    useEffect(() => {
+      translate(originalText, {
+        from: "en",
+        to: appLanguage,
+      }).then((res) => setText(res.text));
+    }, []);
+  };
+  const [taskTitle, setTaskTitle] = useState(task.title);
+  translateText(task.title, setTaskTitle);
+
   const [response, setResponse] = useState("");
   return (
     <View style={styles.mainContainer}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{task.title}</Text>
+        <Text style={styles.titleText}>{taskTitle}</Text>
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionText}>{task.description}</Text>

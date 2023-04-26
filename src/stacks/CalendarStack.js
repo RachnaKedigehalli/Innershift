@@ -6,6 +6,7 @@ import CalenderScreen from "../screens/CalendarScreen";
 import MediaModule from "../components/MediaModule";
 import ModuleProgress from "../screens/ModuleProgress";
 import TopBar from "../components/TopBar";
+import Profile from "../screens/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,12 +18,12 @@ const CalendarStack = () => {
     headerStyle: {
       backgroundColor: AppStyles.colour.white,
     },
-    headerTintColor: AppStyles.colour.darkGreen,
+    // headerTintColor: AppStyles.colour.darkGreen,
   };
   const noHeader = { headerShown: false };
   const headerWithoutBack = {
     header: ({ navigation, route, options, back }) => {
-      return <TopBar showBack={false} />;
+      return <TopBar showBack={false} navigation={navigation} />;
     },
   };
   const headerWithBack = {
@@ -42,7 +43,12 @@ const CalendarStack = () => {
         <Stack.Screen
           name="ModuleProgress"
           component={ModuleProgress}
-          options={headerWithBack}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={discreteHeader}
         />
       </Stack.Navigator>
       {/* <BottomTabNavigator /> */}

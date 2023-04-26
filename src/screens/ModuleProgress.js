@@ -4,9 +4,12 @@ import QuestionModule from "../components/QuestionModule";
 import ReadingModule from "../components/ReadingModule";
 import MediaModule from "../components/MediaModule";
 import AppStyles from "../AppStyles";
+import TopBar from "../components/TopBar";
 
 const ModuleProgress = ({ route, navigation }) => {
   const { module } = route.params;
+  console.log("module", module);
+  console.log("module.tasks", module.tasks);
   const [taskIndex, setTaskIndex] = useState(0);
 
   const moduleReturn = (tasks) => {
@@ -44,23 +47,34 @@ const ModuleProgress = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView
-      style={styles.mainContainer}
-      contentContainerStyle={{ alignItems: "center" }}
-    >
-      <View style={styles.progressBar.bar}>
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              ...styles.progressBar.progress,
-              width: `${(taskIndex / module.tasks.length) * 100}%`,
-            },
-          ]}
-        />
-      </View>
-      {moduleReturn(module.tasks)}
-    </ScrollView>
+    <>
+      <TopBar
+        navigation={navigation}
+        onBack={() => {
+          return taskIndex == 0
+            ? navigation.goBack()
+            : setTaskIndex(taskIndex - 1);
+        }}
+        showBack={true}
+      />
+      <ScrollView
+        style={styles.mainContainer}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        <View style={styles.progressBar.bar}>
+          <View
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                ...styles.progressBar.progress,
+                width: `${(taskIndex / module.tasks.length) * 100}%`,
+              },
+            ]}
+          />
+        </View>
+        {moduleReturn(module.tasks)}
+      </ScrollView>
+    </>
   );
 };
 

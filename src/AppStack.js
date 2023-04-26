@@ -8,6 +8,7 @@ import BottomTabNavigator from "./components/BottomTabNavigator";
 import Chat from "./screens/Chat";
 import DoctorDetails from "./screens/DoctorDetails";
 import HomeModuleStack from "./stacks/HomeModuleStack";
+import Profile from "./screens/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const AppStack = () => {
           component={BottomTabNavigator}
           options={noHeader}
         />
+        <Stack.Screen name="Profile" component={Profile} options={noHeader} />
       </Stack.Navigator>
       {/* <BottomTabNavigator /> */}
     </>
