@@ -296,7 +296,7 @@ function ViewPatient(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}

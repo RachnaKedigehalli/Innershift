@@ -178,7 +178,7 @@ function DoctorChat(){
 	return(<div> 
 		<Flex>
 			<SideDoctor/>
-			<Flex direction='column' bg='white' maxHeight='100vh' minHeight='100vh' w='80%' ml='20%'>
+			<Flex direction='column' bg='white' maxHeight='100vh' minHeight='100vh'>
 				<Header patientName={location.state.name}/>
         <Divider borderColor='gray.400' mb='1vw'/>
 				<Box w='100%' flex={1} overflowY='auto'>
