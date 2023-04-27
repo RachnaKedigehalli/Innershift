@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, HStack, StackDivider, Heading, Input, Card, CardHeader, CardBody, Popover, PopoverHeader, PopoverTrigger, Portal, PopoverContent, PopoverArrow, PopoverFooter, PopoverCloseButton, PopoverBody, Center, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter} from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, Heading, Input, Card,  CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter} from '@chakra-ui/react'
 import SideAdmin from "../../Components/SideAdmin";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -120,7 +120,6 @@ function AdminModules() {
 						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
 							<Button bg='teal.700' color='white' onClick={clickEditModule} width='50%'>Edit</Button>
 							<DeleteAlertDialog/>
-							{/* <Button bg='teal.700' color='white' onClick={clickEditModule} size='md'>Delete</Button> */}
 						</ButtonGroup>
 					</VStack>
 					
@@ -128,9 +127,7 @@ function AdminModules() {
 			</Card>
 		</div>);
 	}
-	const BasicModuleCard = () => {
-		return <ModuleCard name="Module Name" desc="jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfskjasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk" type="unknown" />;
-	}
+	
 
 	return (<div>
 		<Flex>
@@ -168,26 +165,14 @@ function AdminModules() {
 
 					{/* Existing patients cards */}
 					<Box height="flex" overflowY='auto'>
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
+					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={2} mx={8} my={3}>
 						{allModules.map((item,index)=>{
 							return(
-								<GridItem mt='7em' mr='5em' key={index}>
+								<GridItem key={index}>
 									<ModuleCard name={item.title} desc={item.description} type="form"/>
-										{/* <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/> */}
 								</GridItem>
 							)
                         })}
-
-						{/* <GridItem>
-							<ModuleCard name="Module 1" desc='jasdfb sfbasbfs asfbsbdf sfbsbfs fsjvbfusdf sfugsi sfbsibf rfbidbfsk' type="form"/>
-						</GridItem>
-						<GridItem>
-							<BasicModuleCard />
-						</GridItem>
-						<GridItem>
-							<BasicModuleCard />
-						</GridItem> */}
-
 					</Grid>
 					</Box>
 				</VStack>
