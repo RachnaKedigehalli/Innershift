@@ -25,6 +25,7 @@ import java.util.UUID;
 public class AuthenticationController {
 
     private final AuthenticationService service;
+    private final EmailTokenService emailTokenService;
     private final RefreshTokenService refreshTokenService;
     private final EmailService emailService;
     private final EmailTokenRepository emailTokenRepository;
@@ -36,6 +37,55 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.register(request));
     }
+
+    @PostMapping("/setPassword")
+    @CrossOrigin
+    public ResponseEntity<Integer> setPassword(
+            @RequestBody SetPasswordRequest request
+    ) {
+        return ResponseEntity.ok(service.setPassword(request));
+    }
+
+
+    @PostMapping("/forgotPassword")
+    @CrossOrigin
+    public ResponseEntity<?> forgotPassword(@RequestBody String email){
+        System.out.println("in Forgot password OH NOOOOOO!!!");
+        String token = String.valueOf((int)(Math.floor(Math.random() *( 999999 - 100000 + 1) + 100000)));
+        EmailToken emailToken = new EmailToken(
+                token,
+                email,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15)
+        );
+        emailTokenRepository.save(emailToken);
+        emailService.send(
+                email,
+                emailService.emailBuilder(token));
+
+//        return ResponseEntity.ok();
+        return ResponseEntity.ok(EmailResponse.builder()
+                .email(email)
+                .status("sent")
+                .build()
+        );
+    }
+    @PostMapping("/confirmForgotPasswordOTP")
+    @CrossOrigin
+    public ResponseEntity<?> confirmForgotPasswordOTP(@Valid @RequestBody OTPConfirmationRequest request) {
+        try{
+//            String stat = service.confirmToken(request.getToken());
+            System.out.println("Here in confirm passwd");
+            if(emailTokenService.isValidOTP(request.getToken())==false) {
+                System.out.println("trying to throw");throw new Exception("Invalid OTP");}
+            return ResponseEntity.ok(service.GetNewRefreshAndJWTTokens(request.getEmail()));
+        }
+        catch(Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
 
     @PostMapping("/authenticate")
     @CrossOrigin

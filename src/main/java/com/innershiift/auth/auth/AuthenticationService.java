@@ -69,6 +69,23 @@ public class AuthenticationService {
 //        return null;
     }
 
+    public AuthenticationResponse GetNewRefreshAndJWTTokens(String email){
+        var user = repository.findByEmail(email)
+                .orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
+        RefreshToken refToken = refreshTokenService.createRefreshToken(user.getEmail());
+//        System.out.println("jwt " + jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .refreshToken(refToken)
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .role(user.getRole())
+                .id(user.getId())
+                .email(user.getEmail())
+                .build();
+    }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
@@ -155,4 +172,15 @@ public class AuthenticationService {
     }
 
 
+    public Integer setPassword(SetPasswordRequest request) {
+        try {
+            confirmToken(request.getOtp());
+            return repository.updatePasswordByEmail(request.getEmail(),passwordEncoder.encode(request.getPassword()));
+
+        }
+        catch (Exception e){
+            return -1;
+        }
+
+    }
 }
