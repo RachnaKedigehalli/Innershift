@@ -58,6 +58,7 @@ function Tmp(){
 	const DoctorInfo = ({license, bio, degree, position}) => {
 		return(<Card bg={DESKTOP_BG_MEDIUM} w='100%' m={1}>
 			<CardBody>
+				<Heading color='teal.700'> Bio </Heading>
 				<InfoDetail field="License ID" value={license}/>
 				<InfoDetail field="Bio" value={bio} lines={3}/>
 				<InfoDetail field="Degree" value={degree}/>
@@ -77,19 +78,16 @@ function Tmp(){
 						<Heading color='teal.700'> User Name </Heading>
 					</HStack>
 					<Flex w='100%'>
-						<Box w='25%'> 
+						<VStack w='25%'> 
 							{/* {(state.role === 'ADMIN')?
 								<PersonalInfo name="Admin Name" email="admin@somemail.com" phone="9876543210" user="admin"/>
 							:       
 								<PersonalInfo name="Doctor Name" email="admin@somemail.com" phone="9876543210" user="doctor/>
 							} */}
 							<PersonalInfo name="Admin Name" email="admin@somemail.com" phone="9876543210" user="doctor"/>
-					 </Box>
+							<DoctorInfo license='123456789' bio='this is my bio. i am a doctor. i work in so and so hospital and this is my specialization. i have so and so awards and have these other merits.' degree='mbbs' position='doctor'/>
+						</VStack>
 						<VStack flex='1'>
-							<Box w='100%'>
-								<DoctorInfo license='123456789' bio='this is my bio. i am a doctor. i work in so and so hospital and this is my specialization. i have so and so awards and have these other merits.' degree='mbbs' position='doctor'/>
-							</Box>
-
 							<Box bg='gray.100' w='100%'>
 								Charts
 							</Box>
