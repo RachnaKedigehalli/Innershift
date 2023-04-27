@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModuleResponse {
-    private Module module;
-    private ModuleAssignment moduleAssignment;
+public class ModuleStatus {
+    private Integer id;
+    private Boolean locked;
 }

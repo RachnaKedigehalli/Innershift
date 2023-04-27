@@ -1,9 +1,7 @@
 package com.innershiift.auth.app;
 
+import com.innershiift.auth.Module.*;
 import com.innershiift.auth.Module.Module;
-import com.innershiift.auth.Module.ModuleAssignment;
-import com.innershiift.auth.Module.ModuleResponse;
-import com.innershiift.auth.Module.ModuleService;
 import com.innershiift.auth.Mood.Mood;
 import com.innershiift.auth.Mood.MoodService;
 import com.innershiift.auth.Referral.Referral;
@@ -23,24 +21,16 @@ import com.innershiift.auth.user.UserService;
 import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -61,6 +51,8 @@ public class ApplicationController {
 
     private final ModuleService moduleService;
     private final NotificationService notificationService;
+    private final ModuleAssignmentRepository moduleAssignmentRepository;
+    private final ModuleRepository moduleRepository;
 
     @CrossOrigin
     @GetMapping
@@ -264,6 +256,29 @@ public class ApplicationController {
                 moduleService.addModule(m.getContent()).orElseThrow(()->new RuntimeException("Couldn't add module"))
         );
     }
+
+
+    @PostMapping("/deleteAssignmentById")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<ModuleAssignment> deleteAssignmentById(@Valid @RequestBody Integer maId) {
+        return ResponseEntity.ok(
+          moduleService.deleteAssignmentById(maId).orElseThrow(()->new RuntimeException("Couldn't delete module"))
+        );
+    }
+
+
+    // change name of the function locked status
+    @PostMapping("/setLockedForModule")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<ModuleAssignment> setLockedStatus(@Valid @RequestBody ModuleStatus ms) {
+        System.out.println("in the controller to set locked status");
+        return ResponseEntity.ok(
+                moduleService.setModuleLocked(ms.getId(),ms.getLocked()).orElseThrow(()->new RuntimeException("Couldn't set status"))
+        );
+    }
+
 
     @PostMapping("/assignModule")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")

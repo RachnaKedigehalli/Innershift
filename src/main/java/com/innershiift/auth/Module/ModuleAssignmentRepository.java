@@ -18,4 +18,8 @@ public interface ModuleAssignmentRepository extends JpaRepository<ModuleAssignme
     @Modifying
     @Query("UPDATE ModuleAssignment m SET m.scheduled= ?2 WHERE m.moduleAssignedId = ?1")
     void updateOrderByModuleAssignedId(Integer mid, Date sd);
+
+    @Modifying
+    @Query(nativeQuery = true,value = "update _module_assignment set locked=?2 where module_assigned_id=?1")
+    void setLockedStatus(Integer mid, Boolean locked);
 }

@@ -24,9 +24,11 @@ public class ModuleAssignment {
     @GeneratedValue
     private Integer moduleAssignedId;
     private Integer patientId;
+    private Boolean locked;
     private Integer moduleId;
     private String response;
-    private Integer status;
+    private Integer defaultFlag;
+    private Integer status;//0 1 2
     private Date start_timestamp;
     private Date scheduled;
     // Modify duration datastructure from string to something that stores duration

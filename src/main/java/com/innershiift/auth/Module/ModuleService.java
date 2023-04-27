@@ -38,12 +38,24 @@ public class ModuleService {
         moduleAssignment.setModuleId(mId);
         moduleAssignment.setPatientId(pId);
         moduleAssignment.setScheduled(sd);
+        moduleAssignment.setLocked(false);
 //        moduleAssignment.setDuration(duration);
 //        moduleAssignment.setStart_timestamp(start);
         moduleAssignment.setStatus(0);
         return Optional.of(moduleAssignmentRepository.save(moduleAssignment));
     }
-
+    @Transactional
+    public Optional<ModuleAssignment> setModuleLocked(Integer assignmentId,Boolean locked){
+        Optional<ModuleAssignment> ma = moduleAssignmentRepository.findById(assignmentId);
+        System.out.println("In the module service");
+        if(ma.isPresent()){
+            System.out.println("Setting Locked ");
+            moduleAssignmentRepository.setLockedStatus(assignmentId, locked);
+            System.out.println("Locked set!");
+            return moduleAssignmentRepository.findById(assignmentId);
+        }
+        return ma;
+    }
     public Optional<ModuleAssignment> setModuleStatus(Integer assignmentId,Integer status){
         Optional<ModuleAssignment> moduleAssignment = moduleAssignmentRepository.findById(assignmentId);
         if(moduleAssignment.isPresent()){
@@ -87,6 +99,15 @@ public class ModuleService {
     @Transactional
     public void updateOrderByModuleAssignedId(Integer mid, Date sd) {
         moduleAssignmentRepository.updateOrderByModuleAssignedId(mid, sd);
+    }
+
+    public Optional<ModuleAssignment> deleteAssignmentById(Integer maId) {
+        Optional<ModuleAssignment> ma = moduleAssignmentRepository.findById(maId);
+        if(ma.isPresent()){
+            moduleAssignmentRepository.deleteById(maId);
+            return ma;
+        }
+        return ma;
     }
 
 }
