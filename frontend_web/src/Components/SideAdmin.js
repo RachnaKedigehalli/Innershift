@@ -22,7 +22,7 @@ function SideAdmin() {
     }
 
     const onClickPatients = () => {
-        navigate("/doctor/patients")
+        navigate("/admin/patients")
     }
 
 	
@@ -43,10 +43,6 @@ function SideAdmin() {
 					<Button onClick={onClickDoctors} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Doctors
 					</Button>
-
-					<Button onClick={onClickPatients} width='100%' bg='teal.700' color='white'>
-                            <FontAwesomeIcon icon={faStethoscope} style={{marginRight:"0.5em"}}/>  Patients
-                    </Button>
 					
 					<Button onClick={onClickModules} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faDatabase} style={{ marginRight: "0.5em" }} />  Modules
