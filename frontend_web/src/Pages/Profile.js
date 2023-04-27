@@ -68,7 +68,7 @@ function DoctorProfile(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box minHeight='100vh' w='80%' ml='20%'>
+			<Box minHeight='100vh'flex='1'>
 				<VStack flexDirection='column' align='left' m={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
                     <Heading color='teal.700' m={3}> My Profile </Heading>
                     <ProfileDetails name= {doctorDetails[4] + " " + doctorDetails[5]}  email={doctorDetails[4]+"."+doctorDetails[5]+"@gmail.com"} phone="9876543210" license="1234567890" bio={doctorDetails[2]} degree={doctorDetails[3]} position={doctorDetails[1]}/>

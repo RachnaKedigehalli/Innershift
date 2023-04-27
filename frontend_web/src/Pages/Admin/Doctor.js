@@ -1,4 +1,4 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Input,Card,CardHeader,HStack,CardBody,VStack,Text } from '@chakra-ui/react'
+import { Grid, GridItem ,Heading,Image, Button,Center,Input,Card,CardHeader,HStack,CardBody,VStack,Text, Flex, Box} from '@chakra-ui/react'
 import {DESKTOP_BG_LIGHT,DESKTOP_BG_MEDIUM } from "../../Constants" 
 import logo from "../../Assets/Logo/Logo_name.png"
 import face from "../../Assets/Images/profile1.jpg"
@@ -62,34 +62,49 @@ function Doctor(){
     },[])
     
     return(
-        <div>
-            <Grid
+        <Flex>
+            <SideAdmin/>
+            <VStack minH='100vh' w='100%'>
+                <Grid ml={3} mt={10} templateColumns='repeat(7,1fr)' w='100%'>
+                    <GridItem colSpan={1}> <Heading color='teal.700'> Doctors </Heading> </GridItem>
+                    <GridItem colSpan={4}>
+                        <Input placeholder='Search Doctor'/> 
+                    </GridItem>
+
+                    <GridItem colSpan={1}  >
+                        <Button onClick={()=>onAddDoctor(navigate)} bg='teal.700' size='md' style={{color:"white"}}>
+                            <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
+                        </Button>
+                    </GridItem>        
+                </Grid>    
+
+
+
+                <Box w='100%' overFlowY='auto'><Grid templateColumns='repeat(4,1fr)'>
+                    {allDoctors.map((item,index)=>{
+                        return(
+                            <GridItem mt='7em' mr='5em'>
+                                    <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
+                            </GridItem>
+                        )
+                    })}
+                </Grid></Box>
+ 
+            </VStack>
+
+            {/* <Grid
                 h='60em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 >
 
-                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <SideAdmin/>
-                </GridItem>
                 
                 
                 <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
                    <Grid h='15em' templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
                      
                         <GridItem rowSpan={2} colSpan={4}>
-                            <Grid templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
-                                <GridItem> <Heading color='teal.700'> Doctors </Heading> </GridItem>
-                                <GridItem colSpan={2} rowSpan={2} mr='5em'>
-                                    <Input placeholder='Search Doctor'/> 
-                                </GridItem>
-
-                                <GridItem rowSpan={2} colSpan={1}  >
-                                    <Button onClick={()=>onAddDoctor(navigate)} bg='teal.700' size='md' style={{color:"white"}}>
-                                        <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
-                                    </Button>
-                                </GridItem>        
-                            </Grid>           
+                               
                         </GridItem>
 
                         
@@ -107,8 +122,8 @@ function Doctor(){
                    </Grid>
 
                 </GridItem>
-            </Grid>
-        </div>
+            </Grid> */}
+        </Flex>
     ); 
 }
 

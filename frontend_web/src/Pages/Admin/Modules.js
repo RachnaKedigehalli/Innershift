@@ -136,7 +136,7 @@ function AdminModules() {
 			<SideAdmin />
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh' flex='1'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 
 					{/* Moules heading*/}

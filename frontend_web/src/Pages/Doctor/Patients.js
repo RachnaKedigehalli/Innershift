@@ -105,7 +105,7 @@ function DoctorPatients(){
 	}
 	const PatientCard = ({ name, photo, desc, patientId,consultationId}) => {
 		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT}>
+			<Card bg={DESKTOP_BG_LIGHT} maxW='40vh' minW='40vh'>
 				<CardHeader>
 					<HStack>
 						<Image
@@ -120,11 +120,15 @@ function DoctorPatients(){
 				<CardBody>
 					<VStack w='flex'>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
-						<ButtonGroup variant='solid' spacing={2} w='flex' align='center'>
-							<Button bg='teal.700' color='white' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
-							<Button bg='teal.700' color='white' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Patient</Button>
-							<Button bg='teal.700' color='white' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Assign Modules</Button>
-						</ButtonGroup>
+						<VStack w='100%'>
+							<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
+							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
+								<Button bg='teal.700' color='white' w='50%' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Patient</Button>
+								<Button bg='teal.700' color='white' w='50%' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Assign Modules</Button>
+								
+							</ButtonGroup>
+						</VStack>
+						
 					</VStack>
 				</CardBody>
 
@@ -134,7 +138,7 @@ function DoctorPatients(){
 
 	const RequestPatientCard = ({ name, photo, desc,consultationId,status}) => {
 		return (<div>
-			<Card bg={DESKTOP_BG_LIGHT}>
+			<Card bg={DESKTOP_BG_LIGHT} maxW='40vh' minW='40vh'>
 				<CardHeader>
 					<HStack>
 						<Image
@@ -171,7 +175,7 @@ function DoctorPatients(){
 			const cancelRef = React.useRef();
 			return (
 				<>
-					<Button bg='teal.700' color='white' onClick={onOpen} ml={3}>
+					<Button bg='teal.700' color='white'  onClick={onOpen} ml={3}>
 						Confirm
 					</Button>
 		
@@ -207,7 +211,7 @@ function DoctorPatients(){
 
         return (
             <>
-                <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
+                <Button flex='1' ml={2} bg='teal.700' w='100%' color='white' align='center'  onClick={onOpen}>
                     Generate Token
                 </Button>
     
@@ -255,8 +259,8 @@ function DoctorPatients(){
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
-					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3}>
-						<GridItem colSpan={2} ml={7}>
+					<Grid templateColumns='repeat(8, 1fr)' w='flex' gap={3} mt={3}>
+						<GridItem colSpan={2} >
 							<Heading color='teal.700'>Existing Patients</Heading>
 						</GridItem>
 
@@ -264,12 +268,12 @@ function DoctorPatients(){
 							<Input placeholder='SEARCH'></Input>
 						</GridItem>
 
-						<GridItem align='right' mr={10}>
+						<GridItem >
 							<Button
 								onClick={clickSearch}
 								bg="teal.700"
 								color='white'
-								size="md"
+								w='100%'
 								// style={{ color: "black" }}
 							>
 								<FontAwesomeIcon
@@ -279,42 +283,42 @@ function DoctorPatients(){
 								Search
 							</Button>
 						</GridItem>
+						<GridItem >
+							<GenerateToken/>
+						</GridItem>
 					</Grid>
 
 					{/* Existing patients cards */}
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
+					{/* <Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}> */}
+					<HStack overflowX='auto'>
 						{allPatients.map((item,index)=>{
 							return(
 								item.status == true?
-								<GridItem>
-										<PatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId}/>
-								</GridItem>:
+								<PatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId}/>
+								:
 								<></>
 							)
                         })}
-					</Grid>
+					</HStack>
+				
 
 					{/* <Spacer /> */}
 					{/* Request header */}
-					{
-						state.role === 'DOCTOR'?
-							<Heading ml={10}> <Text color='teal.700' align='left'> Pending Requests </Text></Heading>:
-							<></>
 
-					}
+					<Heading > <Text color='teal.700' align='left'> Pending Requests </Text></Heading>:
 
 					{/* Request Cards */}
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={6} mx={8} my={3}>
+					<HStack overflowX='auto'>
 					{allPatients.map((item,index)=>{
 							return(
 								item.status == false?
-								<GridItem>
+								
 										<RequestPatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId} status={item.status}/>
-								</GridItem>:
+								:
 								<></>
 							)
                         })}
-					</Grid>
+					</HStack>
 				</VStack>
 			</Box>
 			
