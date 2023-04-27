@@ -12,12 +12,14 @@ import com.innershiift.auth.Referral.ReferralService;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
+import com.innershiift.auth.notification.NotificationService;
 import com.innershiift.auth.user.Patient.Patient;
 import com.innershiift.auth.user.Patient.PatientResponseInterface;
 import com.innershiift.auth.user.Patient.PatientService;
 import com.innershiift.auth.user.Role;
 import com.innershiift.auth.user.User;
 import com.innershiift.auth.user.UserRepository;
+import com.innershiift.auth.user.UserService;
 import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -53,9 +55,12 @@ public class ApplicationController {
     private final PatientService patientService;
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     private final ModuleService moduleService;
+    private final NotificationService notificationService;
 
     @CrossOrigin
     @GetMapping
@@ -232,6 +237,9 @@ public class ApplicationController {
     public void processMessage(@Payload Message chatMessage) {
         System.out.println("message : " + chatMessage);
         Message m = consultationService.addMessageToConsultation(chatMessage.getConsultationId(), chatMessage.getContent(), chatMessage.getSenderId(), chatMessage.getRecipientId()).orElseThrow(()-> new IllegalStateException("Could not add consultations"));
+        userService.getUserById(chatMessage.getSenderId()).ifPresent((d)->{
+            notificationService.sendNotificationToPatient(chatMessage.getRecipientId(), "New message from Dr. "+ d.getFirstName() + " " + d.getLastName(), chatMessage.getContent());
+        });
 
         simpMessagingTemplate.convertAndSendToUser(
                 m.getConsultationId().toString(),"/queue/messages",
@@ -276,7 +284,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/getModulesByPid")
-    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @PreAuthorize("hasAnyAuthority('DOCTOR', 'USER')")
     @CrossOrigin
     public ResponseEntity<List<ModuleResponse>> getModulesByPid(@Valid @RequestBody Patient p) {
         return ResponseEntity.ok(

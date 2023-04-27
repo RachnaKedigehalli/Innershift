@@ -9,6 +9,7 @@ import org.hibernate.type.descriptor.DateTimeUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,17 +37,14 @@ public class MoodService {
     }
 
     public boolean isMoodSet(Integer pid) {
-        List<Mood> lm = moodRepository.findAll();
-        boolean isMoodSet = false;
+        List<Mood> lm = moodRepository.findAllByPatientId(pid);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
         for(Mood m: lm){
-            if(m.getPatientId() == pid){
-                if(DateUtils.isSameDay(m.getDate(), new Date())) {
-                    isMoodSet = true;
-                    break;
-                }
+            if(fmt.format(m.getDate()).equals(fmt.format(new Date()))) {
+                return true;
             }
         }
-        return isMoodSet;
+        return false;
     }
 
 

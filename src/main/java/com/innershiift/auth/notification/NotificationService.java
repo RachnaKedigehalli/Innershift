@@ -31,12 +31,14 @@ public class NotificationService {
     }
 
     public void sendNotificationToPatient(Integer patientId, String title, String message) {
-        List<NotificationToken> notificationTokens = notificationTokenRepository.findAllByPatientId(patientId);
-        for (NotificationToken notificationToken: notificationTokens) {
-            try {
-                sendPushNotification(notificationToken.getToken(), title, message);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        if (notificationTokenRepository.existsByPatientId(patientId)) {
+            List<NotificationToken> notificationTokens = notificationTokenRepository.findAllByPatientId(patientId);
+            for (NotificationToken notificationToken: notificationTokens) {
+                try {
+                    sendPushNotification(notificationToken.getToken(), title, message);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
