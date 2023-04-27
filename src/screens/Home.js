@@ -10,15 +10,19 @@ import {
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../components/auth/AuthContext";
-import modules from "../data/modules";
+// import modules from "../data/modules";
 import ModuleCard from "../components/ModuleCard";
 import AppStyles from "../AppStyles";
 import CustomButton from "../components/CustomButton";
+import { BASE_APP_URL } from "../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const translate = require("google-translate-api-x");
 
 const Home = ({ navigation }) => {
   const { logout, user, appLanguage } = useContext(AuthContext);
+  const [modules, setModules] = useState([]);
   const translateText = (originalText, setText) => {
     useEffect(() => {
       translate(originalText, {
@@ -27,6 +31,32 @@ const Home = ({ navigation }) => {
       }).then((res) => setText(res.text));
     }, []);
   };
+
+  useEffect(() => {
+    const getModulesForPatient = async () => {
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      axios
+        .post(
+          `${BASE_APP_URL}/getModulesByPid`,
+          {
+            patientId: userDetails.id,
+          },
+          config
+        )
+        .then((res) => {
+          console.log("module:", res.data);
+          setModules(res.data);
+        })
+        .catch(console.log);
+    };
+    getModulesForPatient();
+  }, []);
+
   const originalTexts = {
     bannerHeaderText: "Wind down",
     bannerTagText:
@@ -82,18 +112,27 @@ const Home = ({ navigation }) => {
         </View>
 
         <View style={styles.tasksList}>
-          {modules.map((module, index) => {
-            return (
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("ModuleProgress", { module: module });
-                }}
-                key={index}
-              >
-                <ModuleCard module={module} />
-              </Pressable>
-            );
-          })}
+          {modules ? (
+            modules.map((module, index) => {
+              const scheduled = new Date(module.moduleAssignment.scheduled);
+              const today = new Date();
+              console.log("scheduled", scheduled.toDateString());
+              if (scheduled.toDateString() == today.toDateString()) {
+                return (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("ModuleProgress", { module: module });
+                    }}
+                    key={index}
+                  >
+                    <ModuleCard module={module} />
+                  </Pressable>
+                );
+              }
+            })
+          ) : (
+            <></>
+          )}
         </View>
         <View
           style={{

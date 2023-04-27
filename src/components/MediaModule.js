@@ -49,7 +49,7 @@ const MediaModule = ({ task, index, totalTasks, setIndex, navigation }) => {
               domStorageEnabled={true}
               source={{
                 // uri: task.content,
-                html: `<body><iframe width="100%" height="100%" src="${task.content}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></body>`,
+                html: `<iframe width="100%" height="100%" src="${task.content}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
               }}
             />
           ) : (

@@ -24,7 +24,11 @@ import {
   BottomSheetModalProvider,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  FlatList,
+  GestureHandlerRootView,
+  ScrollView,
+} from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
@@ -51,6 +55,7 @@ const SearchDoctor = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log("in useeffect of search doctor");
     const apiCall = async () => {
       let token = await AsyncStorage.getItem("userToken");
       let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
@@ -60,10 +65,10 @@ const SearchDoctor = (props) => {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      axios
+      await axios
         .get(`${BASE_APP_URL}/getAllDoctors`, config)
         .then((res) => {
-          console.log(res.data);
+          console.log("doctor data", res.data);
           setDoctors(res.data);
         })
         .catch((e) => console.log("couldn't get doctors ", e));
@@ -101,44 +106,50 @@ const SearchDoctor = (props) => {
                 marginBottom: 130,
               }}
             >
-              <FlatList
-                data={doctors}
-                keyExtractor={(item, index) => item[0]}
-                renderItem={({ item }) => {
+              {/* {(doctors != [] && doctors != undefined && doctors != null ) ? (
+                <FlatList
+                  data={doctors}
+                  keyExtractor={(item) => item[0]}
+                  renderItem={({ item }) => {
+                    return (
+                      <Pressable
+                        onPress={() => {
+                          setDoctor(item);
+                          handlePresentModalPress();
+                        }}
+                        // key={item[0]}
+                      >
+                        <DoctorCard
+                          name={`${item[4]} ${item[5]}`}
+                          qualifications={`${item[3]}`}
+                          // navigation={props.navigation}
+                        />
+                      </Pressable>
+                    );
+                  }}
+                />
+              ) : (
+                <></>
+              )} */}
+              <ScrollView>
+                {doctors.map((doctor, did) => {
                   return (
                     <Pressable
                       onPress={() => {
-                        setDoctor(item);
+                        setDoctor(doctor);
                         handlePresentModalPress();
                       }}
-                      // key={item[0]}
+                      key={did}
                     >
                       <DoctorCard
-                        name={`${item[4]} ${item[5]}`}
-                        qualifications={`${item[3]}`}
+                        name={`${doctor[4]} ${doctor[5]}`}
+                        qualifications={`${doctor[3]}`}
                         // navigation={props.navigation}
                       />
                     </Pressable>
                   );
-                }}
-              />
-              {/* {doctors.map((doctor, did) => {
-                return (
-                  <Pressable
-                    onPress={() => {
-                      setDoctor(doctor);
-                      handlePresentModalPress();
-                    }}
-                    key={did}
-                  >
-                    <DoctorCard
-                      name={`${doctor[4]} ${doctor[5]}`}
-                      qualifications={`${doctor[3]}`}
-                      // navigation={props.navigation}
-                    />
-                  </Pressable>
-                );
-              })} */}
+                })}
+              </ScrollView>
             </View>
             {/* <View style={styles.container}> */}
 

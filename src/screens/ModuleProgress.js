@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QuestionModule from "../components/QuestionModule";
 import ReadingModule from "../components/ReadingModule";
 import MediaModule from "../components/MediaModule";
@@ -8,9 +8,19 @@ import TopBar from "../components/TopBar";
 
 const ModuleProgress = ({ route, navigation }) => {
   const { module } = route.params;
+  const [moduleData, setModuleData] = useState();
+  const [moduleAssignment, setModuleAssignment] = useState();
+
   console.log("module", module);
   console.log("module.tasks", module.tasks);
   const [taskIndex, setTaskIndex] = useState(0);
+
+  useEffect(() => {
+    setModuleData(JSON.parse(module.module.content));
+    setModuleAssignment(module.moduleAssignment);
+    console.log("module in module card: ", JSON.parse(module.module.content));
+    console.log("moduleAssignment in module card: ", moduleAssignment);
+  }, []);
 
   const moduleReturn = (tasks) => {
     if (tasks[taskIndex].type == 0) {
@@ -23,7 +33,7 @@ const ModuleProgress = ({ route, navigation }) => {
           navigation={navigation}
         />
       );
-    } else if (tasks[taskIndex].type == 1) {
+    } else if (tasks[taskIndex].type == 2) {
       return (
         <ReadingModule
           task={tasks[taskIndex]}
@@ -61,18 +71,24 @@ const ModuleProgress = ({ route, navigation }) => {
         style={styles.mainContainer}
         contentContainerStyle={{ alignItems: "center" }}
       >
-        <View style={styles.progressBar.bar}>
-          <View
-            style={[
-              StyleSheet.absoluteFill,
-              {
-                ...styles.progressBar.progress,
-                width: `${(taskIndex / module.tasks.length) * 100}%`,
-              },
-            ]}
-          />
-        </View>
-        {moduleReturn(module.tasks)}
+        {moduleData ? (
+          <>
+            <View style={styles.progressBar.bar}>
+              <View
+                style={[
+                  StyleSheet.absoluteFill,
+                  {
+                    ...styles.progressBar.progress,
+                    width: `${(taskIndex / moduleData.tasks.length) * 100}%`,
+                  },
+                ]}
+              />
+            </View>
+            {moduleReturn(moduleData.tasks)}
+          </>
+        ) : (
+          <></>
+        )}
       </ScrollView>
     </>
   );

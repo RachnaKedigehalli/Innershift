@@ -9,10 +9,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
-import modules from "../data/modules";
 import ModuleCard from "../components/ModuleCard";
 import AppStyles from "../AppStyles";
 import { AuthContext } from "../components/auth/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_APP_URL } from "../../config";
 
 const translate = require("google-translate-api-x");
 
@@ -32,21 +34,58 @@ const CalenderScreen = ({ route, navigation }) => {
   });
   var givenDate = new Date(selectedDate);
 
-  const [selectedMonth, setSelectedMonth] = useState(
-    givenDate.toLocaleString("default", { month: "long" })
-  );
-  const [selectedDay, setSelectedDay] = useState(givenDate.getDate());
-  const [selectedYear, setSelectedYear] = useState(givenDate.getFullYear());
+  var getDate = () => {
+    var givenDate = new Date(selectedDate);
+    return givenDate.getDate();
+  };
+  var getMonth = () => {
+    var givenDate = new Date(selectedDate);
+    var month = givenDate.toLocaleString("default", { month: "long" });
+    // return translateText(month, () => {});
+    return month;
+  };
 
-  translateText(
-    givenDate.toLocaleString("default", { month: "long" }),
-    setSelectedMonth
-  );
+  var getYear = () => {
+    var givenDate = new Date(selectedDate);
+    return givenDate.getFullYear();
+  };
+
+  const [modules, setModules] = useState([]);
+  // translateText(
+  //   selectedDate.toLocaleString("default", { month: "long" }),
+  //   setSelectedMonth
+  // );
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   useEffect(() => {
     console.log("date: ", selectedDate);
   }, [selectedDate]);
+
+  useEffect(() => {
+    const getModulesForPatient = async () => {
+      let token = await AsyncStorage.getItem("userToken");
+      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      axios
+        .post(
+          `${BASE_APP_URL}/getModulesByPid`,
+          {
+            patientId: userDetails.id,
+          },
+          config
+        )
+        .then((res) => {
+          console.log("module:", res.data);
+          setModules(res.data);
+        })
+        .catch(console.log);
+    };
+    getModulesForPatient();
+  }, []);
+
   return (
     <View
       style={{
@@ -91,7 +130,7 @@ const CalenderScreen = ({ route, navigation }) => {
       </Modal>
       <View style={styles.dateBar}>
         <View>
-          <Text style={styles.monthText}>{selectedMonth}</Text>
+          <Text style={styles.monthText}>{getMonth()}</Text>
         </View>
         <Pressable
           onPress={() => {
@@ -99,31 +138,38 @@ const CalenderScreen = ({ route, navigation }) => {
           }}
         >
           <View style={styles.dateText}>
-            <Text style={styles.monthText}>{selectedDay}</Text>
+            <Text style={styles.monthText}>{getDate()}</Text>
           </View>
         </Pressable>
         <View>
-          <Text style={styles.monthText}>{selectedYear}</Text>
+          <Text style={styles.monthText}>{getYear()}</Text>
         </View>
       </View>
       <ScrollView
         style={styles.tasksList.container}
         contentContainerStyle={styles.tasksList.contentContainer}
       >
-        {modules.map((module, index) => {
-          return (
-            <Pressable
-              onPress={() => {
-                navigation.navigate("ModuleProgress", {
-                  module: module,
-                });
-              }}
-              key={index}
-            >
-              <ModuleCard module={module} />
-            </Pressable>
-          );
-        })}
+        {modules ? (
+          modules.map((module, index) => {
+            const scheduled = new Date(module.moduleAssignment.scheduled);
+            const today = new Date(selectedDate);
+            console.log("scheduled", scheduled.toDateString());
+            if (scheduled.toDateString() == today.toDateString()) {
+              return (
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("ModuleProgress", { module: module });
+                  }}
+                  key={index}
+                >
+                  <ModuleCard module={module} />
+                </Pressable>
+              );
+            }
+          })
+        ) : (
+          <></>
+        )}
       </ScrollView>
     </View>
   );

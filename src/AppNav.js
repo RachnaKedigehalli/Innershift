@@ -11,6 +11,8 @@ import AppStyles from "./AppStyles";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { create } from "apisauce";
+import axios from "axios";
+import { BASE_APP_URL } from "../config";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -59,8 +61,27 @@ const AppNav = () => {
 
   // Notification--------------------------------------------------
 
-  const { isLoading, userToken } = useContext(AuthContext);
+  const { isLoading, userToken, user } = useContext(AuthContext);
   const [isMoodSet, setIsMoodSet] = useState(false);
+
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${userToken}` },
+    };
+    axios
+      .post(
+        `${BASE_APP_URL}/isMoodSet`,
+        {
+          patientId: user.id,
+        },
+        config
+      )
+      .then((res) => {
+        console.log("isMoodsetAPi", res.data);
+        setIsMoodSet(res.data);
+      })
+      .catch(console.log);
+  }, []);
   if (isLoading) {
     <View
       style={{
@@ -73,7 +94,7 @@ const AppNav = () => {
     </View>;
   }
 
-  console.log("isMoodset in AppNav ", isMoodSet);
+  // console.log("isMoodset in AppNav ", isMoodSet);
 
   return (
     <NavigationContainer>
