@@ -22,7 +22,7 @@ function SideAdmin() {
     }
 
     const onClickPatients = () => {
-        navigate("/doctor/patients")
+        navigate("/admin/patients")
     }
 
 	
