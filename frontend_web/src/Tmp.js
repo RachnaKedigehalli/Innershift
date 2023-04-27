@@ -60,7 +60,7 @@ function Tmp(){
 			<CardBody>
 				<Heading color='teal.700'> Bio </Heading>
 				<InfoDetail field="License ID" value={license}/>
-				<InfoDetail field="Bio" value={bio} lines={3}/>
+				<InfoDetail field="Bio" value={bio} lines={30}/>
 				<InfoDetail field="Degree" value={degree}/>
 				<InfoDetail field="Current Position" value={position}/>
 				
@@ -70,7 +70,7 @@ function Tmp(){
 
     return(
         <Flex>
-			<SideAdmin/>
+			<SideDoctor/>
 			<Box flex='1'm={3} >
 				<VStack mt={10}>
 					<HStack w='100%'>
@@ -78,7 +78,7 @@ function Tmp(){
 						<Heading color='teal.700'> User Name </Heading>
 					</HStack>
 					<Flex w='100%'>
-						<VStack w='25%'> 
+						<VStack w='25%' maxH='100%'> 
 							{/* {(state.role === 'ADMIN')?
 								<PersonalInfo name="Admin Name" email="admin@somemail.com" phone="9876543210" user="admin"/>
 							:       

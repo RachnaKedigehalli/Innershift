@@ -23,6 +23,7 @@ import SideDoctor from '../../Components/SideDoctor';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import FormQuestion from './FormQuestion';
 
 
 function AssignModules() {
@@ -32,8 +33,6 @@ function AssignModules() {
 	const [tasks,setQuestions] = useState([])
     const [allModules,setAllModules] = useState([]);
 	const [state,dispatch] = useStateValue();
-	const [date, updateDate] = useState(new Date());
-
 
 	const onSubmit = () =>{
 		console.log(tasks)
@@ -105,55 +104,21 @@ function AssignModules() {
 		console.log(temp)
    }
 
-    function FormQuestions(qno){
-        return(<Box w = 'flex' m={3} padding={2}>
-			<Card bg={DESKTOP_BG_LIGHT}>
-				<CardBody color='teal.700'>
-					<Heading mb = "1vw" color='teal.700' align='left' size='lg'>Module {qno.qno} </Heading>
-
-					<Heading color='teal.700' align='left' size='md'>Choose the Date: </Heading>
-
-					<DatePicker onChange={(event)=>onChangeDate(qno.qno-1,event)} minDate={new Date()} value={tasks[qno.qno-1].date} />
-
-					<Heading mt='1vw' mb = '1vw' color='teal.700' align='left' size='md'>Choose the Module:</Heading>
-					<Select  placeholder='Select A Module' onChange={(event)=> onChangeDropdown(qno.qno-1,event)}>
-                        {
-                            allModules.map((item,index)=>{
-                                return (<option value = {item.moduleId} key={index} >{item.title}</option>)
-                            })
-                        }
-                    </Select>
-				</CardBody>
-			</Card>
-		</Box>);
-    }
-
-	function QuestionsForm(){
-        var displayQuestions = [];
-        
-        for(var i=1; i<=numberOfQuestions ; i++){
-            displayQuestions.push(<FormQuestions key={i} qno={i}/>)
-        }
-
-		return (<form>
-            {displayQuestions}
-			<ButtonGroup w='50%' align='center'>
-				<Button onClick={addNewTask} w='30%' align='center' bg='teal.700' color='white' m={3}>Add Module</Button>
-				<Button onClick={onSubmit} w='30%' align='center' bg='teal.700' color='white' m={3}> Assign </Button>
-			</ButtonGroup>
-			
-		</form>);
-	}
-
 
 	return (<div>
 		<Flex>
 			<SideDoctor />
-			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh' flex='1'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Assign Modules</Text> </Heading>
 					<Box w='100%' color='teal.700' padding={3} align='center'>
-						<QuestionsForm />
+						{tasks.map((task,index) => 
+						<FormQuestion tasks={tasks} setTasks={setQuestions} index={index} allModules={allModules}/>
+						)}
+						<ButtonGroup w='50%' align='center'>
+							<Button onClick={addNewTask} w='30%' align='center' bg='teal.700' color='white' m={3}>Add Module</Button>
+							<Button onClick={onSubmit} w='30%' align='center' bg='teal.700' color='white' m={3}> Assign </Button>
+						</ButtonGroup>
 					</Box>
 					
 				</VStack>
