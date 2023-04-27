@@ -67,7 +67,7 @@ function Auth(){
     return(
         <div>
             <Flex>
-                <Box bg={DARK_OLIVE} w='20%' minHeight='100vh'/>
+                <Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh'/>
                 <VStack minHeight='100vh' align='center' w='100%'>
                     <Image src={logo} h='15em' mt={61} />
                     <Heading color='teal.700' > Welcome Back</Heading>
