@@ -29,7 +29,6 @@ function AddModule() {
 				description:moduleDescription,
 				thumbnail:thumbnail
 			}
-			console.log(module)
 			navigate('/admin/addquestions', {
 				state:module
 			});
