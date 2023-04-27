@@ -313,7 +313,7 @@ function DoctorPatients(){
 							return(
 								item.status == false?
 								
-										<RequestPatientCard name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId} status={item.status}/>
+										<RequestPatientCard  name={item.firstName + " " + item.lastName} desc={item.gender} key={index} patientId={item.patientId} consultationId={item.consultationId} status={item.status}/>
 								:
 								<></>
 							)

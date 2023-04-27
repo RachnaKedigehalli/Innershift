@@ -25,7 +25,6 @@ function AdminModules() {
 	const [allModules, setAllModules] = useState([]); 
 
 	const clickAddModule = () => {
-		console.log("dashboard clicked");
 		navigate('/admin/addmodule')
 	}
 
@@ -48,6 +47,7 @@ function AdminModules() {
 					array.push(JSON.parse(val[i].content))
 				}
 				setAllModules(array)
+				// console.log(response.data)
             })
 	},[])
 

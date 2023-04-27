@@ -91,18 +91,7 @@ function AssignModules() {
 		setQuestions(temp)
 	}
 
-   const onChangeDropdown = (index,event) => {
-		var temp = tasks
-		temp[index].moduleId = event.target.value
-		setQuestions(temp) 	
-   }
 
-   const onChangeDate = (index,event)=>{
-		var temp = tasks
-		temp[index].date = event
-		setQuestions(temp) 
-		console.log(temp)
-   }
 
 
 	return (<div>
