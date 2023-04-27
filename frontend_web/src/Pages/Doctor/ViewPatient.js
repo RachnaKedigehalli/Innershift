@@ -296,11 +296,11 @@ function ViewPatient(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh'>
-				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
+			<Box bg='white' minHeight='100vh' flex='1' p={3} pr={10}>
+				<VStack flexDirection='column' align='left' w='100%' margin={3} mt={7} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
-					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} margin={3} minHeight='5vh' maxHeight='5vh'>
+					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={6} mt={3} minHeight='5vh' maxHeight='5vh'>
 						<GridItem colSpan={2}>
 							<Heading color='teal.700'>{location.state.name}</Heading>
 						</GridItem>
@@ -325,18 +325,18 @@ function ViewPatient(){
 							</Button>
 						</GridItem>
 					</Grid>
-
-					<HStack w='100%'>
+					
+					<Flex w='100%'>
                         {/* module cards */}
-                        <Box w='30vw' >
+                        <Box w='41%' >
                             <CalHeatMap data={patientMoods}/>
                         </Box>
-
-                        <Box maxHeight='80vh' overflowY='scroll' display='block'>
+						
+                        <Box flex='1' maxHeight='80vh' overflowY='scroll'>
                             <Grid templateColumns='repeat(2, 1fr)' m={3} gap={3}>
 							{allModules.map((item,index)=>{
 								return(
-									<GridItem mt='7em' mr='5em' key={index}>
+									<GridItem key={index}>
 										<ModuleCard name={item.title} desc={item.description} date={item.scheduled.slice(0,10)} index={index} moduleAssignedId={item.moduleAssignedId} type="form"/>
 									</GridItem>
 								)
@@ -346,7 +346,7 @@ function ViewPatient(){
                         </Box>
                         {/* calendar */}
                         
-                    </HStack>
+                    </Flex>
 				</VStack>
 			</Box>
 			

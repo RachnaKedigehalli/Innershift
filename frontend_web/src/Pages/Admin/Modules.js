@@ -129,19 +129,18 @@ function AdminModules() {
 	}
 	
 
-	return (<div>
-		<Flex>
+	return (<Flex>
 
 			{/* This be side nav bar */}
 			<SideAdmin />
 
 			{/* This be main screen */}
 			<Box bg='white' minHeight='100vh' flex='1'>
-				<VStack flexDirection='column' align='left' margin={4} mt={10}>
+				<VStack flexDirection='column' align='left' m={3} ml={5} mt={10}>
 
 					{/* Moules heading*/}
-					<Grid templateColumns='repeat(6, 1fr)' w='flex' gap={6} margin={3}>
-						<GridItem colSpan={1} ml={7}>
+					<Grid templateColumns='repeat(7, 1fr)' w='flex' gap={1} mt={13}>
+						<GridItem colSpan={2} ml={2}>
 							<Heading color='teal.700'>Modules</Heading>
 						</GridItem>
 
@@ -149,10 +148,10 @@ function AdminModules() {
 							<Input placeholder='SEARCH'></Input>
 						</GridItem>
 
-						<GridItem>
+						<GridItem align='right'>
 							<Button
 								onClick={clickAddModule}
-								width='100%' bg='teal.700' color='white'
+								width='75%' bg='teal.700' color='white'
 							>
 								<FontAwesomeIcon
 									icon={faCirclePlus}
@@ -164,8 +163,8 @@ function AdminModules() {
 					</Grid>
 
 					{/* Existing patients cards */}
-					<Box height="flex" overflowY='auto'>
-					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={2} mx={8} my={3}>
+					<Box height="flex" overflowY='auto' mt={3}>
+					<Grid templateColumns='repeat(3, 1fr)' w='flex' gap={4}>
 						{allModules.map((item,index)=>{
 							return(
 								<GridItem key={index}>
@@ -178,8 +177,7 @@ function AdminModules() {
 				</VStack>
 			</Box>
 
-		</Flex>
-	</div>);
+		</Flex>);
 
 }
 

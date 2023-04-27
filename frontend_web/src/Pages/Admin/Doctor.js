@@ -18,7 +18,7 @@ const onAddDoctor = (navigate) =>{
 
 function PatientCard({name, desc}){
 	return(<div>
-		<Card bg={DESKTOP_BG_LIGHT} h='100%'>
+		<Card bg={DESKTOP_BG_MEDIUM} >
 			<CardHeader>
 				<HStack>
 					<Image
@@ -64,15 +64,15 @@ function Doctor(){
     return(
         <Flex>
             <SideAdmin/>
-            <VStack minH='100vh' w='100%'>
-                <Grid ml={3} mt={10} templateColumns='repeat(7,1fr)' w='100%'>
-                    <GridItem colSpan={1}> <Heading color='teal.700'> Doctors </Heading> </GridItem>
+            <VStack minH='100vh' flex='1' overflowX='false' w='100%' p={3} pr={10}>
+                <Grid ml={3} mt={10} templateColumns='repeat(7,1fr)' w='full' gap={3}>
+                    <GridItem colSpan={2}> <Heading color='teal.700'> Doctors </Heading> </GridItem>
                     <GridItem colSpan={4}>
                         <Input placeholder='Search Doctor'/> 
                     </GridItem>
 
                     <GridItem colSpan={1}  >
-                        <Button onClick={()=>onAddDoctor(navigate)} bg='teal.700' size='md' style={{color:"white"}}>
+                        <Button onClick={()=>onAddDoctor(navigate)} bg='teal.700' w='full' mr={5} style={{color:"white"}}>
                             <FontAwesomeIcon icon={faCirclePlus} style={{marginRight:"0.5em"}}/> Add Doctor
                         </Button>
                     </GridItem>        
@@ -80,10 +80,10 @@ function Doctor(){
 
 
 
-                <Box w='100%' overFlowY='auto'><Grid templateColumns='repeat(4,1fr)'>
+                <Box maxW='100%' minW='100%' maxHeight="85vh" overflowY="auto"> <Grid templateColumns='repeat(4,1fr)' m={4} gap={4}>
                     {allDoctors.map((item,index)=>{
                         return(
-                            <GridItem mt='7em' mr='5em'>
+                            <GridItem >
                                     <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
                             </GridItem>
                         )

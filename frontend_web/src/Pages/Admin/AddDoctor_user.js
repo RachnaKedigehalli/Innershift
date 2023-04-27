@@ -1,4 +1,4 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Input, defineStyle } from '@chakra-ui/react'
+import { Grid, GridItem ,Heading,Image, Button,Center,Input, defineStyle, Flex, Box, VStack } from '@chakra-ui/react'
 // import Navbar from '../../Components/Navbar';
 import { DESKTOP_BG_MEDIUM, DARK_GREEN} from "../../Constants" 
 import logo from "../../Assets/Logo/Logo_name.png"
@@ -58,26 +58,26 @@ function UserForm(){
     return(
         <form>
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>First Name</FormLabel>
+                <FormLabel mt={6} color='teal.700'>First Name</FormLabel>
                 <Input onChange={handleChangeFirstName} type='text' placeholder='First Name'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Last Name</FormLabel>
+                <FormLabel mt={6} color='teal.700'>Last Name</FormLabel>
                 <Input onChange={handleChangeLastName} type='text' placeholder='Last Name'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Email address</FormLabel>
+                <FormLabel mt={6} color='teal.700'>Email address</FormLabel>
                 <Input onChange={handleChangeEmail} type='email' placeholder='We will never share your email'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Password</FormLabel>
+                <FormLabel mt={6} color='teal.700'>Password</FormLabel>
                 <Input onChange={handleChangePassword} type='password' style={{color:'teal'}} placeholder="Enter Password" />          
              </FormControl>
             
-            <Button onClick={onSubmit} width="full" mt={4} colorScheme='teal' variant="solid" >
+            <Button onClick={onSubmit} width="full" mt={4} bg='teal.700' color='white'>
                     Continue
             </Button>
         </form>
@@ -96,14 +96,40 @@ function AddDoctor_user(){
     }
 
     return(
-        <div>
-            <Grid
+        <Flex>
+            <SideAdmin/>
+
+            <Box bg='white' minHeight='100vh' flex='1'>
+				<VStack flexDirection='column' align='left' m={3} mt={10}>
+
+					{/* Moules heading*/}
+                    <Heading mt={13} color='teal.700'>Enter Doctor's Data</Heading>
+					<Box w='50%'>
+                        <UserForm/>
+                    </Box>
+				</VStack>
+			</Box>
+
+
+            {/* <Grid h='15em' templateRows='repeat(20,1fr)' templateColumns='repeat(4,1fr)'>     
+                <GridItem rowSpan={2} colSpan={4}>
+                    <Grid templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
+                        <GridItem colSpan={5} rowSpan={2}>
+                            <Heading color='teal.700'>Enter Doctor's Data</Heading>
+                        </GridItem>
+                        <GridItem colSpan={2} rowSpan={2} mr='5em'>
+                                <UserForm/>
+                        </GridItem>                               
+                    </Grid>           
+                </GridItem>
+
+            </Grid> */}
+            {/* <Grid
                 h='60em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 >
 
-                {/* Side bar */}
                 <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
                    <SideAdmin/>
                 </GridItem>
@@ -114,7 +140,7 @@ function AddDoctor_user(){
                         <GridItem rowSpan={2} colSpan={4}>
                             <Grid templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
                                 <GridItem colSpan={5} rowSpan={2}>
-                                    <Heading color={DARK_GREEN}>Enter Doctor's Data</Heading>
+                                    <Heading color='teal.700'>Enter Doctor's Data</Heading>
                                 </GridItem>
                                 <GridItem colSpan={2} rowSpan={2} mr='5em'>
                                         <UserForm/>
@@ -124,8 +150,8 @@ function AddDoctor_user(){
 
                    </Grid>
                 </GridItem>
-            </Grid>
-        </div>
+            </Grid> */}
+        </Flex>
     ); 
 }
 

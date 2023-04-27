@@ -66,7 +66,7 @@ function AddModule() {
 			<SideAdmin />
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
+			<Box bg='white' minHeight='100vh' w='100%'>
 				<VStack flexDirection='column' align='left' margin={4} mt={10}>
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Module </Text> </Heading>
 

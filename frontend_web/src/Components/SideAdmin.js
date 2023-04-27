@@ -34,8 +34,8 @@ function SideAdmin() {
 			<Box>
 
 			</Box>
-			<Center>
-				<VStack width="100%">
+			<Center w='100%'>
+				<VStack width="77%">
 					<Button onClick={clickDashBoard} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 					</Button>

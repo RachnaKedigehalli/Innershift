@@ -1,4 +1,4 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Input } from '@chakra-ui/react'
+import { Grid, GridItem ,Heading,Image, Button,Center,Input, Flex, Box, VStack } from '@chakra-ui/react'
 // import Navbar from '../../Components/Navbar';
 import { DESKTOP_BG_MEDIUM, DARK_GREEN} from "../../Constants" 
 import logo from "../../Assets/Logo/Logo_name.png"
@@ -61,31 +61,31 @@ function UserForm(response){
     return(
         <form>
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>License ID</FormLabel>
-                <Input onChange={handleChangeLicense} type='password' placeholder='License ID'/>
+                <FormLabel mt={6} color='teal.700'>License ID</FormLabel>
+                <Input onChange={handleChangeLicense} type='password' style={{color:'teal'}} placeholder='License ID'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Biography</FormLabel>
-                <Input onChange={handleChangeBio} type='text' placeholder='Biography'/>
+                <FormLabel mt={6} color='teal.700'>Biography</FormLabel>
+                <Input onChange={handleChangeBio} type='text' style={{color:'teal'}} placeholder='Biography'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Degree</FormLabel>
-                <Input onChange={handleChangeDegree} type='text' placeholder='Degree'/>
+                <FormLabel mt={6} color='teal.700'>Degree</FormLabel>
+                <Input onChange={handleChangeDegree} type='text' style={{color:'teal'}} placeholder='Degree'/>
             </FormControl>
 
             <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Current Position</FormLabel>
+                <FormLabel mt={6} color='teal.700'>Current Position</FormLabel>
                 <Input onChange={handleChangeCurrentPos} type='text' style={{color:'teal'}} placeholder="Current Position" />           
              </FormControl>
 
              <FormControl>
-                <FormLabel mt={6} color={DARK_GREEN}>Phone</FormLabel>
+                <FormLabel mt={6} color='teal.700'>Phone</FormLabel>
                 <Input onChange={handleChangePhone} type='text' style={{color:'teal'}} placeholder="Phone" />           
              </FormControl>
             
-            <Button onClick={onSubmit} width="full" mt={4} colorScheme='teal' variant="solid" >
+            <Button onClick={onSubmit} width="full" mt={4} bg='teal.700' color='white'>
                 Add Doctor
             </Button>
         </form>
@@ -97,36 +97,20 @@ function UpdateDoctor_user(){
     const navigate = useNavigate(); 
 
     return(
-        <div>
-            <Grid
-                h='60em'
-                templateRows='repeat(20, 1fr)'
-                templateColumns='repeat(5, 1fr)'
-                >
+        <Flex>
+            <SideAdmin/>
+            <Box bg='white' minHeight='100vh' flex='1'>
+				<VStack flexDirection='column' align='left' m={3} mt={10}>
 
-                {/* Side bar */}
-                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    <SideAdmin/>
-                </GridItem>
-                
-                
-                <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
-                   <Grid h='15em' templateRows='repeat(20,1fr)' templateColumns='repeat(4,1fr)'>     
-                        <GridItem rowSpan={2} colSpan={4}>
-                            <Grid templateRows='repeat(2,1fr)' templateColumns='repeat(4,1fr)'>
-                                <GridItem colSpan={5} rowSpan={2}>
-                                    <Heading color={DARK_GREEN}>Enter Doctor's Data</Heading>
-                                </GridItem>
-                                <GridItem colSpan={2} rowSpan={2} mr='5em'>
-                                        <UserForm response={location.state}/>
-                                </GridItem>                               
-                            </Grid>           
-                        </GridItem>
-                   </Grid>
-                </GridItem>
-                {/* <DialogBox/> */}
-            </Grid>
-        </div>
+					{/* Moules heading*/}
+                    <Heading mt={13} color='teal.700'>Enter Doctor's Data</Heading>
+
+					<Box w='50%'>
+                         <UserForm response={location.state}/>
+                    </Box>
+				</VStack>
+			</Box>
+        </Flex>
     ); 
 }
 

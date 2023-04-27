@@ -27,23 +27,23 @@ function SideDoctor() {
         navigate("/profile")
     }
 
-	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh'>
+	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' maxHeight='100vh'>
 		<VStack spacing={3} align='center'>
 			<Image src={logo} h='9em' />
 			<Box>
 
 			</Box>
-			<Center>
-				<VStack width="100%">
+			<Center w='100%'>
+				<VStack width="77%">
 					<Button onClick={clickDashBoard} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faChartPie} style={{ marginRight: "0.5em" }} />  Dashboard
 					</Button>
 
-					<Button onClick={onClickPatients} ml='5em' mt='2em' w='12em' bg='teal.700' color='white'>
+					<Button onClick={onClickPatients} width='100%' bg='teal.700' color='white'>
 						<FontAwesomeIcon icon={faStethoscope} style={{ marginRight: "0.5em" }} />  Patients
 					</Button>
 
-					<Button onClick={onClickProfile} ml = '5em' mt ='2em' w = '12em' bg='teal.700' color='white'>
+					<Button onClick={onClickProfile} width='100%' bg='teal.700' color='white'>
                             <FontAwesomeIcon icon={faUser} style={{marginRight:"0.5em"}}/>  Profile
                     </Button>
 				</VStack>

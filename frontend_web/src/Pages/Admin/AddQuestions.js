@@ -93,7 +93,7 @@ function AddQuestions() {
 		setQuestions(temp)
 	}
     function FormQuestions(qno){
-        return(<Box w = 'flex' m={3} padding={2}>
+        return(<Box w = 'flex' padding={2}>
 			<Card bg={DESKTOP_BG_LIGHT}>
 				<CardBody color='teal.700'>
 					<Heading color='teal.700' align='left' size='lg'>Question {qno.qno} </Heading>
@@ -147,9 +147,9 @@ function AddQuestions() {
 			<SideAdmin />
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh' w='80%' ml='20%'>
-				<VStack flexDirection='column' align='left' margin={4} mt={10}>
-					<Heading> <Text color='teal.700' ml={3} mt={3}> Add Questions </Text> </Heading>
+			<Box bg='white' minHeight='100vh' flex='1'>
+				<VStack flexDirection='column' align='left'  mt={10}>
+					<Heading> <Text color='teal.700' ml={7} mt={3}> Add Questions </Text> </Heading>
 					<Box w='100%' color='teal.700' padding={3} align='center'>
 						<QuestionsForm number={numberOfQuestions}/>
 					</Box>

@@ -255,7 +255,7 @@ function DoctorPatients(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh'>
+			<Box bg='white' minHeight='100vh' flex='1' ml={5}>
 				<VStack flexDirection='column' align='left' margin={4} mt={10} divider={<StackDivider borderColor='gray.200' />}>
 					
 					{/* existing patients heading */}
@@ -283,7 +283,7 @@ function DoctorPatients(){
 								Search
 							</Button>
 						</GridItem>
-						<GridItem >
+						<GridItem mr={5} >
 							<GenerateToken/>
 						</GridItem>
 					</Grid>

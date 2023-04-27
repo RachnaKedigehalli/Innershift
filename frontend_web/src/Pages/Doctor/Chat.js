@@ -135,7 +135,7 @@ function DoctorChat(){
 
 	const MyMessage = ({msgText}) =>{
 			return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
-			<Center minWidth={30} padding={2}>
+			<Center minWidth={30} padding={5}>
 				{/* <Text>Box 1</Text> */}
 			</Center>
 			<Box flex='1' padding={2}>
@@ -153,7 +153,7 @@ function DoctorChat(){
 	const OtherMessage = ({msgText}) =>{
 		return (<Flex color={DESKTOP_BG_LIGHT} m={1}>
 			<Box bg='white' minWidth={5}></Box>
-			<Box bg='gray.200' borderRadius={30} padding={2}>
+			<Box bg='gray.200' borderRadius={30} padding={5}>
 					<Text color='teal.700'>{msgText}</Text>
 			</Box>
 
@@ -178,9 +178,9 @@ function DoctorChat(){
 	return(<div> 
 		<Flex>
 			<SideDoctor/>
-			<Flex direction='column' bg='white' maxHeight='100vh' minHeight='100vh'>
+			<Flex direction='column' bg='white' flex='1' maxHeight='100vh' minHeight='100vh'>
 				<Header patientName={location.state.name}/>
-        <Divider borderColor='gray.400' mb='1vw'/>
+				<Divider borderColor='gray.400' mb='1vw'/>
 				<Box w='100%' flex={1} overflowY='auto'>
 							{messageList.map((msg,itemIndex) => {
 								return(
@@ -193,7 +193,7 @@ function DoctorChat(){
 							)})}  
 				</Box>         
 				<Flex w='100%' mb={1} >            
-							<Input value={latestMessage} onChange={updateMessage} minHeight='100%' flex={1} borderColor='gray.300' placeholder='Type Here' mr={2} />
+							<Input value={latestMessage} onChange={updateMessage} minHeight='100%' flex={1} borderColor='gray.300' placeholder='Type Here' mr={2} color='teal.700'/>
 							<Button bg='teal.700' color='white' onClick={onSend}>Send</Button>
 				</Flex>
 			</Flex>

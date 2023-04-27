@@ -1,4 +1,4 @@
-import { Grid, GridItem ,Heading,Image, Button,Center,Box} from '@chakra-ui/react'
+import { Grid, GridItem ,Heading,Image, Button,Center,Box, Flex, VStack, HStack} from '@chakra-ui/react'
 import {DESKTOP_BG_MEDIUM, DARK_GREEN} from "../Constants" 
 import logo from "../Assets/Logo/Logo_name.png"
 
@@ -24,19 +24,39 @@ function Dashboard(){
     },[location])
 
     return(
-        <div>
-            <Grid
+        <Flex>
+            {(state.role === 'ADMIN')?
+                <SideAdmin/>:
+                <SideDoctor/>
+            }
+
+            
+
+            <VStack m={3}>
+                {/* <HStack>
+                <Heading  size='lg'> Welcome, <div style={{color:DARK_GREEN}}>{state.firstName} {state.lastName}</div> </Heading>
+                </HStack> */}
+                <HStack w='100%' mt={10}>
+						<Heading  size='lg' color='gray.600'> Welcome,</Heading> 
+						<Heading color='teal.700'> {state.firstName} {state.lastName} </Heading>
+					</HStack>
+
+                {(state.role === 'ADMIN')?
+                    <Box maxW="20rem" maxH="20rem" mt = '5rem'>
+                        <PieChart/>
+                    </Box>
+                :       
+                    <Box maxW="20rem" maxH="20rem" mt = '5rem'>
+                        <PieChartDoctor/>
+                    </Box>
+                }
+            </VStack>
+
+            {/* <Grid
                 h='60em'
                 templateRows='repeat(20, 1fr)'
                 templateColumns='repeat(5, 1fr)'
                 >
-
-                <GridItem rowSpan={20} colSpan={1} bg={DESKTOP_BG_MEDIUM}>
-                    {(state.role === 'ADMIN')?
-                        <SideAdmin/>:
-                        <SideDoctor/>
-                    }
-                </GridItem>
                 
                 
                 <GridItem ml = '5em' mt = '6em' rowSpan={20} colSpan={4}>
@@ -52,8 +72,8 @@ function Dashboard(){
                         </Box>
                     }
                 </GridItem>
-            </Grid>
-        </div>
+            </Grid> */}
+        </Flex>
     ); 
 }
 

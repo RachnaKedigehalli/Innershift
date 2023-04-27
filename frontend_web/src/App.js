@@ -108,7 +108,7 @@ function App() {
           <Route path="/doctor/chat" element={<PrivateRoute><DoctorChat /></PrivateRoute>} />
           <Route path="/doctor/assignmodules" element={<PrivateRoute><AssignModules /></PrivateRoute>} />
           <Route path="/doctor/reorder" element={<PrivateRoute><UpdateOrder /></PrivateRoute>} /> */}
-          {/* <Route path="/dummyloc" element={<PrivateRoute><Dummypage /></PrivateRoute>} /> */}
+          
 
           <Route path="/tmp" element={<Tmp />} />
           <Route path="/dummyloc" element={<Dummypage />}/>
