@@ -42,24 +42,24 @@ function PatientCard({name, desc}){
 
 function AdminPatients(){
     
-    // const location = useLocation();
-    // const navigate = useNavigate(); 
-    // const [state, dispatch] = useStateValue();
-    // const [allDoctors, setAllDoctors] = useState([]); 
+    const location = useLocation();
+    const navigate = useNavigate(); 
+    const [state, dispatch] = useStateValue();
+    const [allPatients, setAllPatients] = useState([]); 
 
-    // useEffect(()=>{
+    useEffect(()=>{
         
-    //     const auth = {
-    //         headers: {
-    //             Authorization: `Bearer ${state.adminToken}`
-    //         }
-    //     }
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
 
-    //     axios.get('http://localhost:8080/api/v1/app/getAllDoctors',auth)
-    //     .then(response=>{
-    //         setAllDoctors(response.data)
-    //     })
-    // },[])
+        axios.get('http://localhost:8080/api/v1/app/getAllPatients',auth)
+        .then(response=>{
+            setAllPatients(response.data)
+        })
+    },[])
     
     return(
         <div>
@@ -84,29 +84,13 @@ function AdminPatients(){
 
                     <Box overflowY='auto' w='100%'>
                         <Grid templateColumns='repeat(4,1fr)' ml={5} mr={5} gap={3}>
-                            {/* {allDoctors.map((item,index)=>{
+                            {allPatients.map((item,index)=>{
                                 return(
-                                    <GridItem mt='7em' mr='5em'>
-                                            <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
+                                    <GridItem mt='7em' mr='5em' key={index}>
+                                            <PatientCard name={item.firstName+ " " + item.lastName} desc={item.emergencyContact}/>
                                     </GridItem>
                                 )
-                            })} */}
-                            <GridItem>
-                                <PatientCard name="patient name" desc="this is patient bio" />
-                            </GridItem>
-                            <GridItem>
-                                <PatientCard name="patient name" desc="this is patient bio" />
-                            </GridItem>
-                            <GridItem>
-                                <PatientCard name="patient name" desc="this is patient bio" />
-                            </GridItem>
-                            <GridItem>
-                                <PatientCard name="patient name" desc="this is patient bio" />
-                            </GridItem>
-                            <GridItem>
-                                <PatientCard name="patient name" desc="this is patient bio" />
-                            </GridItem>
-                            
+                            })}
                         </Grid>
                     </Box>
                 </VStack>

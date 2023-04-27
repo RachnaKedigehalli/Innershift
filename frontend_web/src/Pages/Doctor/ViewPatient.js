@@ -149,7 +149,7 @@ function ViewPatient(){
             <CardBody bg={DESKTOP_BG_MEDIUM}>
                 <VStack spacing={3} align='left'>
                         <Heading flex={1}> <Text noOfLines={1} color='#285e61'> {name}</Text> </Heading>
-                    <Text h={75} bg='blue.100' color='teal.700' noOfLines={3}> {desc} </Text>
+                    <Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
                     <Flex>
                         <Text> To be unlocked on: </Text>
                         <Text ml={1} color='teal.700'>  {date} </Text>

@@ -118,7 +118,7 @@ function App() {
 
           <Route path="/admin/patients" element={<AdminPatients />}/>
 
-          {/* <Route path="/home" element={<Dashboard/>} />
+          <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
           <Route path="/doctor" element={<Doctor />} /> 
           <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
@@ -136,7 +136,7 @@ function App() {
           <Route path="/doctor/chat" element={<DoctorChat />} />
           <Route path="/doctor/assignmodules" element={<AssignModules />} />
           <Route path="/doctor/reorder" element={<UpdateOrder />} />
-        <Route path="/dummyloc" element={<Dummypage />} /> */}
+        <Route path="/dummyloc" element={<Dummypage />} />
 
         </Routes>
       </BrowserRouter>
