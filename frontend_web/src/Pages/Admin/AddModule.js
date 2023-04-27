@@ -4,9 +4,7 @@ import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
 import {
 	FormControl,
-	FormLabel,
-	FormErrorMessage,
-	FormHelperText,
+	FormLabel
 } from '@chakra-ui/react'
 
 import react, {useState} from 'react';
@@ -23,12 +21,13 @@ function AddModule() {
 
 		const [moduleName, setModuleName] = useState('');
 		const [moduleDescription, setModuleDescription] = useState('');
-		const [numberOfQuestions,setNumberOfQuestions] = useState(0)
+		const [thumbnail,setThumbnail] = useState("")
 
 		const clickAddTask = () =>{
 			const module = {
 				title: moduleName, 
 				description:moduleDescription,
+				thumbnail:thumbnail
 			}
 			console.log(module)
 			navigate('/admin/addquestions', {
@@ -38,7 +37,7 @@ function AddModule() {
 
 		const handleChangeModuleName = (event) => setModuleName(event.target.value); 
 		const handleChangeModuleDescription = (event) => setModuleDescription(event.target.value);
-		const handleChangeNumberOfQuestions = (event) => setNumberOfQuestions(event);
+		const handleThumbnail = (event) => setThumbnail(event.target.value);
 
 		return (<form>
 			<FormControl>
@@ -49,16 +48,12 @@ function AddModule() {
 				<FormLabel> Description</FormLabel>
 				<Input type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
 			</FormControl>
-			{/* <FormControl mt={3}>
-				<FormLabel>Number of questions</FormLabel>
-				<NumberInput max={50} min={1} onChange={handleChangeNumberOfQuestions}>
-					<NumberInputField />
-					<NumberInputStepper>
-						<NumberIncrementStepper />
-						<NumberDecrementStepper />
-					</NumberInputStepper>
-				</NumberInput>
-			</FormControl> */}
+
+			<FormControl mt={3}>
+				<FormLabel>Thumbnail(URL)</FormLabel>
+				<Input type='text' value={thumbnail} onChange={handleThumbnail}/>
+			</FormControl>
+			
 
 			<Button onClick={clickAddTask} align='center' bg='teal.700' color='white' m={3}> Add Questions </Button>
 		</form>);
