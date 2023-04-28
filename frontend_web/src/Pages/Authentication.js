@@ -64,6 +64,10 @@ function Auth(){
         
     }
 
+    const forgotPassword = () => {
+        navigate("/forgotpassword");
+    }
+
     return(
         <div>
             <Flex>
@@ -79,7 +83,7 @@ function Auth(){
                     <Button onClick={onSubmit} bg='teal.600' color='white' size='lg'>
                                     Login
                         </Button>
-                    <Heading color='teal.700' size="xs"> Forgot Password?</Heading>
+                    <Button bg='white' color='teal.700' size="xs" onClick={forgotPassword}> Forgot Password?</Button>
                 </VStack>
             </Flex>
         </div>

@@ -21,6 +21,8 @@ import AddQuestions from './Pages/Admin/AddQuestions';
 import DoctorPatients from './Pages/Doctor/Patients';
 
 import Dummypage from './Pages/dummypage';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 import ViewPatient from './Pages/Doctor/ViewPatient';
 import DoctorChat from './Pages/Doctor/Chat';
 import AssignModules from './Pages/Doctor/AssignModules';
@@ -115,6 +117,9 @@ function App() {
 
           <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
+          
           <Route path="/doctor" element={<Doctor />} /> 
           <Route path="/adddoctor/page1" element={<AddDoctor_user />} /> 
           <Route path="/updatedoctor" element={<UpdateDoctor_user />} /> 
