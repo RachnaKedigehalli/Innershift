@@ -110,4 +110,15 @@ public class ModuleService {
         return ma;
     }
 
+    @Transactional
+    public Optional<ModuleAssignment> updateModuleResponse(Integer moduleAssignedId, String response, Date startTimestamp, String duration) {
+        System.out.println("id:"+moduleAssignedId+" vresponse:"+response+" starttimestamp:"+startTimestamp+" duration:"+duration);
+        Optional<ModuleAssignment>  ma  = moduleAssignmentRepository.findById(moduleAssignedId);
+        if(ma.isPresent()){
+            System.out.println("calling update");
+            moduleAssignmentRepository.updateResponse(moduleAssignedId,response,startTimestamp,duration);
+            return moduleAssignmentRepository.findById(moduleAssignedId);
+        }
+        return ma;
+    }
 }

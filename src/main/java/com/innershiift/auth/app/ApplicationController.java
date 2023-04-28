@@ -267,6 +267,16 @@ public class ApplicationController {
         );
     }
 
+    @PostMapping("/sendModuleResponse")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public ResponseEntity<ModuleAssignment> updateModuleResponse(@Valid @RequestBody ModuleAssignment ma) {
+        System.out.println("Here in update module response!");
+        return ResponseEntity.ok(
+               moduleService.updateModuleResponse(ma.getModuleAssignedId(),ma.getResponse(),ma.getStart_timestamp(),ma.getDuration()).orElseThrow(()->new RuntimeException("Couldn't delete module"))
+        );
+    }
+
 
     // change name of the function locked status
     @PostMapping("/setLockedForModule")
@@ -315,13 +325,6 @@ public class ApplicationController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/getReferralByDoctorId")
-//    @PreAuthorize("hasAnyAuthority('DOCTOR')")
-//    @CrossOrigin
-//    public ResponseEntity<Referral> getReferralByDoctorId(@Valid @RequestBody Integer doctorId){
-//        Optional<Referral> ret = referralService.getReferralByDoctorId(doctorId);
-//        return  ResponseEntity.ok((ret.orElse(null)));
-//    }
 
     @PostMapping("/getReferralByDoctor")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
