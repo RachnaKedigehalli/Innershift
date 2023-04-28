@@ -60,6 +60,7 @@ export const AuthProvider = (props) => {
   const login = async (email, password) => {
     setIsLoading(true);
     console.log(`${BASE_AUTH_URL}/authenticate`);
+    var isSuccess = false;
     await axios
       .post(`${BASE_AUTH_URL}/authenticate`, {
         email: email,
@@ -84,14 +85,15 @@ export const AuthProvider = (props) => {
         AsyncStorage.setItem("refreshToken", res.data.refreshToken.token);
         setUserToken(res.data.token);
         setRefreshToken(res.data.refreshToken.token);
-        return true;
+        isSuccess = true;
       })
       .catch((err) => {
         console.log(err);
-        return false;
+        isSuccess = false;
       });
 
     setIsLoading(false);
+    return isSuccess;
   };
   const register = async (
     email,

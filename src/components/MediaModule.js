@@ -1,18 +1,71 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import CustomButton from "../components/CustomButton";
 // import { ResizeMode } from "expo-av";
 // import VideoPlayer from "expo-video-player";
 import { WebView } from "react-native-webview";
+import { AuthContext } from "./auth/AuthContext";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_APP_URL } from "../../config";
 
-const MediaModule = ({ task, index, totalTasks, setIndex, navigation }) => {
+const translate = require("google-translate-api-x");
+
+const MediaModule = ({
+  moduleAssignmentId,
+  task,
+  index,
+  totalTasks,
+  setIndex,
+  navigation,
+  startTime,
+  response,
+  setResponse,
+}) => {
+  const { appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    useEffect(() => {
+      translate(originalText, {
+        from: "en",
+        to: appLanguage,
+      }).then((res) => setText(res.text));
+    }, []);
+  };
+  const [taskTitle, setTaskTitle] = useState(task.title);
+  const [taskDesp, setTaskDesp] = useState(task.description);
+  translateText(task.title, setTaskTitle);
+  translateText(task.description, setTaskDesp);
+
+  const submitModule = async (response, startTime) => {
+    let token = await AsyncStorage.getItem("userToken");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const current = new Date();
+    const duration = current.getTime() - startTime.getTime();
+    const bodyParameters = {
+      moduleAssignedId: moduleAssignmentId,
+      response: JSON.stringify({ response: response }),
+      start_timestamp: startTime,
+      duration: duration.toString(),
+      status: true,
+    };
+    console.log("bodyParameters in media module", bodyParameters);
+    await axios
+      .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
+      .then((res) => {
+        navigation.goBack();
+      });
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{task.title}</Text>
+        <Text style={styles.titleText}>{taskTitle}</Text>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>{task.description}</Text>
+        <Text style={styles.descriptionText}>{taskDesp}</Text>
       </View>
       <View style={styles.mediaContainer}>
         {/* <VideoPlayer
@@ -67,7 +120,7 @@ const MediaModule = ({ task, index, totalTasks, setIndex, navigation }) => {
             if (index < totalTasks - 1) {
               setIndex(index + 1);
             } else {
-              navigation.goBack();
+              submitModule(response, startTime);
             }
           }}
         />

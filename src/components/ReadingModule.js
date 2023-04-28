@@ -1,21 +1,74 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { CheckBox } from "@rneui/themed";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CustomButton from "../components/CustomButton";
 import AppStyles from "../AppStyles";
+import { AuthContext } from "./auth/AuthContext";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_APP_URL } from "../../config";
 
-const ReadingModule = ({ task, index, totalTasks, setIndex, navigation }) => {
+const translate = require("google-translate-api-x");
+
+const ReadingModule = ({
+  moduleAssignmentId,
+  task,
+  index,
+  totalTasks,
+  setIndex,
+  navigation,
+  startTime,
+  response,
+  setResponse,
+}) => {
+  const { appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    useEffect(() => {
+      translate(originalText, {
+        from: "en",
+        to: appLanguage,
+      }).then((res) => setText(res.text));
+    }, []);
+  };
+  const [taskTitle, setTaskTitle] = useState(task.title);
+  const [taskDesp, setTaskDesp] = useState(task.description);
+  const [taskContent, setTaskContent] = useState(task.content);
+  translateText(task.title, setTaskTitle);
+  translateText(task.description, setTaskDesp);
+  translateText(task.content, setTaskContent);
+
+  const submitModule = async (response, startTime) => {
+    let token = await AsyncStorage.getItem("userToken");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const current = new Date();
+    const duration = current.getTime() - startTime.getTime();
+    const bodyParameters = {
+      moduleAssignedId: moduleAssignmentId,
+      response: JSON.stringify({ response: response }),
+      start_timestamp: startTime,
+      duration: duration.toString(),
+      status: true,
+    };
+    await axios
+      .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
+      .then((res) => {
+        navigation.goBack();
+      });
+  };
   const [isSelected, setIsSelected] = useState(false);
   return (
     <View style={styles.mainContainer}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{task.title}</Text>
+        <Text style={styles.titleText}>{taskTitle}</Text>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>{task.description}</Text>
+        <Text style={styles.descriptionText}>{taskDesp}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.contentText}>{task.content}</Text>
+        <Text style={styles.contentText}>{taskContent}</Text>
       </View>
       <View style={styles.markReadContainer}>
         <CheckBox
@@ -46,7 +99,7 @@ const ReadingModule = ({ task, index, totalTasks, setIndex, navigation }) => {
             if (index < totalTasks) {
               setIndex(index + 1);
             } else {
-              navigation.goBack();
+              submitModule(response, startTime);
             }
           }}
         />

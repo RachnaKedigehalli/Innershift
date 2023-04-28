@@ -7,9 +7,10 @@ import AppStyles from "../AppStyles";
 import TopBar from "../components/TopBar";
 
 const ModuleProgress = ({ route, navigation }) => {
-  const { module } = route.params;
+  const { module, startTime } = route.params;
   const [moduleData, setModuleData] = useState();
   const [moduleAssignment, setModuleAssignment] = useState();
+  const [response, setResponse] = useState([]);
 
   console.log("module", module);
   console.log("module.tasks", module.tasks);
@@ -26,31 +27,43 @@ const ModuleProgress = ({ route, navigation }) => {
     if (tasks[taskIndex].type == 0) {
       return (
         <QuestionModule
+          moduleAssignmentId={module.moduleAssignment.moduleAssignedId}
           task={tasks[taskIndex]}
           index={taskIndex}
           totalTasks={tasks.length}
           setIndex={setTaskIndex}
           navigation={navigation}
+          startTime={new Date(startTime)}
+          response={response}
+          setResponse={setResponse}
         />
       );
     } else if (tasks[taskIndex].type == 2) {
       return (
         <ReadingModule
+          moduleAssignmentId={module.moduleAssignment.moduleAssignedId}
           task={tasks[taskIndex]}
           index={taskIndex}
           totalTasks={tasks.length}
           setIndex={setTaskIndex}
           navigation={navigation}
+          startTime={new Date(startTime)}
+          response={response}
+          setResponse={setResponse}
         />
       );
     } else {
       return (
         <MediaModule
+          moduleAssignmentId={module.moduleAssignment.moduleAssignedId}
           task={tasks[taskIndex]}
           index={taskIndex}
           totalTasks={tasks.length}
           setIndex={setTaskIndex}
           navigation={navigation}
+          startTime={new Date(startTime)}
+          response={response}
+          setResponse={setResponse}
         />
       );
     }

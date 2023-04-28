@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import AppStyles from "../AppStyles";
 import { AuthContext } from "./auth/AuthContext";
 import temp_thumbnail from "../../assets/images/dummy/profile1.jpg";
+import { Icon } from "@rneui/base";
 const translate = require("google-translate-api-x");
 
 const ModuleCard = (props) => {
@@ -35,7 +36,13 @@ const ModuleCard = (props) => {
   return (
     <View style={(!props.isLocked ? styles : locked_styles).mainContainer}>
       {/* <Image source={require('./../data/banner.jpeg') }/> */}
-      <Image source={temp_thumbnail} style={styles.moduleImg} />
+      <View style={(!props.isLocked ? styles : locked_styles).ImgContainer}>
+        <Image
+          source={temp_thumbnail}
+          style={(!props.isLocked ? styles : locked_styles).moduleImg}
+        />
+        <View style={(!props.isLocked ? styles : locked_styles).overlay} />
+      </View>
       <View style={(!props.isLocked ? styles : locked_styles).title}>
         <Text style={(!props.isLocked ? styles : locked_styles).titleText}>
           {module ? module.title : ""}
@@ -48,6 +55,12 @@ const ModuleCard = (props) => {
           </Text>
         </View>
       </View>
+      <Icon
+        name="lock"
+        type="material-community"
+        color={AppStyles.colour.darkGrey}
+        style={(!props.isLocked ? styles : locked_styles).lock}
+      />
     </View>
   );
 };
@@ -79,18 +92,38 @@ const styles = StyleSheet.create({
   },
   description: { marginTop: 0 },
   descriptionText: { fontSize: 12, color: AppStyles.colour.darkGrey },
+  lock: {
+    display: "none",
+  },
 });
 
 const locked_styles = StyleSheet.create({
   mainContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
     marginBottom: 35,
+    // backgroundColor: AppStyles.colour.black,
   },
   moduleImg: {
     height: 70,
     width: 70,
     borderRadius: 70,
+    flex: 1,
+    // backgroundColor: "rgba(100,100,100,0.8)",
+  },
+  overlay: {
+    height: 70,
+    width: 70,
+    borderRadius: 70,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  ImgContainer: {
+    height: 70,
+    width: 70,
+    borderRadius: 70,
+    backgroundColor: "rgba(100,100,100,0.8)",
   },
   title: {
     flexDirection: "column",
@@ -103,7 +136,11 @@ const locked_styles = StyleSheet.create({
     fontSize: 16,
     color: AppStyles.colour.darkGreen,
     marginBottom: 4,
+    color: AppStyles.colour.darkGrey,
   },
   description: { marginTop: 0 },
   descriptionText: { fontSize: 12, color: AppStyles.colour.darkGrey },
+  lock: {
+    marginLeft: 15,
+  },
 });

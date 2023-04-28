@@ -115,19 +115,32 @@ const Home = ({ navigation }) => {
           {modules ? (
             modules.map((module, index) => {
               const scheduled = new Date(module.moduleAssignment.scheduled);
-              const today = new Date();
-              console.log("scheduled", scheduled.toDateString());
+              let today = new Date();
+              // console.log(!module.moduleAssignment.locked);
+              // console.log("scheduled", scheduled.toDateString());
               if (scheduled.toDateString() == today.toDateString()) {
-                return (
-                  <Pressable
-                    onPress={() => {
-                      navigation.navigate("ModuleProgress", { module: module });
-                    }}
-                    key={index}
-                  >
-                    <ModuleCard module={module} />
-                  </Pressable>
-                );
+                console.log("Yo, its today", module.module.moduleId);
+                if (!module.moduleAssignment.locked) {
+                  console.log("not locked");
+                  today = new Date();
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        navigation.navigate("ModuleProgress", {
+                          module: module,
+                          startTime: today.toISOString(),
+                        });
+                      }}
+                      key={index}
+                    >
+                      <ModuleCard module={module} isLocked={false} />
+                    </Pressable>
+                  );
+                } else {
+                  return (
+                    <ModuleCard module={module} isLocked={true} key={index} />
+                  );
+                }
               }
             })
           ) : (

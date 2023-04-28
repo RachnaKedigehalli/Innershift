@@ -153,18 +153,29 @@ const CalenderScreen = ({ route, navigation }) => {
           modules.map((module, index) => {
             const scheduled = new Date(module.moduleAssignment.scheduled);
             const today = new Date(selectedDate);
-            console.log("scheduled", scheduled.toDateString());
+            // console.log(!module.moduleAssignment.locked);
+            // console.log("scheduled", scheduled.toDateString());
             if (scheduled.toDateString() == today.toDateString()) {
-              return (
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate("ModuleProgress", { module: module });
-                  }}
-                  key={index}
-                >
-                  <ModuleCard module={module} />
-                </Pressable>
-              );
+              console.log("Yo, its today", module.module.moduleId);
+              if (!module.moduleAssignment.locked) {
+                console.log("not locked");
+                return (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("ModuleProgress", {
+                        module: module,
+                      });
+                    }}
+                    key={index}
+                  >
+                    <ModuleCard module={module} isLocked={false} />
+                  </Pressable>
+                );
+              } else {
+                return (
+                  <ModuleCard module={module} isLocked={true} key={index} />
+                );
+              }
             }
           })
         ) : (
