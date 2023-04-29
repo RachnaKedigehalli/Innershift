@@ -60,11 +60,11 @@ function DoctorPatients(){
 		})
 	}
 
-	const clickDiagnosis = (id,name) => {
+	const clickDiagnosis = (consultationId,name) => {
 		navigate("/doctor/diagnosis",
 		{
 			state:{
-				id:id,
+				consultationId:consultationId,
 				name:name
 			}
 		})
@@ -133,7 +133,7 @@ function DoctorPatients(){
 						<VStack w='100%'>
 							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
 								<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
-								<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,name)} size='md'>Diagnosis</Button>
+								<Button bg='teal.700' color='white' w='100%' onClick={() => clickDiagnosis(consultationId,name)} size='md'>Diagnosis</Button>
 							</ButtonGroup>
 
 							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>

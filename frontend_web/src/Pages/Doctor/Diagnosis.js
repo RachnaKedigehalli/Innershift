@@ -25,7 +25,30 @@ import 'react-calendar/dist/Calendar.css';
 
 function Diagnosis(){
 
-    const [date,updateDate] = useState(new Date()); 
+    const [state,dispatch] = useStateValue();
+    const [currDiagnosis,setDiagnosis] =  useState({target:{value:""}});
+    const [numberOfDiagnosis,setNumberofDiagnosis] = useState(0); 
+    const [allDiagnosis,setAllDiagnosis] = useState([])
+    
+    const location = useLocation(); 
+
+    useEffect(()=>{
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+        const content = {
+            consultationId:location.state.consultationId, 
+        }
+
+        axios.post('http://localhost:8080/api/v1/app/getDiagnosisByCid',content,auth)
+        .then(response=>{
+            console.log(response.data)
+            setAllDiagnosis(response.data)
+        })
+    },[numberOfDiagnosis])
 
     const DiagnosisCard = ({date, diagnosis}) =>{
         return(<HStack w='100%'>
@@ -34,6 +57,31 @@ function Diagnosis(){
         </HStack>)
     }
 
+    const addDiagnosis = ()=>{
+        const auth = {
+            headers: {
+                Authorization: `Bearer ${state.adminToken}`
+            }
+        }
+
+        const date = new Date(); 
+        date.setHours(8); 
+
+        const content = {
+            consultationId:location.state.consultationId, 
+            diagnosis:currDiagnosis.target.value,
+            date:date 
+        }
+
+        axios.post('http://localhost:8080/api/v1/app/addDiagnosis',content,auth)
+        .then(response=>{
+            console.log(response.data)
+            setNumberofDiagnosis(numberOfDiagnosis+1)
+        })
+
+        
+        setDiagnosis({target:{value:""}})
+    }
 
 	return(<div> 
 		<Flex>
@@ -44,33 +92,28 @@ function Diagnosis(){
 			{/* This be main screen */}
 			<Box bg='white' minHeight='100vh' flex='1' p={3}>
                 <Flex mt={10} direction="column">
-                    <Heading color="teal.700"> Jaggu's Diagnosis</Heading>
-                    
-
-                    {/* <VStack mb='1vw'>
-                    </VStack> */}
-
-                   
+                    <Heading color="teal.700"> {location.state.name}'s Diagnosis</Heading>
 
                     <Divider borderColor='gray.600'/>
 
                     <Heading size='md' color="teal.700" mt={5}>Previous Diagnosis</Heading>
                     <VStack overflowY = "auto" maxHeight='68vh' w='100%' divider={<StackDivider borderColor='gray.200' />}>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
-                        <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
+                        {
+                            
+                            allDiagnosis.map((item,index)=>{
+                                const temp = new Date(item.date); 
+                                const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+                                return(
+                                    <DiagnosisCard date={temp.getDate()+" "+month[temp.getUTCMonth()] + " " + temp.getFullYear()} diagnosis={item.diagnosis}/>
+                                )
+                            })
+                        }
                     </VStack>
 
-                    {/* <Divider borderColor='gray.600'/>
-
-                    <Heading size='md' color="teal.700" mt={5}>Add Diagnosis</Heading> */}
                     <HStack w='100%'>
-                        <Textarea placeholder='Append Diagnosis'></Textarea>
-                        <Button bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
+                        <Textarea value={currDiagnosis.target.value} placeholder='Append Diagnosis' onChange={setDiagnosis}/>
+                        <Button onClick={addDiagnosis} bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
                     </HStack>
                 </Flex>
             </Box>
