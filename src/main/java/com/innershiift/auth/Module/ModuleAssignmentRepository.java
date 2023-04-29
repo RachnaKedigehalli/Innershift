@@ -20,8 +20,8 @@ public interface ModuleAssignmentRepository extends JpaRepository<ModuleAssignme
     void updateOrderByModuleAssignedId(Integer mid, Date sd);
 
     @Modifying
-    @Query(nativeQuery = true,value = "update _module_assignment set response=?2, duration=?4, start_timestamp=?3 where module_assigned_id=?1")
-    void updateResponse(Integer moduleAssignedId, String response,Date startTimestamp,String duration);
+    @Query(nativeQuery = true,value = "update _module_assignment set response=?2, duration=?4, start_timestamp=?3, status=?5 where module_assigned_id=?1")
+    void updateResponse(Integer moduleAssignedId, String response,Date startTimestamp,String duration, Boolean status);
 
     @Modifying
     @Query(nativeQuery = true,value = "update _module_assignment set locked=?2 where module_assigned_id=?1")

@@ -1,11 +1,9 @@
 package com.innershiift.auth.user.Patient;
 
 
+import com.innershiift.auth.config.Encrypt;
 import com.innershiift.auth.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,9 +24,12 @@ public class Patient {
 
     private Integer registeredThrough;
 
+    @Convert(converter = Encrypt.class)
     private Date dob;
+    @Convert(converter = Encrypt.class)
     private String emergencyContact;
     private Integer gender;
+    @Convert(converter = Encrypt.class)
     private String phoneNumber;
     private Integer condition;
 }

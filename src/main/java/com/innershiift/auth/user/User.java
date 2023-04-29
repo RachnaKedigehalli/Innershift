@@ -1,6 +1,7 @@
 package com.innershiift.auth.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.innershiift.auth.config.Encrypt;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+    @Convert(converter = Encrypt.class)
     private String firstName;
+    @Convert(converter = Encrypt.class)
     private String lastName;
+    @Convert(converter = Encrypt.class)
     private String email;
     @JsonIgnore
     private String password;

@@ -1,10 +1,8 @@
 package com.innershiift.auth.Module;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.innershiift.auth.config.Encrypt;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,9 +24,12 @@ public class ModuleAssignment {
     private Integer patientId;
     private Boolean locked;
     private Integer moduleId;
+
+    @Lob
+    @Convert(converter = Encrypt.class)
     private String response;
     private Integer defaultFlag;
-    private Integer status;//0 1 2
+    private Boolean status;//0 1 2
     private Date start_timestamp;
     private Date scheduled;
     // Modify duration datastructure from string to something that stores duration

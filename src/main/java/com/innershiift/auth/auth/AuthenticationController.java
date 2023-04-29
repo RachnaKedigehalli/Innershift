@@ -11,6 +11,7 @@ import com.innershiift.auth.config.RefreshTokenService;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/setPassword")
+    @PreAuthorize("hasAnyAuthority('USER', 'DOCTOR', 'ADMIN')")
     @CrossOrigin
     public ResponseEntity<Integer> setPassword(
             @RequestBody SetPasswordRequest request
@@ -49,23 +51,23 @@ public class AuthenticationController {
 
     @PostMapping("/forgotPassword")
     @CrossOrigin
-    public ResponseEntity<?> forgotPassword(@RequestBody String email){
+    public ResponseEntity<?> forgotPassword(@RequestBody AuthenticationRequest request){
         System.out.println("in Forgot password OH NOOOOOO!!!");
         String token = String.valueOf((int)(Math.floor(Math.random() *( 999999 - 100000 + 1) + 100000)));
         EmailToken emailToken = new EmailToken(
                 token,
-                email,
+                request.getEmail(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15)
         );
         emailTokenRepository.save(emailToken);
         emailService.send(
-                email,
+                request.getEmail(),
                 emailService.emailBuilder(token));
 
 //        return ResponseEntity.ok();
         return ResponseEntity.ok(EmailResponse.builder()
-                .email(email)
+                .email(request.getEmail())
                 .status("sent")
                 .build()
         );

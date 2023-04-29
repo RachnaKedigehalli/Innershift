@@ -41,7 +41,7 @@ public class ModuleService {
         moduleAssignment.setLocked(false);
 //        moduleAssignment.setDuration(duration);
 //        moduleAssignment.setStart_timestamp(start);
-        moduleAssignment.setStatus(0);
+        moduleAssignment.setStatus(false);
         return Optional.of(moduleAssignmentRepository.save(moduleAssignment));
     }
     @Transactional
@@ -56,7 +56,7 @@ public class ModuleService {
         }
         return ma;
     }
-    public Optional<ModuleAssignment> setModuleStatus(Integer assignmentId,Integer status){
+    public Optional<ModuleAssignment> setModuleStatus(Integer assignmentId,Boolean status){
         Optional<ModuleAssignment> moduleAssignment = moduleAssignmentRepository.findById(assignmentId);
         if(moduleAssignment.isPresent()){
             ModuleAssignment m = moduleAssignment.get();
@@ -111,12 +111,12 @@ public class ModuleService {
     }
 
     @Transactional
-    public Optional<ModuleAssignment> updateModuleResponse(Integer moduleAssignedId, String response, Date startTimestamp, String duration) {
+    public Optional<ModuleAssignment> updateModuleResponse(Integer moduleAssignedId, String response, Date startTimestamp, String duration, Boolean status) {
         System.out.println("id:"+moduleAssignedId+" vresponse:"+response+" starttimestamp:"+startTimestamp+" duration:"+duration);
         Optional<ModuleAssignment>  ma  = moduleAssignmentRepository.findById(moduleAssignedId);
         if(ma.isPresent()){
             System.out.println("calling update");
-            moduleAssignmentRepository.updateResponse(moduleAssignedId,response,startTimestamp,duration);
+            moduleAssignmentRepository.updateResponse(moduleAssignedId,response,startTimestamp,duration, status);
             return moduleAssignmentRepository.findById(moduleAssignedId);
         }
         return ma;

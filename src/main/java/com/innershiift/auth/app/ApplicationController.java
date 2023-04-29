@@ -273,7 +273,7 @@ public class ApplicationController {
     public ResponseEntity<ModuleAssignment> updateModuleResponse(@Valid @RequestBody ModuleAssignment ma) {
         System.out.println("Here in update module response!");
         return ResponseEntity.ok(
-               moduleService.updateModuleResponse(ma.getModuleAssignedId(),ma.getResponse(),ma.getStart_timestamp(),ma.getDuration()).orElseThrow(()->new RuntimeException("Couldn't delete module"))
+               moduleService.updateModuleResponse(ma.getModuleAssignedId(),ma.getResponse(),ma.getStart_timestamp(),ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't delete module"))
         );
     }
 

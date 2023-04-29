@@ -1,11 +1,9 @@
 package com.innershiift.auth.user.doctor;
 
 
+import com.innershiift.auth.config.Encrypt;
 import com.innershiift.auth.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +20,14 @@ public class Doctor {
 
     @Id
     private Integer doctorId;
-
+    @Convert(converter = Encrypt.class)
     private  String licenseId;
+    @Convert(converter = Encrypt.class)
     private  String biography;
+    @Convert(converter = Encrypt.class)
     private  String degree;
+    @Convert(converter = Encrypt.class)
     private String currentPos;
+    @Convert(converter = Encrypt.class)
     private String phoneNumber;
 }
