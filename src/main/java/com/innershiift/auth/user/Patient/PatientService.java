@@ -88,7 +88,6 @@ public class PatientService {
     }
 
     public Optional<PatientResponseInterface> getPatientByID(Integer id){
-        System.out.println("firstName " + patientRepository.getPatientByPid(id).getFirstName());
         return Optional.of(patientRepository.getPatientByPid(id));
     }
 }

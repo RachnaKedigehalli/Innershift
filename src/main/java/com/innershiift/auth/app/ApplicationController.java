@@ -221,6 +221,7 @@ public class ApplicationController {
     @PreAuthorize("hasAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<Consultation> acceptConsultation(@Valid @RequestBody Consultation c){
+        notificationService.sendNotificationToPatient(c.getPatientId(), "Doctor has accepted your consultation request", "");
         return  ResponseEntity.ok(consultationService.setConsultationStatus(c.getConsultationId(),c.getStatus()).orElseThrow(()->new IllegalStateException("Unable to set Consultation status")));
     }
 

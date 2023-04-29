@@ -26,7 +26,6 @@ public class ModuleAssignment {
     private Integer moduleId;
 
     @Lob
-    @Convert(converter = Encrypt.class)
     private String response;
     private Integer defaultFlag;
     private Boolean status;//0 1 2
