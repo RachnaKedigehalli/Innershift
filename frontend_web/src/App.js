@@ -27,7 +27,7 @@ import ViewPatient from './Pages/Doctor/ViewPatient';
 import DoctorChat from './Pages/Doctor/Chat';
 import AssignModules from './Pages/Doctor/AssignModules';
 import UpdateOrder from './Pages/Doctor/UpdateModuleOrder';
-import Diagnosis from './Pages/Doctor/Daignosis'
+import Diagnosis from './Pages/Doctor/Diagnosis'
 
 import Tmp from './Tmp';
 import ConfirmOTP from './Pages/ConfirmOTP';

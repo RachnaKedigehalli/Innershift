@@ -60,6 +60,16 @@ function DoctorPatients(){
 		})
 	}
 
+	const clickDiagnosis = (id,name) => {
+		navigate("/doctor/diagnosis",
+		{
+			state:{
+				id:id,
+				name:name
+			}
+		})
+	}
+
 	const clickModule = (id,consultationId,name) => {
 		navigate('/doctor/viewpatient',{
 			state:{
@@ -121,15 +131,16 @@ function DoctorPatients(){
 					<VStack w='flex'>
 						<Text h={75} color='teal.700' noOfLines={3}> {desc} </Text>
 						<VStack w='100%'>
-							<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
+							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
+								<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,consultationId,name)} size='md'>Chat</Button>
+								<Button bg='teal.700' color='white' w='100%' onClick={() => clickChat(patientId,name)} size='md'>Diagnosis</Button>
+							</ButtonGroup>
+
 							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
 								<Button bg='teal.700' color='white' w='50%' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Patient</Button>
 								<Button bg='teal.700' color='white' w='50%' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Assign Modules</Button>
 							</ButtonGroup>
-							{/* <ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
-								<Button bg='teal.700' color='white' w='50%' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Notes</Button>
-								<Button bg='teal.700' color='white' w='50%' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Add Notes</Button>
-							</ButtonGroup> */}
+							
 						</VStack>
 						
 					</VStack>
@@ -234,7 +245,7 @@ function DoctorPatients(){
         return (
             <>
                 <Button flex='1' ml={2} bg='teal.700' w='100%' color='white' align='center'  onClick={onGenerateToken}>
-                    Generate Token
+                    Generate Referral
                 </Button>
     
                 <AlertDialog
@@ -249,7 +260,7 @@ function DoctorPatients(){
                             </AlertDialogHeader>
     
                             <AlertDialogBody>
-									<Text color='teal.700'>The generated token is unique and should be shared with only 1 user. Are you sure you want to generate a token?</Text>
+									<Text color='teal.700'>The generated token is unique. Are you sure you want to view the referral</Text>
                             </AlertDialogBody>
     
                             <AlertDialogFooter>

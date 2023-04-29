@@ -68,7 +68,7 @@ function Diagnosis(){
                     {/* <Divider borderColor='gray.600'/>
 
                     <Heading size='md' color="teal.700" mt={5}>Add Diagnosis</Heading> */}
-                    <HStack w='100%' my={2}>
+                    <HStack w='100%'>
                         <Textarea placeholder='Append Diagnosis'></Textarea>
                         <Button bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
                     </HStack>

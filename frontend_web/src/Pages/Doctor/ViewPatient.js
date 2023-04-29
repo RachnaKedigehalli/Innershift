@@ -101,7 +101,7 @@ function ViewPatient(){
         }
         
 		const onChangeDate = (event) =>{
-			event.setHours(5)
+			event.setHours(8)
 			updateDate(event)
 			console.log(event) 
 		}
@@ -195,12 +195,12 @@ function ViewPatient(){
 
 
     function getMoodString(val){
-        if(val === 1){ return "Energetic" };
-        if(val === 2){ return "Happy" };
-        if(val === 3){ return "Calm" };
-        if(val === 4){ return "Mood Swings" };
-        if(val === 5){ return "Sad" };
-        if(val === 6){ return "Irritated" };
+        if(val === 0){ return "Energetic" };
+        if(val === 1){ return "Happy" };
+        if(val === 2){ return "Calm" };
+        if(val === 3){ return "Mood Swings" };
+        if(val === 4){ return "Sad" };
+        if(val === 5){ return "Irritated" };
         return "Unknown"
     }
 
