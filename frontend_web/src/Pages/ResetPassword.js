@@ -1,13 +1,13 @@
-import { Grid, GridItem, Image,Center,Heading,Input,Button, VStack, HStack, Box, Flex, Text, useBoolean, FormControl } from '@chakra-ui/react'
+import { Image,Heading,Input,Button, VStack, Box, Flex, Text, FormControl } from '@chakra-ui/react'
 // import Navbar from '../Components/Navbar';
-import {DARK_OLIVE, DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM, LIGHT_GREEN} from "../Constants" 
+import {DESKTOP_BG_MEDIUM, LIGHT_GREEN} from "../Constants" 
 
-import {faAngleLeft, faTriangleExclamation} from '@fortawesome/free-solid-svg-icons'
+import {faTriangleExclamation} from '@fortawesome/free-solid-svg-icons'
 
 import logo from "../Assets/Logo/Logo_white.png"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Form, useLocation, useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { useStateValue } from '../StateProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -27,7 +27,7 @@ function ResetPassword(){
 
     useEffect(()=>console.log(location.state),[])
     const confirmReset = () => {
-        if(password != c_password){
+        if(password !== c_password){
             CheckPasswords(false);
             return;
         }
