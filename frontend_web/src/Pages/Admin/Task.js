@@ -1,4 +1,4 @@
-import { Flex, Card, Button, RadioGroup, Radio,Text, Box, VStack,  HStack,  Heading, Input, CardBody, extendTheme, withDefaultVariant, ButtonGroup } from '@chakra-ui/react'
+import { Flex, Card, Button, RadioGroup, Radio,Text, Box,   HStack,  Heading, Input, CardBody, extendTheme, withDefaultVariant, ButtonGroup, Textarea } from '@chakra-ui/react'
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
 import {
@@ -47,7 +47,7 @@ function FormTask({tasks,setTasks,index}){
 						<Input value ={description.target.value} borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={setDescription}/>
 
 						<FormLabel  mt={2} m={1}> <Text as='b'> Content</Text> </FormLabel>
-						<Input value = {content.target.value} borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={setContent}/>
+						<Textarea value = {content.target.value} borderColor='gray.400' focusBorderColor='teal.700' type='text' onChange={setContent}/>
 
 					</FormControl>
 				</CardBody>

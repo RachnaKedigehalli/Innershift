@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Image, Text, Box, VStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberDecrementStepper, HStack, StackDivider, Heading, Input, Center, form, NumberInputStepper, Radio, RadioGroup } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, ButtonGroup, Textarea,Image, Text, Box, VStack, NumberInput, NumberInputField, NumberIncrementStepper, NumberDecrementStepper, HStack, StackDivider, Heading, Input, Center, form, NumberInputStepper, Radio, RadioGroup } from '@chakra-ui/react'
 import SideAdmin from "../../Components/SideAdmin";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
@@ -45,7 +45,7 @@ function AddModule() {
 			</FormControl>
 			<FormControl mt={3}>
 				<FormLabel> Description</FormLabel>
-				<Input type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
+				<Textarea type='text' value={moduleDescription} onChange={handleChangeModuleDescription}/>
 			</FormControl>
 
 			<FormControl mt={3}>
