@@ -30,6 +30,7 @@ import UpdateOrder from './Pages/Doctor/UpdateModuleOrder';
 
 
 import Tmp from './Tmp';
+import ConfirmOTP from './Pages/ConfirmOTP';
 
 
 function PrivateRoute({ children }) {
@@ -118,6 +119,7 @@ function App() {
           <Route path="/home" element={<Dashboard/>} />
           <Route path="/auth" element={<Auth />} /> 
           <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/confirmOTP" element={<ConfirmOTP />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           
           <Route path="/doctor" element={<Doctor />} /> 

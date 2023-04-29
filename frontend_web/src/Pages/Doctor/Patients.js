@@ -125,8 +125,11 @@ function DoctorPatients(){
 							<ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
 								<Button bg='teal.700' color='white' w='50%' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Patient</Button>
 								<Button bg='teal.700' color='white' w='50%' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Assign Modules</Button>
-								
 							</ButtonGroup>
+							{/* <ButtonGroup variant='solid' spacing={2} w='100%' align='center'>
+								<Button bg='teal.700' color='white' w='50%' onClick={() => clickModule(patientId,consultationId,name)} size='md'>View Notes</Button>
+								<Button bg='teal.700' color='white' w='50%' onClick={() => assignModule(patientId,consultationId,name)} size='md'>Add Notes</Button>
+							</ButtonGroup> */}
 						</VStack>
 						
 					</VStack>
@@ -164,10 +167,32 @@ function DoctorPatients(){
 	const GenerateToken = () => {
 		const { isOpen, onOpen, onClose } = useDisclosure()
         const cancelRef = React.useRef();
+		const [referral, setReferral] = useState("");
 
 		function closeAll(){
 			onClose();
 			onClose();
+		}
+
+		const onGenerateToken = ()=>{
+			console.log("Hi")
+			const auth = {
+				headers: {
+					Authorization: `Bearer ${state.adminToken}`
+				}
+			}
+			
+			const details = {
+				doctorId: state.id
+			}
+	
+			axios.post('http://localhost:8080/api/v1/app/getReferralByDoctor',details,auth)
+			.then(response=>{
+				setReferral(response.data.referral)
+				console.log(response.data.referral)
+				onOpen(); 
+			})
+			
 		}
 
 		const DisplayCode = () => {
@@ -191,13 +216,10 @@ function DoctorPatients(){
 								</AlertDialogHeader>
 		
 								<AlertDialogBody>
-									<Text color='teal.700'> Note: This code can be used only once and only against the email provided. </Text>
+									<Text  color='teal.700'>Referral Code: \n {referral}</Text>
 								</AlertDialogBody>
 		
 								<AlertDialogFooter>
-									{/* <Button bg='gray.200' color='teal.700' onClick={onClose} ml={3}>
-										Cancel
-									</Button> */}
 									<Button bg='teal.700' color='white' onClick={closeAll} ml={3}>
 										Done
 									</Button>
@@ -211,7 +233,7 @@ function DoctorPatients(){
 
         return (
             <>
-                <Button flex='1' ml={2} bg='teal.700' w='100%' color='white' align='center'  onClick={onOpen}>
+                <Button flex='1' ml={2} bg='teal.700' w='100%' color='white' align='center'  onClick={onGenerateToken}>
                     Generate Token
                 </Button>
     
@@ -227,10 +249,7 @@ function DoctorPatients(){
                             </AlertDialogHeader>
     
                             <AlertDialogBody>
-                                <FormControl>
-									<Text color='teal.700'> Enter Patient's Email:</Text>
-									<Input color='teal.700' borderColor='teal.700' focusBorderColor='teal.700'/>
-								</FormControl>
+									<Text color='teal.700'>The generated token is unique and should be shared with only 1 user. Are you sure you want to generate a token?</Text>
                             </AlertDialogBody>
     
                             <AlertDialogFooter>

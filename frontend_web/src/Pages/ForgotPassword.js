@@ -13,11 +13,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 function ForgotPassword(){
-    // const [email,setEmail] = useState("")
-    // const [password,setPassword] = useState("")
-    // const [state, dispatch] = useStateValue();
-    // const handleChangeEmail = (event) => setEmail(event.target.value)
-    // const handleChangePassword = (event) => setPassword(event.target.value)
+    const [email,setEmail] = useState({target:{value:""}})
+    const [state, dispatch] = useStateValue();
+
 
     const navigate = useNavigate();
 
@@ -67,18 +65,24 @@ function ForgotPassword(){
         
     // }
 
-    const [validEmail, setValidEmail] = useState('true');
+    const [validEmail, setValidEmail] = useState(true);
 
     const sendOTP = () => {
-        //check for send otp
-        // if wrong otp
         setValidEmail(false);
-        // else
-        navigate("/resetpassword");
+        const credentials = {email:email.target.value} 
+        axios.post("http://localhost:8080/api/v1/auth/forgotPassword",credentials)
+        .then((response)=>
+            console.log(response.data)
+        )
+
+        navigate("/confirmOTP",{
+            state:{
+                email:email.target.value
+            }
+        });
     }
 
     const navAuth = () => {
-        console.log("hi");
         navigate("/auth");
     }
 
@@ -91,7 +95,7 @@ function ForgotPassword(){
                     <Heading color='teal.700' > Reset Password</Heading>
                     {/* <Heading color='teal.700' size='sm'>Please Enter Your Details</Heading> */}
                     <Heading color='teal.700' size='sm' >Email</Heading>
-                        <Input w='30%'size='lg' bgColor={LIGHT_GREEN} />
+                        <Input onChange={setEmail} w='30%'size='lg' bgColor={LIGHT_GREEN} />
                     {validEmail? <></> : <Text color='red'><FontAwesomeIcon icon={faTriangleExclamation} style={{color: "#ff0000",}} />   Invalid email</Text>}
                     <Button bg='teal.700' color='white' size='md' style={{marginTop:"1em"}} onClick={sendOTP}>
                                     Send OTP

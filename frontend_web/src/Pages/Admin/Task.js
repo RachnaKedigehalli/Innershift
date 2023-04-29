@@ -3,9 +3,7 @@ import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 
 import {
 	FormControl,
-	FormLabel,
-	FormErrorMessage,
-	FormHelperText,
+	FormLabel
 } from '@chakra-ui/react'
 
 import {useEffect, useState} from 'react';

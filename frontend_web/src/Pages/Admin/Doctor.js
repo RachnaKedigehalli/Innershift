@@ -57,6 +57,7 @@ function Doctor(){
 
         axios.get('http://localhost:8080/api/v1/app/getAllDoctors',auth)
         .then(response=>{
+            console.log(response.data)
             setAllDoctors(response.data)
         })
     },[])
@@ -83,8 +84,8 @@ function Doctor(){
                 <Box maxW='100%' minW='100%' maxHeight="85vh" overflowY="auto"> <Grid templateColumns='repeat(4,1fr)' m={4} gap={4}>
                     {allDoctors.map((item,index)=>{
                         return(
-                            <GridItem >
-                                    <PatientCard name={item[4] + " " + item[5]} desc={item[3]} key={index}/>
+                            <GridItem key={index}>
+                                    <PatientCard name={item.firstName + " " + item.lastName} desc={item.degree}/>
                             </GridItem>
                         )
                     })}
