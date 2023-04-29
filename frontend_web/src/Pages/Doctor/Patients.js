@@ -216,7 +216,7 @@ function DoctorPatients(){
 								</AlertDialogHeader>
 		
 								<AlertDialogBody>
-									<Text  color='teal.700'>Referral Code: \n {referral}</Text>
+									<Text  color='teal.700'>Referral Code: {referral}</Text>
 								</AlertDialogBody>
 		
 								<AlertDialogFooter>
@@ -245,7 +245,7 @@ function DoctorPatients(){
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                <Text color='teal.700'> Generate Token </Text>
+                                <Text color='teal.700'> Generate Referral</Text>
                             </AlertDialogHeader>
     
                             <AlertDialogBody>

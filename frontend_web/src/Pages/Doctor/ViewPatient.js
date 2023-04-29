@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, ButtonGroup, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, Switch, Text, Box, VStack, FormControl,FormLabel, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import axios from 'axios'
@@ -105,9 +105,11 @@ function ViewPatient(){
 			updateDate(event)
 			console.log(event) 
 		}
+
+		
          
         return (
-            <>
+            <VStack>
                 <Button flex='1' ml={2} bg='teal.700' color='white' align='center'  onClick={onOpen}>
                     Edit
                 </Button>
@@ -140,9 +142,33 @@ function ViewPatient(){
                         </AlertDialogContent>
                     </AlertDialogOverlay>
                 </AlertDialog>
-            </>
+            </VStack>
         )
     }
+
+	const toggleLock = (moduleAssignedId,index) => {
+		const lock = allModules[index].locked 
+		var temp = allModules; 
+		temp[index].locked = !lock 
+		setAllModules(temp) 
+
+		const auth = {
+			headers: {
+				Authorization: `Bearer ${state.adminToken}`
+			}
+		}
+
+		const dict = {
+			id:moduleAssignedId, 
+			locked:!lock
+ 		}
+
+		console.log(dict)
+		axios.post('http://localhost:8080/api/v1/app/setLockedForModule',dict, auth)
+			.then(response=>{
+				console.log(response.data)
+		}) 
+	}
 
 	const ModuleCard = ({ name, type, desc, date,index,moduleAssignedId}) => {
 		return (<Card bg={DESKTOP_BG_MEDIUM} >
@@ -155,6 +181,13 @@ function ViewPatient(){
                         <Text ml={1} color='teal.700'>  {date} </Text>
                         <RescheduleDialog moduleAssignedId={moduleAssignedId}/>
                     </Flex>
+
+					<FormControl mt  display='flex' alignItems='center'>
+					<FormLabel htmlFor='lock-unlock' mb='0'>
+							Lock/Unlock:
+						</FormLabel>
+						<Switch defaultChecked={allModules[index].locked} onChange={()=>toggleLock(moduleAssignedId,index)} id='lock-unlock' />
+					</FormControl>
                 </VStack>
             </CardBody>
         </Card>);
@@ -280,10 +313,9 @@ function ViewPatient(){
 			let array = []
 			for(let i = 0; i<val.length;i++){
 				var temp = JSON.parse(val[i].module.content)
-				array.push({...temp,moduleAssignedId:val[i].moduleAssignment.moduleAssignedId,scheduled:val[i].moduleAssignment.scheduled})
+				array.push({...temp,moduleAssignedId:val[i].moduleAssignment.moduleAssignedId,scheduled:val[i].moduleAssignment.scheduled,locked:val[i].moduleAssignment.locked})
 			}
 			setAllModules(array)
-			console.log(array)
         })
 
 
@@ -337,7 +369,13 @@ function ViewPatient(){
 							{allModules.map((item,index)=>{
 								return(
 									<GridItem key={index}>
-										<ModuleCard name={item.title} desc={item.description} date={item.scheduled.slice(0,10)} index={index} moduleAssignedId={item.moduleAssignedId} type="form"/>
+										<ModuleCard 
+											name={item.title} 
+											desc={item.description} 
+											date={item.scheduled.slice(0,10)}
+											index={index} 
+											moduleAssignedId={item.moduleAssignedId} 
+											type="form"/>
 									</GridItem>
 								)
 							})}
