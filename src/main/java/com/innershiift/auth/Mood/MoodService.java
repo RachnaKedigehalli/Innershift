@@ -61,6 +61,18 @@ public class MoodService {
 
     }
 
+    public List<Mood> getMoodByDate(Date date){
+        List<Mood> lm = moodRepository.findAll();
+        List<Mood> ret = new ArrayList<Mood>();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+        for(Mood m: lm){
+            if(fmt.format(m.getDate()).equals(fmt.format(date))){
+                ret.add(m);
+            }
+        }
+        return ret;
+    }
+
 //    public Mood addMood(Integer pid, Date date, Integer mood) {
 //        Mood m = new Mood();
 //        m.setMood(mood);

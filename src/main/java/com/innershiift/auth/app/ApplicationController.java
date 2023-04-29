@@ -154,6 +154,15 @@ public class ApplicationController {
                 moodService.getMoodByPatientId(p.getPatientId()));
     }
 
+    @PostMapping("/getMoodsByDate")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin
+    public ResponseEntity<List<Mood>> getMoodsByDate(@Valid @RequestBody Mood m) {
+        return ResponseEntity.ok(
+                moodService.getMoodByDate(m.getDate()));
+    }
+
+
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @CrossOrigin
@@ -376,6 +385,9 @@ public class ApplicationController {
     public ResponseEntity<List<Diagnosis>> getDiagnosisByCid(@Valid @RequestBody Diagnosis d){
         return ResponseEntity.ok(diagnosisService.getAllDiagnosisByCid(d.getConsultationId()).orElseThrow(()-> new RuntimeException("couldn't get diagnosis")));
     }
+
+//    @PostMapping("/deleteAccount")
+
 }
 
 
