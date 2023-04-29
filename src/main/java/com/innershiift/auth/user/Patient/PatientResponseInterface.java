@@ -19,17 +19,12 @@ public class PatientResponseInterface {
 
     private Integer registeredThrough;
 
-    @Convert(converter = Encrypt.class)
     private String dob;
-    @Convert(converter = Encrypt.class)
     private String emergencyContact;
     private Integer gender;
-    @Convert(converter = Encrypt.class)
     private String phoneNumber;
     private Integer condition;
-    @Convert(converter = Encrypt.class)
     private String firstName;
-    @Convert(converter = Encrypt.class)
     private String lastName;
 
     public PatientResponseInterface(Integer patientId, Integer registeredThrough, String dob, String emergencyContact, Integer gender, String phoneNumber, Integer condition, String firstName, String lastName) {
