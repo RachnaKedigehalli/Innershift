@@ -11,12 +11,15 @@ import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 import CustomTextInput from "../CustomTextInput";
 import { AuthContext } from "./AuthContext";
+import axios from "axios";
+import { BASE_AUTH_URL } from "../../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const translate = require("google-translate-api-x");
 
 const ForgotPassword = ({ route, navigation }) => {
-  const { register, appLanguage } = useContext(AuthContext);
-  const { first, last, email } = route.params;
+  const { appLanguage, login } = useContext(AuthContext);
+  const { otp, response, email } = route.params;
 
   const translateText = (originalText, setText) => {
     useEffect(() => {
@@ -42,6 +45,28 @@ const ForgotPassword = ({ route, navigation }) => {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [errorStatus, setErrorStatus] = useState(false);
+
+  const changePassword = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${response.token}` },
+    };
+    console.log("userToken in forgot pass ", response.token);
+    await axios
+      .post(
+        `${BASE_AUTH_URL}/setPassword`,
+        {
+          email: email,
+          otp: otp,
+          password: password,
+        },
+        config
+      )
+      .then(async (res) => {
+        console.log("forgot password", res.data);
+        login(email, password);
+      })
+      .catch(console.log);
+  };
 
   return (
     <ScrollView
@@ -135,7 +160,7 @@ const ForgotPassword = ({ route, navigation }) => {
                 disabled={
                   password == "" || repassword == "" || password != repassword
                 }
-                onPress={() => {
+                onPress={async () => {
                   // register(email, first, last, password);
                   //   navigation.navigate("AdditionalInfo", {
                   //     email: email,
@@ -143,6 +168,7 @@ const ForgotPassword = ({ route, navigation }) => {
                   //     firstName: first,
                   //     lastName: last,
                   //   });
+                  await changePassword();
                 }}
               />
             </View>

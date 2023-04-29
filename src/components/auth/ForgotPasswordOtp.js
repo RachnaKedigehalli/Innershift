@@ -4,12 +4,26 @@ import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
 import CustomTextInput from "../CustomTextInput";
 import { AuthContext } from "./AuthContext";
+import { BASE_AUTH_URL } from "../../../config";
+import axios from "axios";
 
 const translate = require("google-translate-api-x");
 
 const ForgotPasswordOtp = ({ route, navigation }) => {
   const { verifyOTP, appLanguage } = useContext(AuthContext);
   const { email } = route.params;
+
+  const handleForgotPassword = async () => {
+    await axios
+      .post(`${BASE_AUTH_URL}/forgotPassword`, { email: email })
+      .then((res) => {
+        console.log("forgot password", res.data);
+      })
+      .catch(console.log);
+  };
+  useEffect(() => {
+    handleForgotPassword();
+  }, []);
 
   const translateText = (originalText, setText) => {
     useEffect(() => {
@@ -34,6 +48,23 @@ const ForgotPasswordOtp = ({ route, navigation }) => {
 
   const [otp, setOtp] = useState("");
   const [isVerified, setIsVerified] = useState();
+  const [userToken, setUserToken] = useState();
+  const sendOTP = async () => {
+    await axios
+      .post(`${BASE_AUTH_URL}/confirmForgotPasswordOTP`, {
+        email: email,
+        token: otp,
+      })
+      .then((res) => {
+        console.log("forgot password", res.data);
+        navigation.navigate("ForgotPassword", {
+          email: email,
+          otp: otp,
+          response: res.data,
+        });
+      })
+      .catch(console.log);
+  };
 
   return (
     <ScrollView
@@ -115,9 +146,7 @@ const ForgotPasswordOtp = ({ route, navigation }) => {
                   //   setIsVerified(verified);
                   //   console.log(verified);
                   //   if (verified)
-                  navigation.navigate("ForgotPassword", {
-                    email: email,
-                  });
+                  await sendOTP();
                 }}
               />
             </View>
