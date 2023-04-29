@@ -27,7 +27,6 @@ import FormQuestion from './FormQuestion';
 
 
 function AssignModules() {
-	const navigate = useNavigate();
 	const location = useLocation();
 	const [numberOfQuestions,setNumberOfQuestions] = useState(0)
 	const [tasks,setQuestions] = useState([])
@@ -35,8 +34,6 @@ function AssignModules() {
 	const [state,dispatch] = useStateValue();
 
 	const onSubmit = () =>{
-		console.log(tasks)
-
 		const auth = {
 			headers: {
 			    Authorization: `Bearer ${state.adminToken}`
