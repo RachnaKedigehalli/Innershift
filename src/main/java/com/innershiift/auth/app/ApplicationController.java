@@ -376,7 +376,7 @@ public class ApplicationController {
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin
     public ResponseEntity<Diagnosis> addDiagnosis(@Valid @RequestBody Diagnosis d){
-        return ResponseEntity.ok(diagnosisService.addDiagnosis(d.getConsultationId(), d.getDiagnosis()).orElseThrow(()-> new RuntimeException("couldn't add diagnosis")));
+        return ResponseEntity.ok(diagnosisService.addDiagnosis(d.getConsultationId(), d.getDiagnosis(), d.getDate()).orElseThrow(()-> new RuntimeException("couldn't add diagnosis")));
     }
 
     @PostMapping("/getDiagnosisByCid")

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @Builder
@@ -17,6 +19,8 @@ public class Diagnosis {
     @GeneratedValue
     Integer diagnosisId;
     Integer consultationId;
+
+    Date date;
 
     @Lob
     String diagnosis;
