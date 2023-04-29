@@ -16,7 +16,7 @@ const DoctorDetails = (props) => {
     };
     const bodyParameters = {
       patientId: userDetails.id,
-      doctorId: props.doctor[0],
+      doctorId: props.doctor.doctorId,
     };
     await axios
       .post(`${BASE_APP_URL}/addConsultation`, bodyParameters, config)
@@ -31,7 +31,7 @@ const DoctorDetails = (props) => {
         );
       })
       .catch(console.log);
-    props.setIsDoctorAssigned(true);
+    props.setIsDoctorAssigned(1);
   };
 
   // renders
@@ -69,7 +69,7 @@ const DoctorDetails = (props) => {
               color: AppStyles.colour.darkGreen,
             }}
           >
-            {`Dr. ${props.doctor[4]} ${props.doctor[5]}`}
+            {`Dr. ${props.doctor.firstName} ${props.doctor.lastName}`}
           </Text>
           <Text
             style={{
@@ -79,7 +79,7 @@ const DoctorDetails = (props) => {
               color: "#5EA49B",
             }}
           >
-            {`${props.doctor[3]}`}
+            {`${props.doctor.degree}`}
           </Text>
           <Text
             style={{
@@ -88,7 +88,7 @@ const DoctorDetails = (props) => {
               fontWeight: "regular",
             }}
           >
-            {`${props.doctor[2]}`}
+            {`${props.doctor.currentPos}`}
           </Text>
         </View>
         <View
@@ -113,8 +113,7 @@ const DoctorDetails = (props) => {
             >
               Bio:{" "}
             </Text>
-            Erving won three championships, four Most Valuable Player awards,
-            and three scoring titles with the ABA's Virginia Squires.
+            {props.doctor.biography}
           </Text>
         </View>
         <CustomButton

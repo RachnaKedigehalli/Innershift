@@ -142,8 +142,8 @@ const SearchDoctor = (props) => {
                       key={did}
                     >
                       <DoctorCard
-                        name={`${doctor[4]} ${doctor[5]}`}
-                        qualifications={`${doctor[3]}`}
+                        name={`${doctor.firstName} ${doctor.lastName}`}
+                        qualifications={`${doctor.degree}`}
                         // navigation={props.navigation}
                       />
                     </Pressable>

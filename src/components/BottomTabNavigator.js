@@ -18,58 +18,62 @@ import axios from "axios";
 import { BASE_APP_URL } from "../../config";
 import CalendarStack from "../stacks/CalendarStack";
 import HomeModuleStack from "../stacks/HomeModuleStack";
+import ConsultationWaiting from "../screens/ConsultationWaiting";
 const noHeader = { headerShown: false };
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = (props) => {
   const [showBack, setShowBack] = useState(false);
-  const [isDoctorAssigned, setIsDoctorAssigned] = useState(false);
+  const [isDoctorAssigned, setIsDoctorAssigned] = useState(0);
+
+  const apiCall = async () => {
+    let token = await AsyncStorage.getItem("userToken");
+    let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+    console.log("token", token);
+    console.log("userDetails", userDetails);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const bodyParameters = {
+      patientId: await userDetails.id,
+    };
+    // console.log("patient_id", bodyParameters.patientId);
+    var consultation_var = undefined;
+    await axios
+      .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
+      .then(async (res) => {
+        console.log("isCOns data: ", JSON.stringify(res.data));
+        console.log(typeof res.data);
+        if (JSON.stringify(res.data) == "[]") {
+          console.log("empty");
+        } else if (res.data[0].status == true) {
+          console.log("data : ", typeof res.data[0].doctorId);
+          var docbody = {
+            doctorId: await res.data[0].doctorId,
+          };
+
+          await axios
+            .post(`${BASE_APP_URL}/getDoctorById`, docbody, config)
+            .then(async (res2) => {
+              console.log("doc data: ", JSON.stringify(res2.data));
+              consultation_var = { ...res.data[0], doctor: res2.data };
+              await AsyncStorage.setItem(
+                "consultation",
+                JSON.stringify(consultation_var)
+              );
+            })
+            .catch((e) => console.log("consulting doctor not found ", e));
+          console.log(consultation_var);
+          setIsDoctorAssigned(2);
+        } else {
+          setIsDoctorAssigned(1);
+        }
+      })
+      .catch((e) => console.log("Not consulting a doctor ", e));
+  };
 
   useEffect(() => {
-    const apiCall = async () => {
-      let token = await AsyncStorage.getItem("userToken");
-      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
-      console.log("token", token);
-      console.log("userDetails", userDetails);
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-
-      const bodyParameters = {
-        patientId: await userDetails.id,
-      };
-      // console.log("patient_id", bodyParameters.patientId);
-      var consultation_var = undefined;
-      await axios
-        .post(`${BASE_APP_URL}/isConsulting`, bodyParameters, config)
-        .then(async (res) => {
-          console.log("isCOns data: ", JSON.stringify(res.data));
-          console.log(typeof res.data);
-          if (JSON.stringify(res.data) == "[]") {
-            console.log("empty");
-          } else {
-            console.log("data : ", typeof res.data[0].doctorId);
-            var docbody = {
-              doctorId: await res.data[0].doctorId,
-            };
-
-            await axios
-              .post(`${BASE_APP_URL}/getDoctorById`, docbody, config)
-              .then(async (res2) => {
-                console.log("doc data: ", JSON.stringify(res2.data));
-                consultation_var = { ...res.data[0], doctor: res2.data };
-                await AsyncStorage.setItem(
-                  "consultation",
-                  JSON.stringify(consultation_var)
-                );
-              })
-              .catch((e) => console.log("consulting doctor not found ", e));
-            console.log(consultation_var);
-            setIsDoctorAssigned(true);
-          }
-        })
-        .catch((e) => console.log("Not consulting a doctor ", e));
-    };
     apiCall();
   }, []);
 
@@ -133,7 +137,7 @@ const BottomTabNavigator = (props) => {
         options={{
           header: ({ navigation, route, options, back }) => {
             // return <TopBar showBack={false} />;
-            return isDoctorAssigned ? (
+            return isDoctorAssigned == 2 ? (
               <></>
             ) : (
               <TopBar showBack={false} navigation={navigation} />
@@ -151,15 +155,17 @@ const BottomTabNavigator = (props) => {
               </>
             );
           },
-          tabBarStyle: isDoctorAssigned
-            ? { display: "none" }
-            : styles.bottomTab,
+          tabBarStyle:
+            isDoctorAssigned == 2 ? { display: "none" } : styles.bottomTab,
         }}
       >
         {(props) => {
+          apiCall();
           console.log("isDocAssigned: ", isDoctorAssigned);
-          return isDoctorAssigned ? (
+          return isDoctorAssigned == 2 ? (
             <Chat {...props} />
+          ) : isDoctorAssigned == 1 ? (
+            <ConsultationWaiting />
           ) : (
             <SearchDoctor setIsDoctorAssigned={setIsDoctorAssigned} />
           );

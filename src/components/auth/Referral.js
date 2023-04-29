@@ -134,7 +134,7 @@ const Referral = ({ route, navigation }) => {
                     firstName: firstName,
                     lastName: lastName,
                     dob: dob,
-                    gender: gender.id,
+                    gender: gender,
                     phoneNumber: phoneNumber,
                     referral: referral,
                   });
@@ -166,7 +166,7 @@ const Referral = ({ route, navigation }) => {
                     firstName: firstName,
                     lastName: lastName,
                     dob: dob,
-                    gender: gender.id,
+                    gender: gender,
                     phoneNumber: phoneNumber,
                     referral: "",
                   });

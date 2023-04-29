@@ -41,7 +41,7 @@ const Chat = ({ navigation }) => {
         consultationId: cons.consultationId,
         content: currentMessage,
         senderId: userDetails.id,
-        recipientId: cons.doctor[0],
+        recipientId: cons.doctor.doctorId,
       };
 
       await stompClient?.send(
@@ -200,7 +200,7 @@ const Chat = ({ navigation }) => {
             <Text style={styles.doctorName}>
               {" "}
               {cons != undefined && cons != null
-                ? `Dr. ${cons.doctor[4]} ${cons.doctor[5]}`
+                ? `Dr. ${cons.doctor.firstName} ${cons.doctor.lastName}`
                 : ""}
             </Text>
           </View>

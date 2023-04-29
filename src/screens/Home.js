@@ -17,11 +17,13 @@ import CustomButton from "../components/CustomButton";
 import { BASE_APP_URL } from "../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const translate = require("google-translate-api-x");
 
 const Home = ({ navigation }) => {
   const { logout, user, appLanguage } = useContext(AuthContext);
+  const netInfo = useNetInfo();
   const [modules, setModules] = useState([]);
   const translateText = (originalText, setText) => {
     useEffect(() => {
@@ -34,25 +36,48 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     const getModulesForPatient = async () => {
-      let token = await AsyncStorage.getItem("userToken");
-      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      if (netInfo.isConnected && netInfo.isInternetReachable) {
+        let token = await AsyncStorage.getItem("userToken");
+        let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+        axios
+          .post(
+            `${BASE_APP_URL}/getModulesByPid`,
+            {
+              patientId: userDetails.id,
+            },
+            config
+          )
+          .then((res) => {
+            console.log("module:", res.data);
+            setModules(res.data);
 
-      axios
-        .post(
-          `${BASE_APP_URL}/getModulesByPid`,
-          {
-            patientId: userDetails.id,
-          },
-          config
-        )
-        .then((res) => {
-          console.log("module:", res.data);
-          setModules(res.data);
-        })
-        .catch(console.log);
+            const module_cache = [];
+            res.data.map((m) => {
+              const scheduled = new Date(m.moduleAssignment.scheduled);
+              let today = new Date();
+              if (scheduled.toDateString() == today.toDateString()) {
+                module_cache.push(m);
+              }
+            });
+            AsyncStorage.setItem(
+              "cached_modules",
+              JSON.stringify({ modules: module_cache })
+            );
+          })
+          .catch(console.log);
+      } else {
+        try {
+          cached_modules = JSON.parse(
+            await AsyncStorage.getItem("cached_modules")
+          );
+          setModules(cached_modules.modules);
+        } catch (e) {
+          console.log("error loading cached modules");
+        }
+      }
     };
     getModulesForPatient();
   }, []);
