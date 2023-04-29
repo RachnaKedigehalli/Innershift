@@ -47,17 +47,21 @@ function Diagnosis(){
                     <Heading color="teal.700"> Jaggu's Diagnosis</Heading>
                     
 
-                    <VStack mb='1vw'>
-                        <Heading size='lg' color="teal.700">Add Diagnosis</Heading>
-                    </VStack>
-
-                    <VStack ml>
-                        <Textarea placeholder='Enter Diagnosis'></Textarea>
-                    </VStack>
-
+                    {/* <VStack mb='1vw'>
+                    </VStack> */}
 
                     <Divider borderColor='gray.600'/>
-                    <VStack overflowY = "auto" maxHeight='85vh' w='100%' divider={<StackDivider borderColor='gray.200' />}>
+
+                    <Heading size='md' color="teal.700" mt={5}>Add Diagnosis</Heading>
+                    <HStack w='100%' my={2}>
+                        <Textarea placeholder='Append Diagnosis'></Textarea>
+                        <Button bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
+                    </HStack>
+
+                    <Divider borderColor='gray.600'/>
+
+                    <Heading size='md' color="teal.700" mt={5}>Previous Diagnosis</Heading>
+                    <VStack overflowY = "auto" maxHeight='70vh' w='100%' divider={<StackDivider borderColor='gray.200' />}>
                         <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
                         <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
                         <DiagnosisCard date="15 April 2023" diagnosis="tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo tsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfotsndfksdn sdis sfasuindhi id hwi fifis fwehfos wehoa hgidg efw weihfobf wfo"/>
