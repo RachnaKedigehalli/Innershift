@@ -32,4 +32,6 @@ public class Patient {
     @Convert(converter = Encrypt.class)
     private String phoneNumber;
     private Integer condition;
+    private Boolean doctorConsent;
+    private Boolean generalConsent;
 }

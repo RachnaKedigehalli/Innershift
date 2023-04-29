@@ -10,6 +10,8 @@ import com.innershiift.auth.Referral.ReferralService;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
+import com.innershiift.auth.diagnosis.Diagnosis;
+import com.innershiift.auth.diagnosis.DiagnosisService;
 import com.innershiift.auth.notification.NotificationService;
 import com.innershiift.auth.user.Patient.Patient;
 import com.innershiift.auth.user.Patient.PatientResponseInterface;
@@ -54,6 +56,8 @@ public class ApplicationController {
     private final NotificationService notificationService;
     private final ModuleAssignmentRepository moduleAssignmentRepository;
     private final ModuleRepository moduleRepository;
+
+    private final DiagnosisService diagnosisService;
 
     @CrossOrigin
     @GetMapping
@@ -346,7 +350,7 @@ public class ApplicationController {
     @PostMapping("/getDoctorByReferral")
     @PreAuthorize("hasAnyAuthority('USER')")
     @CrossOrigin
-    public ResponseEntity<Object> getDoctorByReferral(@Valid @RequestBody ReferralRequest referral){
+    public ResponseEntity<DoctorResponse> getDoctorByReferral(@Valid @RequestBody ReferralRequest referral){
         Optional<Integer> dret = referralService.getDoctorByReferral(referral.getReferral());
         if(dret.isPresent()){
             Optional<DoctorResponse> doc = doctorService.getDoctorByID(dret.get());
@@ -358,4 +362,20 @@ public class ApplicationController {
         }
         else return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/addDiagnosis")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<Diagnosis> addDiagnosis(@Valid @RequestBody Diagnosis d){
+        return ResponseEntity.ok(diagnosisService.addDiagnosis(d.getConsultationId(), d.getDiagnosis()).orElseThrow(()-> new RuntimeException("couldn't add diagnosis")));
+    }
+
+    @PostMapping("/getDiagnosisByCid")
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
+    @CrossOrigin
+    public ResponseEntity<List<Diagnosis>> getDiagnosisByCid(@Valid @RequestBody Diagnosis d){
+        return ResponseEntity.ok(diagnosisService.getAllDiagnosisByCid(d.getConsultationId()).orElseThrow(()-> new RuntimeException("couldn't get diagnosis")));
+    }
 }
+
+
