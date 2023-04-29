@@ -26,12 +26,10 @@ const Home = ({ navigation }) => {
   const netInfo = useNetInfo();
   const [modules, setModules] = useState([]);
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   useEffect(() => {

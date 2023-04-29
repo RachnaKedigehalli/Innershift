@@ -166,7 +166,7 @@ const SelectLanguage = ({ navigation }) => {
   const originalSelectLangText = "Select your prefered language";
   const [selectLangText, setSelectLangText] = useState(originalSelectLangText);
   useEffect(() => {
-    translate(selectLangText, {
+    translate(originalSelectLangText, {
       from: "en",
       to: language,
     }).then((res) => setSelectLangText(res.text));
@@ -199,13 +199,17 @@ const SelectLanguage = ({ navigation }) => {
           style={{
             flexDirection: "column",
             alignItems: "center",
-            paddingTop: 81,
+            // paddingTop: 10,
             justifyContent: "center",
             paddingHorizontal: 35,
             paddingBottom: 55,
           }}
         >
-          <Image source={require("assets/images/logo.png")} />
+          <Image
+            source={require("assets/images/logo.png")}
+            resizeMode="contain"
+            style={{ height: 40 }}
+          />
           <View
             style={{
               flexDirection: "column",
@@ -288,9 +292,7 @@ const SelectLanguage = ({ navigation }) => {
           accessibilityLabel={continueText}
           onPress={() => {
             changeAppLanguage(language);
-            navigation.navigate("StartPage", {
-              screen: "StartPage",
-            });
+            navigation.navigate("Menu");
           }}
         />
       </ScrollView>

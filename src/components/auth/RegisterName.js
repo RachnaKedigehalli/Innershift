@@ -19,12 +19,10 @@ const RegisterName = ({ route, navigation }) => {
   const { email } = route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {
@@ -117,10 +115,12 @@ const RegisterName = ({ route, navigation }) => {
                 accessibilityLabel={continueText}
                 disabled={firstName == ""}
                 onPress={() => {
+                  // console.log("firstName in register name: ", firstName);
+                  // console.log("lastName in register name: ", lastName);
                   navigation.navigate("SetPassword", {
-                    first: firstName,
-                    last: lastName,
-                    email: email,
+                    ...route.params,
+                    firstName: firstName,
+                    lastName: lastName,
                   });
                 }}
               />

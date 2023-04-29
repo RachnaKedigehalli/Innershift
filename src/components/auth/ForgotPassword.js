@@ -22,12 +22,10 @@ const ForgotPassword = ({ route, navigation }) => {
   const { otp, response, email } = route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {

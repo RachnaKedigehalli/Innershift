@@ -104,7 +104,9 @@ export const AuthProvider = (props) => {
     gender,
     phone,
     referral,
-    baselineScore
+    baselineScore,
+    doctorConsent,
+    generalConsent
   ) => {
     setIsLoading(true);
     // setUserToken("token");
@@ -128,6 +130,8 @@ export const AuthProvider = (props) => {
               condition: baselineScore,
               emergencyContact: phone,
               phoneNumber: phone,
+              doctorConsent: doctorConsent,
+              generalConsent: generalConsent,
             },
             {
               headers: {

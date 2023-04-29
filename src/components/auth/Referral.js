@@ -17,16 +17,12 @@ const translate = require("google-translate-api-x");
 
 const Referral = ({ route, navigation }) => {
   const { register, appLanguage } = useContext(AuthContext);
-  const { email, password, firstName, lastName, dob, gender, phoneNumber } =
-    route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {
@@ -129,13 +125,7 @@ const Referral = ({ route, navigation }) => {
                 accessibilityLabel={loginText}
                 onPress={async () => {
                   navigation.navigate("BaselineCheckpoint", {
-                    email: email,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName,
-                    dob: dob,
-                    gender: gender,
-                    phoneNumber: phoneNumber,
+                    ...route.params,
                     referral: referral,
                   });
                   // await register(
@@ -160,14 +150,13 @@ const Referral = ({ route, navigation }) => {
                 title={skipText}
                 accessibilityLabel={skipText}
                 onPress={async () => {
+                  // console.log(
+                  //   "firstName in referral: ",
+                  //   route.params.firstName
+                  // );
+                  // console.log("lastName in  referral: ", route.params.lastName);
                   navigation.navigate("BaselineCheckpoint", {
-                    email: email,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName,
-                    dob: dob,
-                    gender: gender,
-                    phoneNumber: phoneNumber,
+                    ...route.params,
                     referral: "",
                   });
                   // await register(

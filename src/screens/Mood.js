@@ -14,12 +14,10 @@ const translate = require("google-translate-api-x");
 const Mood = (props) => {
   const { appLanguage } = useContext(AuthContext);
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
   const originalTexts = {
     moodQues: "How are you feeling today?",

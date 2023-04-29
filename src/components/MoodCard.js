@@ -8,12 +8,10 @@ const translate = require("google-translate-api-x");
 const MoodCard = (props) => {
   const { appLanguage } = useContext(AuthContext);
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const [moodName, setMoodName] = useState(props.name);

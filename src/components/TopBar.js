@@ -11,7 +11,7 @@ import React from "react";
 import { Icon } from "@rneui/themed";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AppStyles from "../AppStyles";
-const TopBar = ({ showBack, navigation, onBack }) => {
+const TopBar = ({ showBack, navigation, onBack, showProfile, showLogo }) => {
   console.log(navigation);
   const insets = useSafeAreaInsets();
   return (
@@ -25,25 +25,32 @@ const TopBar = ({ showBack, navigation, onBack }) => {
         </Pressable>
       ) : (
         // <Icon name="arrow-left" onPress={navigation.goBack} />
-        <Pressable onPress={() => navigation.navigate("home")}>
+        <Pressable onPress={() => navigation.navigate("Menu")}>
           <Image
             style={styles.menu}
             source={require("../../assets/icons/menu_hamburger.png")}
-            onPress={() => navigation.navigate("home")}
           />
         </Pressable>
         // <Icon name="menu" onPress={() => navigation.navigate("home")} />
       )}
-      <Image
-        style={styles.logo}
-        source={require("../../assets/images/logo.png")}
-      />
-      <Pressable onPress={() => navigation.navigate("Profile")}>
+      {showLogo ? (
         <Image
-          style={styles.profile_picture}
-          source={require("../../assets/images/dummy/profile3.jpg")}
+          style={styles.logo}
+          source={require("../../assets/images/logo.png")}
         />
-      </Pressable>
+      ) : (
+        <></>
+      )}
+      {showProfile ? (
+        <Pressable onPress={() => navigation.navigate("Profile")}>
+          <Image
+            style={styles.profile_picture}
+            source={require("../../assets/images/dummy/profile3.jpg")}
+          />
+        </Pressable>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

@@ -31,14 +31,14 @@ const AuthStack = () => {
   const noHeader = { headerShown: false };
 
   return (
-    <Stack.Navigator initialRouteName="SelectLanguage">
+    <Stack.Navigator initialRouteName="StartPage">
       <Stack.Screen name="StartPage" component={StartPage} options={noHeader} />
       <Stack.Screen name="TandC" component={TandC} options={noHeader} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SelectLanguage"
         component={SelectLanguage}
         options={noHeader}
-      />
+      /> */}
       <Stack.Screen name="Register" component={Register} options={noHeader} />
 
       <Stack.Screen

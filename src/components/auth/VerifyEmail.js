@@ -12,12 +12,10 @@ const Register = ({ route, navigation }) => {
   const { email } = route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {
@@ -116,7 +114,7 @@ const Register = ({ route, navigation }) => {
                   console.log(verified);
                   if (verified)
                     navigation.navigate("RegisterName", {
-                      email: email,
+                      ...route.params,
                     });
                 }}
               />

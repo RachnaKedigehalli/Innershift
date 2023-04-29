@@ -22,12 +22,10 @@ const AdditionalInfo = ({ route, navigation }) => {
   const { email, password, firstName, lastName } = route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {
@@ -265,12 +263,11 @@ const AdditionalInfo = ({ route, navigation }) => {
                 title={loginText}
                 accessibilityLabel={loginText}
                 onPress={async () => {
-                  console.log("checking gender in add info ", gender.id);
+                  // console.log("checking gender in add info ", gender.id);
+                  // console.log("firstName in add: ", route.params.firstName);
+                  // console.log("lastName in add: ", route.params.lastName);
                   navigation.navigate("Referral", {
-                    email: email,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName,
+                    ...route.params,
                     dob: dob,
                     gender: gender.id,
                     phoneNumber: phoneNumber,

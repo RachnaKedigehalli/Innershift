@@ -19,12 +19,10 @@ const SetPassword = ({ route, navigation }) => {
   const { first, last, email } = route.params;
 
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
 
   const originalTexts = {
@@ -137,11 +135,14 @@ const SetPassword = ({ route, navigation }) => {
                 }
                 onPress={() => {
                   // register(email, first, last, password);
+                  // console.log(
+                  //   "firstName in set pass: ",
+                  //   route.params.firstName
+                  // );
+                  // console.log("lastName in set pass: ", route.params.lastName);
                   navigation.navigate("AdditionalInfo", {
-                    email: email,
+                    ...route.params,
                     password: password,
-                    firstName: first,
-                    lastName: last,
                   });
                 }}
               />

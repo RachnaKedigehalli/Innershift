@@ -11,12 +11,10 @@ const ModuleCard = (props) => {
   const [module, setModule] = useState();
   const [moduleAssignment, setModuleAssignment] = useState();
   const translateText = (originalText, setText) => {
-    useEffect(() => {
-      translate(originalText, {
-        from: "en",
-        to: appLanguage,
-      }).then((res) => setText(res.text));
-    }, []);
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
   };
   useEffect(() => {
     setModule(JSON.parse(props.module.module.content));
