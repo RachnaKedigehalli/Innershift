@@ -19,6 +19,7 @@ import com.innershiift.auth.user.User;
 import com.innershiift.auth.user.UserRepository;
 import com.innershiift.auth.user.UserService;
 import com.innershiift.auth.user.doctor.Doctor;
+import com.innershiift.auth.user.doctor.DoctorResponse;
 import com.innershiift.auth.user.doctor.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +78,7 @@ public class ApplicationController {
     @GetMapping("/getAllDoctors")
     @CrossOrigin
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<Object>> getAllDoctors() {
+    public ResponseEntity<List<DoctorResponse>> getAllDoctors() {
         return ResponseEntity.ok(
                 doctorService.getAllDoctors()
                         .orElseThrow(()-> new IllegalStateException("Could not get doctors"))
@@ -199,7 +200,7 @@ public class ApplicationController {
     @PreAuthorize("hasAuthority('USER')")
     @CrossOrigin
     public ResponseEntity<Patient> addPatientByPhoneNumberAndGender(@Valid @RequestBody Patient p){
-        return ResponseEntity.ok(patientService.addPatient(p.getPatientId(), p.getPhoneNumber(), p.getGender()).orElseThrow(()-> new IllegalStateException("Could not add patient")));
+        return ResponseEntity.ok(patientService.addPatient(p.getPatientId(), p.getPhoneNumber(), p.getGender(), p.getDob()).orElseThrow(()-> new IllegalStateException("Could not add patient")));
     }
 
     @GetMapping("/getAllUsers")
@@ -347,7 +348,7 @@ public class ApplicationController {
     public ResponseEntity<Object> getDoctorByReferral(@Valid @RequestBody ReferralRequest referral){
         Optional<Integer> dret = referralService.getDoctorByReferral(referral.getReferral());
         if(dret.isPresent()){
-            Optional<Object> doc = doctorService.getDoctorByID(dret.get());
+            Optional<DoctorResponse> doc = doctorService.getDoctorByID(dret.get());
             consultationService.addConsultationBetweenUserId(dret.get(), referral.getPatientId(), true);
             if(doc.isPresent()){
                 return ResponseEntity.ok(doc.orElse(null));

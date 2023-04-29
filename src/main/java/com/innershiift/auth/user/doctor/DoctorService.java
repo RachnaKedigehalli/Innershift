@@ -16,11 +16,11 @@ public class DoctorService {
 
     private final DoctorRepository doctorRepository;
 
-    public Optional<List<Object>> getAllDoctors(){
+    public Optional<List<DoctorResponse>> getAllDoctors(){
         return Optional.of(doctorRepository.getAllDoctors());
     }
 
-    public  Optional<Object> getDoctorByID(Integer id){
+    public  Optional<DoctorResponse> getDoctorByID(Integer id){
         return Optional.of(doctorRepository.getDoctorById(id));
     }
 

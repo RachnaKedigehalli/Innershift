@@ -26,9 +26,9 @@ public class PatientService {
     public Optional<Patient> addPatient(Patient p){
         return  Optional.of(patientRepository.save(p));
     }
-    public Optional<Patient> addPatient( Integer pid, String phoneNumber,Integer gender){
+    public Optional<Patient> addPatient( Integer pid, String phoneNumber,Integer gender, String dob){
         Patient p = new Patient();
-        p.setDob(new Date());
+        p.setDob(dob);
         p.setPatientId(pid);
         p.setEmergencyContact("none");
         p.setPhoneNumber(phoneNumber);
@@ -38,7 +38,7 @@ public class PatientService {
         return  Optional.of(patientRepository.save(p));
     }
 
-    public Optional<Patient> updatePatientDOBByID(Integer id,Date d){
+    public Optional<Patient> updatePatientDOBByID(Integer id,String d){
         Optional<Patient> dbPatient = patientRepository.findById(id);
         if(dbPatient.isPresent()){
             patientRepository.updateDobByID(id,d);

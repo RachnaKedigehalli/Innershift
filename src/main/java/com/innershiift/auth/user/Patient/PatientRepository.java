@@ -13,7 +13,7 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     @Transactional
     @Modifying
     @Query("UPDATE Patient p SET p.dob= ?2 WHERE p.patientId = ?1")
-    int updateDobByID(Integer id, Date dob);
+    int updateDobByID(Integer id, String dob);
 
     @Transactional
     @Modifying

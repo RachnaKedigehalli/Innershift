@@ -25,7 +25,7 @@ public class Patient {
     private Integer registeredThrough;
 
     @Convert(converter = Encrypt.class)
-    private Date dob;
+    private String dob;
     @Convert(converter = Encrypt.class)
     private String emergencyContact;
     private Integer gender;
