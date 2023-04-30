@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Button, Switch, Text, Box, VStack, FormControl,FormLabel, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Button, Switch, Text, Box, VStack, FormControl,FormLabel, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, HStack } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import axios from 'axios'
@@ -6,9 +6,8 @@ import axios from 'axios'
 import styled from "@emotion/styled";
 
 
-import FullCalendar, { formatDate } from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'	
 import 'react-calendar/dist/Calendar.css';
 
 
@@ -16,11 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     // faCirclePlus, 
     faComments,
-    faHeadphones,
-	faBookOpen,
-	faCirclePlay,
-	faListUl,
-	faQuestion
+    faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 
 import React, { useEffect, useState } from 'react';
@@ -60,6 +55,8 @@ function ViewPatient(){
     const [patientMoods, setPatientMoods]  = useState([]); 
 	const [allModules, setAllModules] = useState([]);
 	const [date,updateDate] = useState(new Date());
+
+	
 
 
 	const clickChat = (id,consultationId,name) => {
@@ -276,6 +273,11 @@ function ViewPatient(){
 		);
     }
 
+	const fileExport = () =>{
+		const url = "http://localhost:8080/api/v1/app/exportPdf/" + location.state.id
+		window.open(url)
+
+	}
 
 	
 	useEffect(()=>{
@@ -318,6 +320,7 @@ function ViewPatient(){
 			setAllModules(array)
         })
 
+		
 
 	},[])
 
@@ -342,6 +345,22 @@ function ViewPatient(){
 						</GridItem>
 
 						<GridItem align='right'>
+							<HStack>
+							<Button
+								onClick={fileExport}
+								bg="teal.700"
+                                color='white'
+								size="md"
+                                w='100%'
+								isDisabled={!location.state.consent}
+							>
+								<FontAwesomeIcon
+									icon={faFileExport}
+									style={{ marginRight: "0.5em" }}
+								/>{" "}
+								Export
+							</Button>
+
 							<Button
 								onClick={()=>clickChat(location.state.id,location.state.consultationId,location.state.name)}
 								bg="teal.700"
@@ -355,6 +374,7 @@ function ViewPatient(){
 								/>{" "}
 								Chat
 							</Button>
+							</HStack>
 						</GridItem>
 					</Grid>
 					

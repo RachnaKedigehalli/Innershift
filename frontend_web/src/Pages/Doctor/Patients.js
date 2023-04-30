@@ -71,13 +71,31 @@ function DoctorPatients(){
 	}
 
 	const clickModule = (id,consultationId,name) => {
-		navigate('/doctor/viewpatient',{
-			state:{
-				id:id,
-				consultationId:consultationId,
-				name:name
+		
+		const auth = {
+			headers: {
+				Authorization: `Bearer ${state.adminToken}`
 			}
+		}
+
+		const dict = {
+			patientId:id 
+		}
+
+		
+		axios.post('http://localhost:8080/api/v1/app/getConsentByPid',dict, auth)
+			.then(response=>{
+				navigate('/doctor/viewpatient',{
+					state:{
+						id:id,
+						consultationId:consultationId,
+						name:name,
+						consent:response.data.generalConsent
+					}
+				})
 		})
+
+		
 	}
 
 	const assignModule = (id,consultationId,name) => {
@@ -113,6 +131,7 @@ function DoctorPatients(){
 	const clickSearch = () => {
 		navigate('/dummyloc')
 	}
+
 	const PatientCard = ({ name, photo, desc, patientId,consultationId}) => {
 		return (<div>
 			<Card bg={DESKTOP_BG_LIGHT} maxW='40vh' minW='40vh'>
