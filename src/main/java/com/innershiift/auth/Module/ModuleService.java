@@ -1,6 +1,7 @@
 package com.innershiift.auth.Module;
 
 
+import jakarta.persistence.Lob;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -111,14 +112,22 @@ public class ModuleService {
     }
 
     @Transactional
-    public Optional<ModuleAssignment> updateModuleResponse(Integer moduleAssignedId, String response, Date startTimestamp, String duration, Boolean status) {
+    public ModuleAssignment updateModuleResponse(Integer moduleAssignedId, String response, Date startTimestamp, String duration, Boolean status) {
         System.out.println("id:"+moduleAssignedId+" vresponse:"+response+" starttimestamp:"+startTimestamp+" duration:"+duration);
         Optional<ModuleAssignment>  ma  = moduleAssignmentRepository.findById(moduleAssignedId);
         if(ma.isPresent()){
             System.out.println("calling update");
-            moduleAssignmentRepository.updateResponse(moduleAssignedId,response,startTimestamp,duration, status);
-            return moduleAssignmentRepository.findById(moduleAssignedId);
+//            moduleAssignmentRepository.updateResponse(moduleAssignedId,response,startTimestamp,duration, status);
+            ma.get().setResponse(response);
+            ma.get().setStart_timestamp(startTimestamp);
+            ma.get().setDuration(duration);
+            ma.get().setStatus(status);
+            return moduleAssignmentRepository.save(ma.get());
+//            return moduleAssignmentRepository.findById(moduleAssignedId);
         }
-        return ma;
+        else {
+            throw new RuntimeException("error updating module");
+        }
+
     }
 }

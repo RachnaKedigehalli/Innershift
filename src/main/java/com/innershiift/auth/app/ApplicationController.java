@@ -14,6 +14,7 @@ import com.innershiift.auth.consultation.Message;
 import com.innershiift.auth.diagnosis.Diagnosis;
 import com.innershiift.auth.diagnosis.DiagnosisService;
 import com.innershiift.auth.notification.NotificationService;
+import com.innershiift.auth.pdfExporter.PdfExporter;
 import com.innershiift.auth.user.Patient.Patient;
 import com.innershiift.auth.user.Patient.PatientResponseInterface;
 import com.innershiift.auth.user.Patient.PatientService;
@@ -24,6 +25,8 @@ import com.innershiift.auth.user.UserService;
 import com.innershiift.auth.user.doctor.Doctor;
 import com.innershiift.auth.user.doctor.DoctorResponse;
 import com.innershiift.auth.user.doctor.DoctorService;
+import com.lowagie.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -34,7 +37,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -289,9 +296,14 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<ModuleAssignment> updateModuleResponse(@Valid @RequestBody ModuleAssignment ma) {
         System.out.println("Here in update module response!");
-        return ResponseEntity.ok(
-               moduleService.updateModuleResponse(ma.getModuleAssignedId(),ma.getResponse(),ma.getStart_timestamp(),ma.getDuration(), ma.getStatus()).orElseThrow(()->new RuntimeException("Couldn't delete module"))
-        );
+        try {
+            return ResponseEntity.ok(
+                    moduleService.updateModuleResponse(ma.getModuleAssignedId(), ma.getResponse(), ma.getStart_timestamp(), ma.getDuration(), ma.getStatus())
+            );
+        }
+        catch(RuntimeException re) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
@@ -422,6 +434,25 @@ public class ApplicationController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/exportPdf/{patientId}")
+//    @PreAuthorize("hasAnyAuthority('DOCTOR', 'USER')")
+    @CrossOrigin
+    public void exportToPDF(HttpServletResponse response, @PathVariable("patientId") Integer patientId) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=AnonymousPatientData_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        PdfExporter exporter = new PdfExporter(patientId, moduleService, moodService);
+        exporter.export(response);
+
+    }
+
+
 }
 
 

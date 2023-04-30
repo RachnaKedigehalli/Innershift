@@ -26,14 +26,7 @@ public class MoodService {
 
     public List<Mood> getMoodByPatientId(Integer pid){
 //        return  moodRepository.getMoodByPId(pid);
-        List<Mood> lm = moodRepository.findAll();
-        List<Mood> ret = new ArrayList<Mood>();
-        for(Mood m: lm){
-            if(m.getPatientId()== pid){
-                ret.add(m);
-            }
-        }
-        return ret;
+        return moodRepository.findAllByPatientId(pid);
     }
 
     public boolean isMoodSet(Integer pid) {
