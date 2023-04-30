@@ -36,8 +36,17 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     int updateConditionByID(Integer id,Integer condition);
 
     @Transactional
+    @Modifying
+    @Query("UPDATE Patient p SET p.doctorConsent= ?2, p.generalConsent= ?3 WHERE p.patientId = ?1")
+    int updateConsentByID(Integer id, Boolean doctorConsent, Boolean generalConsent);
+
+    @Transactional
     @Query("SELECT new com.innershiift.auth.user.Patient.PatientResponseInterface(p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName) from Patient p INNER JOIN User u on p.patientId=u.id" )
     List<PatientResponseInterface> getAllPatients();
+
+    @Transactional
+    @Query("SELECT p.registeredThrough, p.dob, p.gender, p.condition from Patient p WHERE p.generalConsent=true" )
+    List<Patient> getAllPatientsWithGeneralConsent();
 
     @Transactional
     @Query("SELECT new com.innershiift.auth.user.Patient.PatientResponseInterface(p.patientId, p.registeredThrough, p.dob, p.emergencyContact, p.gender, p.phoneNumber, p.condition, u.firstName, u.lastName) from Patient p INNER JOIN User u on p.patientId=u.id WHERE p.patientId=?1" )

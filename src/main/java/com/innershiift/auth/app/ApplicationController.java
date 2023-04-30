@@ -7,6 +7,7 @@ import com.innershiift.auth.Mood.MoodService;
 import com.innershiift.auth.Referral.Referral;
 import com.innershiift.auth.Referral.ReferralRequest;
 import com.innershiift.auth.Referral.ReferralService;
+import com.innershiift.auth.auth.AuthenticationRequest;
 import com.innershiift.auth.consultation.Consultation;
 import com.innershiift.auth.consultation.ConsultationService;
 import com.innershiift.auth.consultation.Message;
@@ -29,6 +30,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -166,7 +168,7 @@ public class ApplicationController {
     @GetMapping("/getAllPatients")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @CrossOrigin
-    public ResponseEntity<List<PatientResponseInterface>> getAllPatients(){
+    public ResponseEntity<List<Patient>> getAllPatients(){
         return ResponseEntity.ok(
                 patientService.getAllPatients()
                         .orElseThrow(()-> new IllegalStateException("Could not get all patients")
@@ -386,8 +388,40 @@ public class ApplicationController {
         return ResponseEntity.ok(diagnosisService.getAllDiagnosisByCid(d.getConsultationId()).orElseThrow(()-> new RuntimeException("couldn't get diagnosis")));
     }
 
-//    @PostMapping("/deleteAccount")
+    @PostMapping("/deleteAccount")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public ResponseEntity<?> deleteAccount(@Valid @RequestBody AuthenticationRequest request){
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        user.ifPresent((u)->{
+            Optional<List<Consultation>> c = consultationService.getAllConsultationPerUser(u.getId());
 
+
+        });
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/getConsentByPid")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public  ResponseEntity<?> getConsent(@Valid @RequestBody Patient patient) {
+        try {
+            return ResponseEntity.ok(patientService.getConsent(patient.getPatientId()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/updateConsentByPid")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @CrossOrigin
+    public  ResponseEntity<?> updateConsent(@Valid @RequestBody Patient patient) {
+        try {
+            return ResponseEntity.ok(patientService.updateConsent(patient));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
 
 

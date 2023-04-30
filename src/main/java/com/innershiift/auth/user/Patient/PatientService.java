@@ -83,11 +83,25 @@ public class PatientService {
         return dbPatient;
     }
 
-    public Optional<List<PatientResponseInterface>> getAllPatients(){
-        return Optional.of(patientRepository.getAllPatients());
+    public Optional<List<Patient>> getAllPatients(){
+        return Optional.of(patientRepository.getAllPatientsWithGeneralConsent());
     }
 
     public Optional<PatientResponseInterface> getPatientByID(Integer id){
         return Optional.of(patientRepository.getPatientByPid(id));
+    }
+
+    public Patient getConsent(Integer patientId) {
+        return patientRepository.findById(patientId).orElseThrow(()->new RuntimeException("getConsent failed"));
+    }
+
+    public Patient updateConsent(Patient patient) {
+        if (patientRepository.findById(patient.getPatientId()).isPresent()) {
+            patientRepository.updateConsentByID(patient.getPatientId(), patient.getDoctorConsent(), patient.getGeneralConsent());
+            return patientRepository.findById(patient.getPatientId()).orElseThrow(()->new RuntimeException("updateConsent failed"));
+        }
+        else {
+            throw new RuntimeException("Patient does not exist");
+        }
     }
 }
