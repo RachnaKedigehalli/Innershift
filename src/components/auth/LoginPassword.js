@@ -1,11 +1,11 @@
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Platform,
-  Pressable,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    ScrollView,
+    Platform,
+    Pressable,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import CustomButton from "../CustomButton";
@@ -16,144 +16,156 @@ import { AuthContext } from "./AuthContext";
 const translate = require("google-translate-api-x");
 
 const LoginPassword = ({ route, navigation }) => {
-  const { login, userToken, appLanguage } = useContext(AuthContext);
-  const { email } = route.params;
+    const { login, userToken, appLanguage } = useContext(AuthContext);
+    const { email } = route.params;
 
-  const translateText = (originalText, setText) => {
-    translate(originalText, {
-      from: "en",
-      to: appLanguage,
-    }).then((res) => setText(res.text));
-  };
+    const translateText = (originalText, setText) => {
+        translate(originalText, {
+            from: "en",
+            to: appLanguage,
+        }).then((res) => setText(res.text));
+    };
 
-  const originalTexts = {
-    enterPasswordText: "Enter your password",
-    loginText: "Login",
-    invalidText: "Incorrect email or password",
-  };
-  const [enterPasswordText, setEnterPasswordText] = useState(
-    originalTexts.enterPasswordText
-  );
-  const [loginText, setLoginText] = useState(originalTexts.loginText);
-  const [invalidText, setInvalidText] = useState(originalTexts.invalidText);
-  translateText(originalTexts.enterPasswordText, setEnterPasswordText);
-  translateText(originalTexts.loginText, setLoginText);
-  translateText(originalTexts.invalidText, setInvalidText);
+    const originalTexts = {
+        enterPasswordText: "Enter your password",
+        loginText: "Login",
+        invalidText: "Incorrect email or password",
+        forgotPassword: "Forgot password?",
+    };
+    const [enterPasswordText, setEnterPasswordText] = useState(
+        originalTexts.enterPasswordText
+    );
+    const [loginText, setLoginText] = useState(originalTexts.loginText);
+    const [invalidText, setInvalidText] = useState(originalTexts.invalidText);
+    const [forgotPassword, setForgotPassword] = useState(
+        originalTexts.forgotPassword
+    );
+    translateText(originalTexts.enterPasswordText, setEnterPasswordText);
+    translateText(originalTexts.loginText, setLoginText);
+    translateText(originalTexts.invalidText, setInvalidText);
+    translateText(originalTexts.forgotPassword, setForgotPassword);
 
-  const [password, setPassword] = useState("");
-  const [invalid, setInvalid] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+    const [password, setPassword] = useState("");
+    const [invalid, setInvalid] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-  return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 81,
-          justifyContent: "center",
-          // backgroundColor: AppStyles.colour.wh
-          // gap: 57,
-        }}
-      >
-        <Image source={require("../../../assets/images/logo.png")} />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: 61,
-            // gap: 9
-          }}
+    return (
+        <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
         >
-          <Text
-            style={{
-              // fontSize: 27,
-              fontSize: Platform.OS == "android" ? 24 : 27,
-              fontWeight: "600",
-              color: AppStyles.colour.textGreen,
-              width: 300,
-              textAlign: "center",
-              fontFamily: AppStyles.font.subHeadings,
-            }}
-          >
-            {enterPasswordText}
-          </Text>
-
-          <View
-            style={{
-              marginTop: 20,
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <CustomTextInput
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Password"
-              secureTextEntry={true}
-            />
-            {invalid ? (
-              <View
-                style={{
-                  paddingLeft: 8,
-                  paddingTop: 10,
-                }}
-              >
-                <Text style={{ color: "red" }}>{invalidText}</Text>
-              </View>
-            ) : (
-              <></>
-            )}
             <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
                 style={{
-                  marginTop: 42,
+                    flexDirection: "column",
+                    alignItems: "center",
+                    paddingTop: 81,
+                    justifyContent: "center",
+                    // backgroundColor: AppStyles.colour.wh
+                    // gap: 57,
                 }}
-              >
-                <CustomButton
-                  title={loginText}
-                  accessibilityLabel={loginText}
-                  loading={isLoading}
-                  onPress={async () => {
-                    setIsLoading(true);
-                    const prom = await login(email, password);
-                    console.log(prom);
-                    setInvalid(!prom);
-                    setIsLoading(false);
-                  }}
-                />
-              </View>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("ForgotPasswordOtp", { email: email });
-                }}
-              >
-                <Text
-                  style={{
-                    marginTop: 20,
-                    fontSize: 16,
-                    color: AppStyles.colour.darkGrey,
-                    fontWeight: "600",
-                  }}
+            >
+                <Image source={require("../../../assets/images/logo.png")} />
+                <View
+                    style={{
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: 61,
+                        // gap: 9
+                    }}
                 >
-                  Forgot password?
-                </Text>
-              </Pressable>
+                    <Text
+                        style={{
+                            // fontSize: 27,
+                            fontSize: Platform.OS == "android" ? 24 : 27,
+                            fontWeight: "600",
+                            color: AppStyles.colour.textGreen,
+                            width: 300,
+                            textAlign: "center",
+                            fontFamily: AppStyles.font.subHeadings,
+                        }}
+                    >
+                        {enterPasswordText}
+                    </Text>
+
+                    <View
+                        style={{
+                            marginTop: 20,
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <CustomTextInput
+                            onChangeText={setPassword}
+                            value={password}
+                            placeholder="Password"
+                            secureTextEntry={true}
+                        />
+                        {invalid ? (
+                            <View
+                                style={{
+                                    paddingLeft: 8,
+                                    paddingTop: 10,
+                                }}
+                            >
+                                <Text style={{ color: "red" }}>
+                                    {invalidText}
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
+                        <View
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    marginTop: 42,
+                                }}
+                            >
+                                <CustomButton
+                                    title={loginText}
+                                    accessibilityLabel={loginText}
+                                    loading={isLoading}
+                                    onPress={async () => {
+                                        setIsLoading(true);
+                                        const prom = await login(
+                                            email,
+                                            password
+                                        );
+                                        console.log(prom);
+                                        setInvalid(!prom);
+                                        setIsLoading(false);
+                                    }}
+                                />
+                            </View>
+                            <Pressable
+                                onPress={() => {
+                                    navigation.navigate("ForgotPasswordOtp", {
+                                        email: email,
+                                    });
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        marginTop: 20,
+                                        fontSize: 16,
+                                        color: AppStyles.colour.darkGrey,
+                                        fontWeight: "600",
+                                    }}
+                                >
+                                    Forgot password?
+                                </Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
             </View>
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
+        </ScrollView>
+    );
 };
 
 export default LoginPassword;

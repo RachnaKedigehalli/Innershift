@@ -1,12 +1,12 @@
 import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
-  StatusBar,
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    Image,
+    StatusBar,
 } from "react-native";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { CheckBox } from "@rneui/themed";
 import CustomButton from "../CustomButton";
 import AppStyles from "../../AppStyles";
@@ -15,18 +15,18 @@ import { AuthContext } from "./AuthContext";
 const translate = require("google-translate-api-x");
 
 const TandC = ({ navigation }) => {
-  const { appLanguage } = useContext(AuthContext);
+    const { appLanguage } = useContext(AuthContext);
 
-  const translateText = (originalText, setText) => {
-    translate(originalText, {
-      from: "en",
-      to: appLanguage,
-    }).then((res) => setText(res.text));
-  };
+    const translateText = (originalText, setText) => {
+        translate(originalText, {
+            from: "en",
+            to: appLanguage,
+        }).then((res) => setText(res.text));
+    };
 
-  const originalTexts = {
-    TandCHeading: "Please read the terms of use carefully",
-    TandCText: `The delimited scope and purpose of the Push-D program 
+    const originalTexts = {
+        TandCHeading: "Please read the terms of use carefully",
+        TandCText: `The delimited scope and purpose of the Push-D program 
     The Information contained in, or accessed through, this website is for your general information and Self-development use only and
     is not intended to be used as medical advice and should not be used to diagnose, treat, cure or prevent any medical condition.
     The diagnosis and treatment of clinical depression and anxiety requires a medical practitioner or qualified mental health
@@ -52,176 +52,187 @@ const TandC = ({ navigation }) => {
     NIMHANS does not recommend or endorse any specific tests, providers (including, but not limited to, hospitals and physicians),
     products, procedures, or other information that may be mentioned on the website. Any opinions expressed on the website are the
     opinions of the individual authors, not of NIMHANS.`,
-    acceptText: "I agree to the terms",
-    doctorConsent:
-      "Allow your doctor to use anonymised data for research/second opinion",
-    generalConsent:
-      "Allow use of anonymised data for app statistics, decision making",
-    continueText: "Continue",
-  };
+        acceptText: "I agree to the terms",
+        doctorConsent:
+            "Allow your doctor to use anonymised data for research/second opinion",
+        generalConsent:
+            "Allow use of anonymised data for app statistics, decision making",
+        continueText: "Continue",
+    };
 
-  const [TandCHeading, setTandCHeading] = useState(originalTexts.TandCHeading);
-  const [TandCText, setTandCText] = useState(originalTexts.TandCText);
-  const [acceptText, setAcceptText] = useState(originalTexts.acceptText);
-  const [continueText, setContinueText] = useState(originalTexts.continueText);
-  const [doctorConsent, setDoctorConsent] = useState(
-    originalTexts.doctorConsent
-  );
-  const [generalConsent, setGeneralConsent] = useState(
-    originalTexts.generalConsent
-  );
+    const [TandCHeading, setTandCHeading] = useState(
+        originalTexts.TandCHeading
+    );
+    const [TandCText, setTandCText] = useState(originalTexts.TandCText);
+    const [acceptText, setAcceptText] = useState(originalTexts.acceptText);
+    const [continueText, setContinueText] = useState(
+        originalTexts.continueText
+    );
+    const [doctorConsent, setDoctorConsent] = useState(
+        originalTexts.doctorConsent
+    );
+    const [generalConsent, setGeneralConsent] = useState(
+        originalTexts.generalConsent
+    );
 
-  translateText(originalTexts.TandCHeading, setTandCHeading);
-  translateText(originalTexts.TandCText, setTandCText);
-  translateText(originalTexts.acceptText, setAcceptText);
-  translateText(originalTexts.continueText, setContinueText);
-  translateText(originalTexts.doctorConsent, setDoctorConsent);
-  translateText(originalTexts.generalConsent, setGeneralConsent);
+    translateText(originalTexts.TandCHeading, setTandCHeading);
+    translateText(originalTexts.TandCText, setTandCText);
+    translateText(originalTexts.acceptText, setAcceptText);
+    translateText(originalTexts.continueText, setContinueText);
+    translateText(originalTexts.doctorConsent, setDoctorConsent);
+    translateText(originalTexts.generalConsent, setGeneralConsent);
 
-  const [isSelected, setIsSelected] = useState(false);
-  const [isDoctorConsent, setIsDoctorConsent] = useState(false);
-  const [isGeneralConsent, setIsGeneralConsent] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
+    const [isDoctorConsent, setIsDoctorConsent] = useState(false);
+    const [isGeneralConsent, setIsGeneralConsent] = useState(false);
 
-  return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: AppStyles.colour.white,
-      }}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: 81,
-          justifyContent: "center",
-          // gap: 57,
-          paddingHorizontal: 35,
-          paddingBottom: 55,
-        }}
-      >
-        <Image source={require("../../../assets/images/logo.png")} />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: 61,
-            // gap: 9
-          }}
+    return (
+        <ScrollView
+            contentContainerStyle={{
+                flexGrow: 1,
+                backgroundColor: AppStyles.colour.white,
+            }}
+            keyboardShouldPersistTaps="handled"
         >
-          <Text
-            style={{
-              fontSize: Platform.OS == "android" ? 24 : 27,
-              fontWeight: "600",
-              color: AppStyles.colour.textGreen,
-              //   width: 300,
-              // textAlign: "center",
-              fontFamily: AppStyles.font.subHeadings,
-              marginBottom: 25,
-              textAlign: "center",
-            }}
-          >
-            {TandCHeading}
-          </Text>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: AppStyles.font.poppinsRegular,
-                color: AppStyles.colour.textGreen,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              {TandCText}
-            </Text>
             <View
-              style={{
-                width: "100%",
-                alignSelf: "flex-start",
-                marginTop: 20,
-                marginBottom: 10,
-              }}
+                style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    paddingTop: 81,
+                    justifyContent: "center",
+                    // gap: 57,
+                    paddingHorizontal: 35,
+                    paddingBottom: 55,
+                }}
             >
-              <CheckBox
-                title={acceptText}
-                checked={isSelected}
-                iconType="material-community"
-                containerStyle={{
-                  backgroundColor: AppStyles.colour.white,
-                  width: "100%",
-                }}
-                onPress={() => setIsSelected(!isSelected)}
-                checkedIcon={"checkbox-marked"}
-                uncheckedIcon={"checkbox-blank-outline"}
-                checkedColor={AppStyles.colour.darkGreen}
-                uncheckedColor={AppStyles.colour.darkGreen}
-                textStyle={{
-                  color: AppStyles.colour.textGreen,
-                  fontFamily: AppStyles.font.Poppins_500Medium,
-                }}
-              />
-              <CheckBox
-                title={doctorConsent}
-                checked={isDoctorConsent}
-                iconType="material-community"
-                containerStyle={{
-                  backgroundColor: AppStyles.colour.white,
-                  width: "100%",
-                }}
-                onPress={() => setIsDoctorConsent(!isDoctorConsent)}
-                checkedIcon={"checkbox-marked"}
-                uncheckedIcon={"checkbox-blank-outline"}
-                checkedColor={AppStyles.colour.darkGreen}
-                uncheckedColor={AppStyles.colour.darkGreen}
-                textStyle={{
-                  color: AppStyles.colour.textGreen,
-                  fontFamily: AppStyles.font.Poppins_500Medium,
-                }}
-              />
-              <CheckBox
-                title={generalConsent}
-                checked={isGeneralConsent}
-                iconType="material-community"
-                containerStyle={{
-                  backgroundColor: AppStyles.colour.white,
-                  width: "100%",
-                }}
-                onPress={() => setIsGeneralConsent(!isGeneralConsent)}
-                checkedIcon={"checkbox-marked"}
-                uncheckedIcon={"checkbox-blank-outline"}
-                checkedColor={AppStyles.colour.darkGreen}
-                uncheckedColor={AppStyles.colour.darkGreen}
-                textStyle={{
-                  color: AppStyles.colour.textGreen,
-                  fontFamily: AppStyles.font.Poppins_500Medium,
-                }}
-              />
+                <Image source={require("../../../assets/images/logo.png")} />
+                <View
+                    style={{
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: 61,
+                        // gap: 9
+                    }}
+                >
+                    <Text
+                        style={{
+                            fontSize: Platform.OS == "android" ? 24 : 27,
+                            fontWeight: "600",
+                            color: AppStyles.colour.textGreen,
+                            //   width: 300,
+                            // textAlign: "center",
+                            fontFamily: AppStyles.font.subHeadings,
+                            marginBottom: 25,
+                            textAlign: "center",
+                        }}
+                    >
+                        {TandCHeading}
+                    </Text>
+
+                    <View
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontFamily: AppStyles.font.poppinsRegular,
+                                color: AppStyles.colour.textGreen,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
+                        >
+                            {TandCText}
+                        </Text>
+                        <View
+                            style={{
+                                width: "100%",
+                                alignSelf: "flex-start",
+                                marginTop: 20,
+                                marginBottom: 10,
+                            }}
+                        >
+                            <CheckBox
+                                title={acceptText}
+                                checked={isSelected}
+                                iconType="material-community"
+                                containerStyle={{
+                                    backgroundColor: AppStyles.colour.white,
+                                    width: "100%",
+                                }}
+                                onPress={() => setIsSelected(!isSelected)}
+                                checkedIcon={"checkbox-marked"}
+                                uncheckedIcon={"checkbox-blank-outline"}
+                                checkedColor={AppStyles.colour.darkGreen}
+                                uncheckedColor={AppStyles.colour.darkGreen}
+                                textStyle={{
+                                    color: AppStyles.colour.textGreen,
+                                    fontFamily:
+                                        AppStyles.font.Poppins_500Medium,
+                                }}
+                            />
+                            <CheckBox
+                                title={doctorConsent}
+                                checked={isDoctorConsent}
+                                iconType="material-community"
+                                containerStyle={{
+                                    backgroundColor: AppStyles.colour.white,
+                                    width: "100%",
+                                }}
+                                onPress={() =>
+                                    setIsDoctorConsent(!isDoctorConsent)
+                                }
+                                checkedIcon={"checkbox-marked"}
+                                uncheckedIcon={"checkbox-blank-outline"}
+                                checkedColor={AppStyles.colour.darkGreen}
+                                uncheckedColor={AppStyles.colour.darkGreen}
+                                textStyle={{
+                                    color: AppStyles.colour.textGreen,
+                                    fontFamily:
+                                        AppStyles.font.Poppins_500Medium,
+                                }}
+                            />
+                            <CheckBox
+                                title={generalConsent}
+                                checked={isGeneralConsent}
+                                iconType="material-community"
+                                containerStyle={{
+                                    backgroundColor: AppStyles.colour.white,
+                                    width: "100%",
+                                }}
+                                onPress={() =>
+                                    setIsGeneralConsent(!isGeneralConsent)
+                                }
+                                checkedIcon={"checkbox-marked"}
+                                uncheckedIcon={"checkbox-blank-outline"}
+                                checkedColor={AppStyles.colour.darkGreen}
+                                uncheckedColor={AppStyles.colour.darkGreen}
+                                textStyle={{
+                                    color: AppStyles.colour.textGreen,
+                                    fontFamily:
+                                        AppStyles.font.Poppins_500Medium,
+                                }}
+                            />
+                        </View>
+                        <CustomButton
+                            title={continueText}
+                            accessibilityLabel={continueText}
+                            disabled={!isSelected}
+                            onPress={async () => {
+                                navigation.navigate("Register", {
+                                    doctorConsent: isDoctorConsent,
+                                    generalConsent: isGeneralConsent,
+                                });
+                            }}
+                        />
+                    </View>
+                </View>
             </View>
-            <CustomButton
-              title={continueText}
-              accessibilityLabel={continueText}
-              disabled={!isSelected}
-              onPress={async () => {
-                navigation.navigate("Register", {
-                  doctorConsent: isDoctorConsent,
-                  generalConsent: isGeneralConsent,
-                });
-              }}
-            />
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
+        </ScrollView>
+    );
 };
 
 export default TandC;
