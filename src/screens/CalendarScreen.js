@@ -15,6 +15,8 @@ import { AuthContext } from "../components/auth/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_APP_URL } from "../../config";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { Icon } from "@rneui/base";
 
 const translate = require("google-translate-api-x");
 
@@ -27,6 +29,7 @@ const CalenderScreen = ({ route, navigation }) => {
     }).then((res) => setText(res.text));
   };
   const [modalVisible, setModalVisible] = useState(false);
+  const netInfo = useNetInfo();
   const [selectedDate, setSelectedDate] = useState(() => {
     return getFormatedDate(new Date(), "YYYY/MM/DD");
   });
@@ -61,25 +64,67 @@ const CalenderScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const getModulesForPatient = async () => {
-      let token = await AsyncStorage.getItem("userToken");
-      let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      if (netInfo.isConnected && netInfo.isInternetReachable) {
+        let token = await AsyncStorage.getItem("userToken");
+        let userDetails = JSON.parse(await AsyncStorage.getItem("userDetails"));
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+        axios
+          .post(
+            `${BASE_APP_URL}/getModulesByPid`,
+            {
+              patientId: userDetails.id,
+            },
+            config
+          )
+          .then((res) => {
+            console.log("module:", res.data);
+            setModules(res.data);
 
-      axios
-        .post(
-          `${BASE_APP_URL}/getModulesByPid`,
-          {
-            patientId: userDetails.id,
-          },
-          config
-        )
-        .then((res) => {
-          console.log("module:", res.data);
-          setModules(res.data);
-        })
-        .catch(console.log);
+            const module_cache = [];
+            res.data.map((m) => {
+              const scheduled = new Date(m.moduleAssignment.scheduled);
+              let today = new Date();
+              if (scheduled.toDateString() == today.toDateString()) {
+                module_cache.push(m);
+              }
+            });
+            AsyncStorage.setItem(
+              "cached_modules",
+              JSON.stringify({ modules: module_cache })
+            );
+          })
+          .catch(console.log);
+
+        await AsyncStorage.getItem("cached_module_response").then(
+          async (item) => {
+            if (item) {
+              const bodyParameters = JSON.parse(item);
+              await axios
+                .post(
+                  `${BASE_APP_URL}/sendModuleResponse`,
+                  bodyParameters,
+                  config
+                )
+                .then((res) => {
+                  console.log("sent previous response");
+                  AsyncStorage.removeItem("cached_module_response");
+                })
+                .catch(console.log);
+            }
+          }
+        );
+      } else {
+        try {
+          cached_modules = JSON.parse(
+            await AsyncStorage.getItem("cached_modules")
+          );
+          setModules(cached_modules.modules);
+        } catch (e) {
+          console.log("error loading cached modules");
+        }
+      }
     };
     getModulesForPatient();
   }, []);
@@ -147,6 +192,26 @@ const CalenderScreen = ({ route, navigation }) => {
         style={styles.tasksList.container}
         contentContainerStyle={styles.tasksList.contentContainer}
       >
+        {!netInfo.isConnected || !netInfo.isInternetReachable ? (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#FDAAAA",
+              padding: 7,
+              alignSelf: "center",
+              width: "80%",
+              borderRadius: 40,
+              marginBottom: "15%",
+            }}
+          >
+            <Icon name="wifi-off" type="material-community" size={16}></Icon>
+            <Text> Network connection is unavailable</Text>
+          </View>
+        ) : (
+          <></>
+        )}
         {modules ? (
           modules.map((module, index) => {
             const scheduled = new Date(module.moduleAssignment.scheduled);

@@ -8,6 +8,7 @@ import { AuthContext } from "./auth/AuthContext";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_APP_URL } from "../../config";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const translate = require("google-translate-api-x");
 
@@ -31,6 +32,7 @@ const MediaModule = ({
   };
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDesp, setTaskDesp] = useState(task.description);
+  const netInfo = useNetInfo();
   translateText(task.title, setTaskTitle);
   translateText(task.description, setTaskDesp);
 
@@ -50,11 +52,26 @@ const MediaModule = ({
       status: true,
     };
     console.log("bodyParameters in media module", bodyParameters);
-    await axios
-      .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
-      .then((res) => {
-        navigation.goBack();
-      });
+    if (netInfo.isConnected && netInfo.isInternetReachable) {
+      await axios
+        .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
+        .then((res) => {
+          navigation.goBack();
+        });
+    } else {
+      AsyncStorage.setItem(
+        "cached_module_response",
+        JSON.stringify(bodyParameters)
+      );
+    }
+    await AsyncStorage.getItem("cached_module").then(async (item) => {
+      if (item) {
+        const module = JSON.parse(item);
+        if (module.moduleAssignment.moduleAssignedId == moduleAssignmentId) {
+          AsyncStorage.removeItem("cached_module");
+        }
+      }
+    });
   };
 
   return (
@@ -115,7 +132,7 @@ const MediaModule = ({
           accessibilityLabel={"Proceed"}
           // disabled={response == ""}
           onPress={() => {
-            if (index < totalTasks - 1) {
+            if (index + 1 != totalTasks) {
               setIndex(index + 1);
             } else {
               submitModule(response, startTime);

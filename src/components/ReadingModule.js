@@ -7,6 +7,7 @@ import { AuthContext } from "./auth/AuthContext";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_APP_URL } from "../../config";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const translate = require("google-translate-api-x");
 
@@ -31,6 +32,7 @@ const ReadingModule = ({
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDesp, setTaskDesp] = useState(task.description);
   const [taskContent, setTaskContent] = useState(task.content);
+  const netInfo = useNetInfo();
   translateText(task.title, setTaskTitle);
   translateText(task.description, setTaskDesp);
   translateText(task.content, setTaskContent);
@@ -50,11 +52,27 @@ const ReadingModule = ({
       duration: duration.toString(),
       status: true,
     };
-    await axios
-      .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
-      .then((res) => {
-        navigation.goBack();
-      });
+    console.log("bodyParameters in media module", bodyParameters);
+    if (netInfo.isConnected && netInfo.isInternetReachable) {
+      await axios
+        .post(`${BASE_APP_URL}/sendModuleResponse`, bodyParameters, config)
+        .then((res) => {
+          navigation.goBack();
+        });
+    } else {
+      AsyncStorage.setItem(
+        "cached_module_response",
+        JSON.stringify(bodyParameters)
+      );
+    }
+    await AsyncStorage.getItem("cached_module").then(async (item) => {
+      if (item) {
+        const module = JSON.parse(item);
+        if (module.moduleAssignment.moduleAssignedId == moduleAssignmentId) {
+          AsyncStorage.removeItem("cached_module");
+        }
+      }
+    });
   };
   const [isSelected, setIsSelected] = useState(false);
   return (
@@ -94,7 +112,7 @@ const ReadingModule = ({
           accessibilityLabel={"Proceed"}
           disabled={!isSelected}
           onPress={() => {
-            if (index < totalTasks) {
+            if (index + 1 != totalTasks) {
               setIndex(index + 1);
             } else {
               submitModule(response, startTime);

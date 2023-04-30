@@ -36,7 +36,7 @@ const ModuleCard = (props) => {
       {/* <Image source={require('./../data/banner.jpeg') }/> */}
       <View style={(!props.isLocked ? styles : locked_styles).ImgContainer}>
         <Image
-          source={module.thumbnail}
+          source={props.module.module.thumbnail}
           style={(!props.isLocked ? styles : locked_styles).moduleImg}
         />
         <View style={(!props.isLocked ? styles : locked_styles).overlay} />

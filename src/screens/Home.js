@@ -18,6 +18,7 @@ import { BASE_APP_URL } from "../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { Icon } from "@rneui/base";
 
 const translate = require("google-translate-api-x");
 
@@ -66,6 +67,25 @@ const Home = ({ navigation }) => {
             );
           })
           .catch(console.log);
+
+        await AsyncStorage.getItem("cached_module_response").then(
+          async (item) => {
+            if (item) {
+              const bodyParameters = JSON.parse(item);
+              await axios
+                .post(
+                  `${BASE_APP_URL}/sendModuleResponse`,
+                  bodyParameters,
+                  config
+                )
+                .then((res) => {
+                  console.log("sent previous response");
+                  AsyncStorage.removeItem("cached_module_response");
+                })
+                .catch(console.log);
+            }
+          }
+        );
       } else {
         try {
           cached_modules = JSON.parse(
@@ -134,6 +154,26 @@ const Home = ({ navigation }) => {
           </View>
         </View>
 
+        {!netInfo.isConnected || !netInfo.isInternetReachable ? (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#FDAAAA",
+              padding: 7,
+              alignSelf: "center",
+              width: "80%",
+              borderRadius: 40,
+              marginTop: 20,
+            }}
+          >
+            <Icon name="wifi-off" type="material-community" size={16}></Icon>
+            <Text> Network connection is unavailable</Text>
+          </View>
+        ) : (
+          <></>
+        )}
         <View style={styles.tasksList}>
           {modules ? (
             modules.map((module, index) => {
@@ -148,7 +188,8 @@ const Home = ({ navigation }) => {
                   today = new Date();
                   return (
                     <Pressable
-                      onPress={() => {
+                      onPress={async () => {
+                        console.log("toISO maaa ", today.toISOString());
                         navigation.navigate("ModuleProgress", {
                           module: module,
                           startTime: today.toISOString(),

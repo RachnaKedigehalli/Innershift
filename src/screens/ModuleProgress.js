@@ -24,7 +24,7 @@ const ModuleProgress = ({ route, navigation }) => {
   }, []);
 
   const moduleReturn = (tasks) => {
-    if (tasks[taskIndex].type == 0) {
+    if (tasks[taskIndex].type == 1) {
       return (
         <QuestionModule
           moduleAssignmentId={module.moduleAssignment.moduleAssignedId}
@@ -38,7 +38,7 @@ const ModuleProgress = ({ route, navigation }) => {
           setResponse={setResponse}
         />
       );
-    } else if (tasks[taskIndex].type == 2) {
+    } else if (tasks[taskIndex].type == 3) {
       return (
         <ReadingModule
           moduleAssignmentId={module.moduleAssignment.moduleAssignedId}
