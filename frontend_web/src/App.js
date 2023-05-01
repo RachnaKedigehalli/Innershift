@@ -28,6 +28,7 @@ import DoctorChat from './Pages/Doctor/Chat';
 import AssignModules from './Pages/Doctor/AssignModules';
 import UpdateOrder from './Pages/Doctor/UpdateModuleOrder';
 import Diagnosis from './Pages/Doctor/Diagnosis'
+import FormResponse from './Pages/Doctor/FormResponses'
 
 import Tmp from './Tmp';
 import ConfirmOTP from './Pages/ConfirmOTP';
@@ -139,6 +140,7 @@ function App() {
           <Route path="/doctor/assignmodules" element={<AssignModules />} />
           <Route path="/doctor/reorder" element={<UpdateOrder />} />
           <Route path="/doctor/diagnosis" element={<Diagnosis />} />
+          <Route path="/doctor/formresponse" element={<FormResponse />} />
 
 
         <Route path="/dummyloc" element={<Dummypage />} />

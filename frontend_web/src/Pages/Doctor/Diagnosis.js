@@ -1,13 +1,8 @@
-import { Flex, Grid, GridItem, Button, Textarea, Text, Box, VStack, HStack, StackDivider, Heading, Card, CardBody, useDisclosure, AlertDialog, AlertDialogHeader, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogFooter, Divider, Switch } from '@chakra-ui/react'
+import { Flex, Button, Textarea, Text, VStack, HStack, StackDivider, Heading, Divider, } from '@chakra-ui/react'
 import SideDoctor from "../../Components/SideDoctor";
 import { DESKTOP_BG_LIGHT, DESKTOP_BG_MEDIUM } from "../../Constants";
 import axios from 'axios'
 
-import styled from "@emotion/styled";
-
-
-import FullCalendar, { formatDate } from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
 
 import 'react-calendar/dist/Calendar.css';
 
@@ -16,10 +11,6 @@ import { useNavigate, useLocation, } from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
 
 
-// changes
-import DatePicker from 'react-date-picker';
-import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
 
 
 
@@ -51,10 +42,10 @@ function Diagnosis(){
     },[numberOfDiagnosis])
 
     const DiagnosisCard = ({date, diagnosis}) =>{
-        return(<HStack w='100%'>
-            <Text as='b' color='teal.700' w='500px' align='right'> {date} </Text>
-            <Text color='teal.700' > {diagnosis} </Text>
-        </HStack>)
+        return(<Flex w='100%'>
+            <Text as='b' color='teal.700' w='16ch' align='right'> {date} </Text>
+            <Text color='teal.700' flex='1' ml={1} > {diagnosis} </Text>
+        </Flex>)
     }
 
     const addDiagnosis = ()=>{
@@ -95,7 +86,7 @@ function Diagnosis(){
 
                 <Divider borderColor='gray.600'/>
 
-                <Heading size='md' color="teal.700" mt={5}>Previous Diagnosis</Heading>
+                <Heading size='md' color="teal.700" my={2}>Previous Diagnosis</Heading>
                 <VStack overflowY = "auto" flex='1' w='100%' divider={<StackDivider borderColor='gray.200' />}>
                     {
                         
@@ -110,7 +101,7 @@ function Diagnosis(){
                     }
                 </VStack>
 
-                <HStack w='100%' mt={1}>
+                <HStack w='100%'>
                     <Textarea value={currDiagnosis.target.value} placeholder='Append Diagnosis' onChange={setDiagnosis}/>
                     <Button onClick={addDiagnosis} bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
                 </HStack>
