@@ -29,7 +29,7 @@ function SideAdmin() {
 
 	return (
 	// <Box >
-		<VStack bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' spacing={3} align='center'>
+		<VStack bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100%' spacing={3} align='center'>
 			<Image src={logo} h='9em' />
 			<Box>
 
@@ -49,10 +49,6 @@ function SideAdmin() {
 					</Button>
 				</VStack>
 			</Center>
-
-
-
-
 		</VStack>
 	// </Box>
 	);

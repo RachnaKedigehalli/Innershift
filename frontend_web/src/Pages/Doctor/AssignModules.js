@@ -47,12 +47,11 @@ function AssignModules() {
 				scheduled:tasks[i].date,
 			}
 
-			console.log(dict)
-
-			axios.post('http://localhost:8080/api/v1/app/assignModule',dict, auth)
-			    .then(response=>{
-			        console.log(response.data)
-			})
+			if(tasks[i].post === true){
+				axios.post('http://localhost:8080/api/v1/app/assignModule',dict, auth)
+					.then(response=>{
+				})
+			}
 		}
 	}
 
@@ -74,8 +73,29 @@ function AssignModules() {
 					array.push(temp)
 				}
 				setAllModules(array)
-                console.log(array)
         })
+
+		const dict = {
+			patientId:location.state.id
+		}
+
+		axios.post("http://localhost:8080/api/v1/app/getModulesByPid",dict,auth)
+		.then((response)=>{
+			setNumberOfQuestions(response.data.length)
+			let size = response.data.length 
+
+			var temp = [] 
+			for(let i = 0;i<size;i++){
+				temp.push({
+					moduleId:response.data[i].module.moduleId,
+					date:response.data[i].moduleAssignment.scheduled,
+					moduleAssignmentId: response.data[i].moduleAssignment.moduleAssignedId,
+					post:false
+				})
+			}
+			setQuestions(temp)
+		})
+
 	},[])
 
 	const addNewTask = () => {
@@ -83,12 +103,12 @@ function AssignModules() {
 		var temp = tasks
 		temp.push({
 			moduleId:-1,
-			date:new Date()
+			date:new Date(),
+			moduleAssignmentId:-1,
+			post:true
 		})
 		setQuestions(temp)
 	}
-
-
 
 
 	return (<div>
@@ -99,7 +119,7 @@ function AssignModules() {
 					<Heading> <Text color='teal.700' ml={3} mt={3}> Assign Modules</Text> </Heading>
 					<Box w='100%' color='teal.700' padding={3} align='center'>
 						{tasks.map((task,index) => 
-						<FormQuestion tasks={tasks} setTasks={setQuestions} index={index} allModules={allModules}/>
+							<FormQuestion moduleAssignmentId={task.moduleAssignmentId} existingDate={task.date} existingModule={task.moduleId} tasks={tasks} setTasks={setQuestions} index={index} allModules={allModules}/>
 						)}
 						<ButtonGroup w='50%' align='center'>
 							<Button onClick={addNewTask} w='30%' align='center' bg='teal.700' color='white' m={3}>Add Module</Button>

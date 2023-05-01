@@ -27,7 +27,7 @@ function SideDoctor() {
         navigate("/profile")
     }
 
-	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100vh' maxHeight='100vh'>
+	return (<Box bg={DESKTOP_BG_MEDIUM} w='20%' minHeight='100%'>
 		<VStack spacing={3} align='center'>
 			<Image src={logo} h='9em' />
 			<Box>
