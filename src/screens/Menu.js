@@ -23,9 +23,13 @@ const Menu = ({ navigation }) => {
       action: () => navigation.navigate("ManageConsent"),
     },
     {
-      title: "Delete Account",
-      action: () => navigation.navigate("SelectLanguage"),
+      title: "Export Data",
+      action: () => navigation.navigate("ExportData"),
     },
+    // {
+    //   title: "Delete Account",
+    //   action: () => navigation.navigate("DeleteAccount"),
+    // },
     {
       title: "Logout",
       action: async () => await logout(),

@@ -32,6 +32,8 @@ const Home = ({ navigation }) => {
       to: appLanguage,
     }).then((res) => setText(res.text));
   };
+  const [numCompleted, setNumCompleted] = useState(0);
+  const [numToday, setNumToday] = useState(0);
 
   useEffect(() => {
     const getModulesForPatient = async () => {
@@ -50,15 +52,20 @@ const Home = ({ navigation }) => {
             config
           )
           .then((res) => {
-            console.log("module:", res.data);
+            // console.log("module:", res.data);
             setModules(res.data);
 
             const module_cache = [];
             res.data.map((m) => {
               const scheduled = new Date(m.moduleAssignment.scheduled);
               let today = new Date();
-              if (scheduled.toDateString() == today.toDateString()) {
-                module_cache.push(m);
+              if (scheduled.getTime() < today.getTime()) {
+                setNumToday(numToday + 1);
+                if (!m.moduleAssignment.status) {
+                  module_cache.push(m);
+                } else {
+                  setNumCompleted(numCompleted + 1);
+                }
               }
             });
             AsyncStorage.setItem(
@@ -98,7 +105,7 @@ const Home = ({ navigation }) => {
       }
     };
     getModulesForPatient();
-  }, []);
+  }, [netInfo]);
 
   const originalTexts = {
     bannerHeaderText: "Wind down",
@@ -149,7 +156,11 @@ const Home = ({ navigation }) => {
 
           <View style={styles.tasksHeader.progressBar}>
             <View
-              style={[StyleSheet.absoluteFill, styles.tasksHeader.progress]}
+              style={[
+                StyleSheet.absoluteFill,
+                styles.tasksHeader.progress,
+                { width: `${(numCompleted / numToday) * 100}%` },
+              ]}
             />
           </View>
         </View>
@@ -183,7 +194,10 @@ const Home = ({ navigation }) => {
               // console.log("scheduled", scheduled.toDateString());
               if (scheduled.toDateString() == today.toDateString()) {
                 console.log("Yo, its today", module.module.moduleId);
-                if (!module.moduleAssignment.locked) {
+                if (
+                  !module.moduleAssignment.locked &&
+                  !module.moduleAssignment.status
+                ) {
                   console.log("not locked");
                   today = new Date();
                   return (
@@ -197,12 +211,21 @@ const Home = ({ navigation }) => {
                       }}
                       key={index}
                     >
-                      <ModuleCard module={module} isLocked={false} />
+                      <ModuleCard
+                        module={module}
+                        isLocked={false}
+                        isCompleted={module.moduleAssignment.status}
+                      />
                     </Pressable>
                   );
                 } else {
                   return (
-                    <ModuleCard module={module} isLocked={true} key={index} />
+                    <ModuleCard
+                      module={module}
+                      isLocked={true}
+                      key={index}
+                      isCompleted={module.moduleAssignment.status}
+                    />
                   );
                 }
               }
@@ -292,7 +315,6 @@ const styles = StyleSheet.create({
     progress: {
       backgroundColor: AppStyles.colour.darkGreen,
       borderRadius: 10,
-      width: "50%",
     },
   },
   tasksList: {

@@ -10,6 +10,8 @@ import Profile from "../screens/Profile";
 import Menu from "../screens/Menu";
 import SelectLanguage from "../screens/SelectLanguage";
 import ManageConsent from "../screens/ManageConsent";
+import DeleteAccount from "../screens/DeleteAccount";
+import ExportData from "../screens/ExportData";
 
 const Stack = createNativeStackNavigator();
 const HomeModuleStack = () => {
@@ -82,6 +84,16 @@ const HomeModuleStack = () => {
       <Stack.Screen
         name="ManageConsent"
         component={ManageConsent}
+        options={discreteHeader}
+      />
+      <Stack.Screen
+        name="DeleteAccount"
+        component={DeleteAccount}
+        options={discreteHeader}
+      />
+      <Stack.Screen
+        name="ExportData"
+        component={ExportData}
         options={discreteHeader}
       />
     </Stack.Navigator>

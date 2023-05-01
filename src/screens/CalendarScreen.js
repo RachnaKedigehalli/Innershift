@@ -79,7 +79,7 @@ const CalenderScreen = ({ route, navigation }) => {
             config
           )
           .then((res) => {
-            console.log("module:", res.data);
+            // console.log("module:", res.data);
             setModules(res.data);
 
             const module_cache = [];
@@ -127,7 +127,7 @@ const CalenderScreen = ({ route, navigation }) => {
       }
     };
     getModulesForPatient();
-  }, []);
+  }, [netInfo]);
 
   return (
     <View
@@ -220,8 +220,14 @@ const CalenderScreen = ({ route, navigation }) => {
             // console.log("scheduled", scheduled.toDateString());
             if (scheduled.toDateString() == today.toDateString()) {
               console.log("Yo, its today", module.module.moduleId);
-              if (!module.moduleAssignment.locked) {
-                console.log("not locked");
+              if (
+                !module.moduleAssignment.locked &&
+                !module.moduleAssignment.status
+              ) {
+                console.log(
+                  "not locked, status: ",
+                  module.moduleAssignment.status
+                );
                 return (
                   <Pressable
                     onPress={() => {
@@ -231,12 +237,21 @@ const CalenderScreen = ({ route, navigation }) => {
                     }}
                     key={index}
                   >
-                    <ModuleCard module={module} isLocked={false} />
+                    <ModuleCard
+                      module={module}
+                      isLocked={false}
+                      isCompleted={module.moduleAssignment.status}
+                    />
                   </Pressable>
                 );
               } else {
                 return (
-                  <ModuleCard module={module} isLocked={true} key={index} />
+                  <ModuleCard
+                    module={module}
+                    isLocked={true}
+                    key={index}
+                    isCompleted={module.moduleAssignment.status}
+                  />
                 );
               }
             }

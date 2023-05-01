@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#DCEFED"
-      }
+      },
+      "package": "com.samaelarch.Innershift"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bc702018-d990-4325-bd28-5798f8b51b49"
+      }
     }
   }
 }

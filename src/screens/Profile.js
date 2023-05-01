@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../components/auth/AuthContext";
 import CustomButton from "../components/CustomButton";
 import { Avatar } from "@rneui/base";
@@ -7,8 +7,20 @@ import dp from "../../assets/images/dummy/profile1.jpg";
 import AppStyles from "../AppStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const translate = require("google-translate-api-x");
+
 const Profile = () => {
   const { logout, user, appLanguage } = useContext(AuthContext);
+  const translateText = (originalText, setText) => {
+    translate(originalText, {
+      from: "en",
+      to: appLanguage,
+    }).then((res) => setText(res.text));
+  };
+
+  const originalTexts = { logoutText: "Logout" };
+  const [logoutText, setLogoutText] = useState(originalTexts.logoutText);
+  translateText(originalTexts.logoutText, setLogoutText);
 
   return (
     <View style={styles.mainContainer}>
@@ -19,7 +31,8 @@ const Profile = () => {
         </Text>
       </View>
       <CustomButton
-        title="logout"
+        title={logoutText}
+        accessibilityLabel={logoutText}
         onPress={async () => await logout()}
       ></CustomButton>
     </View>

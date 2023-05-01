@@ -236,6 +236,8 @@ export const AuthProvider = (props) => {
         await AsyncStorage.removeItem("userDetails");
         await AsyncStorage.removeItem("consultation");
         await AsyncStorage.removeItem("expoPushToken");
+        await AsyncStorage.removeItem("cached_modules");
+        await AsyncStorage.removeItem("cached_module_response");
         setIsLoading(false);
       })
       .catch(() => {

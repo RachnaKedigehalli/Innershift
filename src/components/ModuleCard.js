@@ -29,36 +29,87 @@ const ModuleCard = (props) => {
     );
   }, []);
 
+  const [imageErr, setImageErr] = useState(false);
   // translateText(props.module.title, setModuleTitle);
   // translateText(props.module.description, setModuleDesp);
+
   return (
     <View style={(!props.isLocked ? styles : locked_styles).mainContainer}>
       {/* <Image source={require('./../data/banner.jpeg') }/> */}
       <View style={(!props.isLocked ? styles : locked_styles).ImgContainer}>
-        <Image
-          source={props.module.module.thumbnail}
-          style={(!props.isLocked ? styles : locked_styles).moduleImg}
+        {!imageErr && module ? (
+          <Image
+            source={{ uri: module.thumbnail }}
+            style={
+              (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+                .moduleImg
+            }
+            onError={() => {
+              console.log("image errorrr");
+              setImageErr(true);
+            }}
+          />
+        ) : (
+          <Image
+            source={require("../../assets/images/moduleThumbnailDefault.jpg")}
+            style={
+              (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+                .moduleImg
+            }
+          />
+        )}
+
+        <View
+          style={
+            (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+              .overlay
+          }
         />
-        <View style={(!props.isLocked ? styles : locked_styles).overlay} />
       </View>
-      <View style={(!props.isLocked ? styles : locked_styles).title}>
-        <Text style={(!props.isLocked ? styles : locked_styles).titleText}>
+      <View
+        style={
+          (!props.isLocked && !props.isCompleted ? styles : locked_styles).title
+        }
+      >
+        <Text
+          style={
+            (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+              .titleText
+          }
+        >
           {module ? module.title : ""}
         </Text>
-        <View style={(!props.isLocked ? styles : locked_styles).description}>
+        <View
+          style={
+            (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+              .description
+          }
+        >
           <Text
-            style={(!props.isLocked ? styles : locked_styles).descriptionText}
+            style={
+              (!props.isLocked && !props.isCompleted ? styles : locked_styles)
+                .descriptionText
+            }
           >
             {module ? module.description : ""}
           </Text>
         </View>
       </View>
-      <Icon
-        name="lock"
-        type="material-community"
-        color={AppStyles.colour.darkGrey}
-        style={(!props.isLocked ? styles : locked_styles).lock}
-      />
+      {props.isCompleted ? (
+        <Icon
+          name="check"
+          type="material-community"
+          color={AppStyles.colour.darkGrey}
+          style={(!props.isCompleted ? styles : locked_styles).lock}
+        />
+      ) : (
+        <Icon
+          name="lock"
+          type="material-community"
+          color={AppStyles.colour.darkGrey}
+          style={(!props.isLocked ? styles : locked_styles).lock}
+        />
+      )}
     </View>
   );
 };
@@ -69,6 +120,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
     marginBottom: 35,
   },
   moduleImg: {
@@ -79,7 +131,7 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: "column",
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 12,
     height: 65,
   },
   titleText: {
@@ -126,7 +178,7 @@ const locked_styles = StyleSheet.create({
   title: {
     flexDirection: "column",
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 12,
     height: 65,
   },
   titleText: {
