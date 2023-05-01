@@ -71,22 +71,22 @@ function PatientCard({ name, bio, currPos, license, degree }) {
 					<VStack w="flex">
 						<Flex w='100%' minW='100%'>
 							<Text color='teal.700' as='b'>Bio:</Text>
-							<Text color='teal.700' as='b' ml={1} noOfLines={3}>{bio}</Text>
+							<Text color='teal.700' flex='1' ml={1} noOfLines={3}>{bio}</Text>
 						</Flex>
 
 						<Flex w='100%' minW='100%'>
 							<Text color='teal.700' as='b'>Degree:</Text>
-							<Text color='teal.700' as='b' ml={1} >{degree}</Text>
+							<Text color='teal.700' flex='1' ml={1} >{degree}</Text>
 						</Flex>
 						
 						<Flex w='100%' minW='100%'>
 							<Text color='teal.700' as='b'>Current Position:</Text>
-							<Text color='teal.700' as='b' ml={1} >{currPos}</Text>
+							<Text color='teal.700' flex='1' ml={1} >{currPos}</Text>
 						</Flex>
 
 						<Flex w='100%' minW='100%'>
 							<Text color='teal.700' as='b'>License ID:</Text>
-							<Text color='teal.700' as='b' ml={1} >{license}</Text>
+							<Text color='teal.700' flex='1' ml={1} >{license}</Text>
 						</Flex>
 
 					</VStack>
