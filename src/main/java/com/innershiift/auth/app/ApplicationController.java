@@ -28,6 +28,7 @@ import com.innershiift.auth.user.doctor.DoctorService;
 import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -40,10 +41,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/app")
@@ -216,7 +215,21 @@ public class ApplicationController {
     @CrossOrigin
     public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient p){
         System.out.println("inside add patient, " + p);
-        return ResponseEntity.ok(patientService.addPatient(p).orElseThrow(()-> new IllegalStateException("Could not add patient")));
+        try {
+            Patient patient = patientService.addPatient(p).orElseThrow(() -> new IllegalStateException("Could not add patient"));
+            if (patient.getRegisteredThrough() == 0) {
+                List<Module> modules = moduleService.getAllModules().orElseThrow(() -> new RuntimeException("error fetching modules"));
+                int numModules = Integer.min(modules.size(), 2);
+                Collections.shuffle(modules);
+                for (int i = 0; i < numModules; i++) {
+                    moduleService.assignModule(patient.getPatientId(), modules.get(i).getModuleId(), new Date());
+                }
+            }
+            return ResponseEntity.ok(patient);
+        }
+        catch(RuntimeException re) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     @PostMapping("/addPatientWithPhone")
     @PreAuthorize("hasAuthority('USER')")
@@ -285,9 +298,9 @@ public class ApplicationController {
     @PostMapping("/deleteAssignmentById")
     @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @CrossOrigin
-    public ResponseEntity<ModuleAssignment> deleteAssignmentById(@Valid @RequestBody Integer maId) {
+    public ResponseEntity<ModuleAssignment> deleteAssignmentById(@Valid @RequestBody ModuleAssignment ma) {
         return ResponseEntity.ok(
-          moduleService.deleteAssignmentById(maId).orElseThrow(()->new RuntimeException("Couldn't delete module"))
+          moduleService.deleteAssignmentById(ma.getModuleAssignedId()).orElseThrow(()->new RuntimeException("Couldn't delete module"))
         );
     }
 
@@ -414,7 +427,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/getConsentByPid")
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'DOCTOR')")
     @CrossOrigin
     public  ResponseEntity<?> getConsent(@Valid @RequestBody Patient patient) {
         try {
