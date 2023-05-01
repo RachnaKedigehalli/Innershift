@@ -90,33 +90,31 @@ function Diagnosis(){
 			<SideDoctor/>
 
 			{/* This be main screen */}
-			<Box bg='white' minHeight='100vh' flex='1' p={3}>
-                <Flex mt={10} direction="column">
-                    <Heading color="teal.700"> {location.state.name}'s Diagnosis</Heading>
+			<Flex bg='white' minHeight='100vh' maxHeight='100vh' flex='1' p={3} pt={10} direction='column'>
+                <Heading color="teal.700"> {location.state.name}'s Diagnosis</Heading>
 
-                    <Divider borderColor='gray.600'/>
+                <Divider borderColor='gray.600'/>
 
-                    <Heading size='md' color="teal.700" mt={5}>Previous Diagnosis</Heading>
-                    <VStack overflowY = "auto" maxHeight='68vh' w='100%' divider={<StackDivider borderColor='gray.200' />}>
-                        {
-                            
-                            allDiagnosis.map((item,index)=>{
-                                const temp = new Date(item.date); 
-                                const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                <Heading size='md' color="teal.700" mt={5}>Previous Diagnosis</Heading>
+                <VStack overflowY = "auto" flex='1' w='100%' divider={<StackDivider borderColor='gray.200' />}>
+                    {
+                        
+                        allDiagnosis.map((item,index)=>{
+                            const temp = new Date(item.date); 
+                            const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-                                return(
-                                    <DiagnosisCard date={temp.getDate()+" "+month[temp.getUTCMonth()] + " " + temp.getFullYear()} diagnosis={item.diagnosis}/>
-                                )
-                            })
-                        }
-                    </VStack>
+                            return(
+                                <DiagnosisCard date={temp.getDate()+" "+month[temp.getUTCMonth()] + " " + temp.getFullYear()} diagnosis={item.diagnosis}/>
+                            )
+                        })
+                    }
+                </VStack>
 
-                    <HStack w='100%'>
-                        <Textarea value={currDiagnosis.target.value} placeholder='Append Diagnosis' onChange={setDiagnosis}/>
-                        <Button onClick={addDiagnosis} bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
-                    </HStack>
-                </Flex>
-            </Box>
+                <HStack w='100%' mt={1}>
+                    <Textarea value={currDiagnosis.target.value} placeholder='Append Diagnosis' onChange={setDiagnosis}/>
+                    <Button onClick={addDiagnosis} bg='teal.700' h='100%' color='white' padding={5}>Append <br/>Diagnosis</Button>
+                </HStack>
+            </Flex>
 			
 		</Flex>
 	</div>);
